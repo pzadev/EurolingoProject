@@ -173,11 +173,18 @@
 
           this.cursors = this.input.keyboard.createCursorKeys();
 
-          this.backgroundMusic = this.sound.add("backgroundMusic", {
-            loop: true,
-            volume: 0.2,
-          });
-          this.backgroundMusic.play();
+          if (!this.sound.get("backgroundMusic")) {
+            this.backgroundMusic = this.sound.add("backgroundMusic", {
+              loop: true,
+              volume: 0.2,
+            });
+            this.backgroundMusic.play();
+          } else {
+            const backgroundMusic = this.sound.get("backgroundMusic");
+            if (!backgroundMusic.isPlaying) {
+              backgroundMusic.play();
+            }
+          }
         }
 
         update() {
@@ -228,6 +235,12 @@
         }
 
         create() {
+          // Stop BG Music in House
+          const backgroundMusic = this.sound.get("backgroundMusic");
+          if (backgroundMusic) {
+            backgroundMusic.stop();
+          }
+
           this.cursors = this.input.keyboard.createCursorKeys();
 
           // House image
