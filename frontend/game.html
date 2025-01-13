@@ -13,6 +13,7 @@
   <body>
     <script type="module">
       import CollisionBlocks from "./collisionBlocks.js";
+      import HouseCollisionBlocks from "./houseCollisionBlocks.js";
       class MainScene extends Phaser.Scene {
         constructor() {
           super({ key: "Main" });
@@ -21,8 +22,8 @@
         // Character positioning
         init(data) {
           // Defaults guy start position to 900/800 unless switching scene
-          this.startX = data && data.x ? data.x : 900; // Default to 900 if no position passed
-          this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
+          this.startX = data && data.x ? data.x : 1000; // Default to 900 if no position passed
+          this.startY = data && data.y ? data.y : 1200; // Default to 800 if no position passed
         }
 
         preload() {
@@ -35,6 +36,8 @@
             frameHeight: 32,
           });
           this.load.image("collision", "assets/collision.png");
+          this.load.image("roof1", "assets/rooftoop.png")
+          this.load.image("roof2", "assets/Rooftop2.1.png")
         }
 
         create() {
@@ -65,6 +68,17 @@
             .setScale(3.2); // How zoomed in the map is
 
           background.play("background");
+
+          this.roof = this.add
+            .image(1251, 432, "roof1")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.5);
+          this.roof1 = this.add
+            .image(334, 943, "roof2")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.59);
 
           this.player = this.physics.add
             .sprite(this.startX, this.startY, "guy")
@@ -207,6 +221,7 @@
             frameWidth: 32,
             frameHeight: 32,
           });
+          this.load.image("collision", "assets/collision.png");
         }
 
         create() {
@@ -224,9 +239,7 @@
 
           this.player.setCollideWorldBounds(true);
 
-          // Add house door collision area
-          this.doorArea = this.physics.add.staticGroup();
-          this.doorArea.create(250, 160, "collision").setSize(50, 70);
+          const houseCollisionBlocks = new HouseCollisionBlocks(this);
 
           this.physics.add.collider(
             this.player,
@@ -238,6 +251,14 @@
             null,
             this
           );
+          const houseCollisionGroup = HouseCollisionBlocks.getHouseBlocks();
+          // Player & Collision Blocks collide
+          this.physics.add.collider(this.player, this.collisionBlocks);
+          this.physics.add.collider(this.player, houseCollisionGroup);
+
+          // Add house door collision area
+          this.doorArea = this.physics.add.staticGroup();
+          this.doorArea.create(250, 160, "collision").setSize(50, 70);
 
           this.physics.world.setBounds(0, 0, 500, 800);
           this.cameras.main.setBounds(0, 0, 500, 800);
