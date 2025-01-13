@@ -38,6 +38,8 @@
           this.load.image("collision", "assets/collision.png");
           this.load.image("roof1", "assets/rooftop.png");
           this.load.image("roof2", "assets/Rooftop2.1.png");
+          this.load.audio("backgroundMusic", "assets/backgroundMusic.mp3"); // Background music
+          this.load.audio("doorOpen", "assets/doorOpen.mp3"); // Door sound
         }
 
         create() {
@@ -147,12 +149,15 @@
             .setOrigin(1, 1); // House door TR
           door2.visible = false;
 
+          this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+
           // Player to door teleport
           this.physics.add.collider(
             this.player,
             this.doorArea,
             function (player, doorArea) {
               if (doorArea === this.doorArea.getChildren()[0]) {
+                this.doorOpenSound.play();
                 console.log("You are close to the house door!");
                 this.scene.start("House");
               }
@@ -167,6 +172,12 @@
           this.cameras.main.startFollow(this.player);
 
           this.cursors = this.input.keyboard.createCursorKeys();
+
+          this.backgroundMusic = this.sound.add("backgroundMusic", {
+            loop: true,
+            volume: 0.2,
+          });
+          this.backgroundMusic.play();
         }
 
         update() {
@@ -213,6 +224,7 @@
             frameHeight: 32,
           });
           this.load.image("collision", "assets/collision.png");
+          this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
         }
 
         create() {
@@ -247,6 +259,7 @@
             this.doorArea,
             function (player, doorArea) {
               console.log("You are at the door!");
+              this.doorOpenSound.play();
               this.scene.start("Main", { x: 500, y: 685 });
             },
             null,
