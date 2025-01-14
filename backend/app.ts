@@ -13,6 +13,7 @@ import {
   testItalianWords,
   testSpanishWords,
   testUrkainianWords,
+  users
 } from "./data/testData/index";
 import { seeding } from "./database/seeding";
 
@@ -28,7 +29,8 @@ const bootstrap = async () => {
     testGermanWords,
     testItalianWords,
     testSpanishWords,
-    testUrkainianWords
+    testUrkainianWords,
+    users
   );
 
   app.listen(port, () => {
