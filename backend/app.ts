@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 import apiRouter from "./routers";
 import {
   italianWords,
@@ -13,11 +13,12 @@ import {
   testItalianWords,
   testSpanishWords,
   testUrkainianWords,
-  users
+  users,
 } from "./data/testData/index";
 import { seeding } from "./database/seeding";
 
-const app = express();
+const app: Application = express();
+app.use(express.json());
 const port: number = 8080;
 
 app.use("/api", apiRouter);
