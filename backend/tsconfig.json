@@ -10,5 +10,5 @@
     "rootDir": ".",
     "allowJs": true
   },
-  "include": ["**/*.ts", "database/db.js"]
+  "include": ["**/*.ts", "database/db.js", "tests/**/*.ts"]
 }
