@@ -21,8 +21,28 @@ export const fetchAllUsers = async () : Promise<any[]> => {
     if (users.length <= 0) {
         return Promise.reject({
             status: 404,
-            msg: "no words found"
+            msg: "no users found"
         })
     }
     return users
+}
+
+export const fetchUserByUsername = async (userParam: string) : Promise<any> => {
+    const db = await createDatabase()
+    const collection: Collection = db.collection("users")
+    const user = await collection.findOne({username : userParam})
+    if (!user){
+        return Promise.reject({
+            status: 404,
+            msg: "no user found"
+        })
+    }
+    return user
+}
+
+export const postUser = async (body: object) : Promise<any> => {
+    const db = await createDatabase()
+    const collection: Collection = db.collection("users")
+    const newUser = await collection.insertOne(body)
+    return newUser
 }
