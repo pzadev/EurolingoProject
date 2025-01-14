@@ -1,5 +1,6 @@
 import express from 'express'
-import { getApi, getAllWords, getAllUsers } from '../controllers/app.controller'
+import { getApi, getAllWords } from '../controllers/app.controller'
+import userRouter from './usersRouter'
 
 const apiRouter = express.Router()
 
@@ -7,6 +8,7 @@ apiRouter.get('/', getApi)
 
 apiRouter.get('/:language', getAllWords)
 
-apiRouter.get('/users', getAllUsers)
+apiRouter.use('/users', userRouter )
+
 
 export default apiRouter
