@@ -39,7 +39,10 @@
           this.load.image("roof1", "assets/rooftop.png");
           this.load.image("roof2", "assets/Rooftop2.1.png");
           this.load.audio("backgroundMusic", "assets/backgroundMusic.mp3"); // Background music
-          this.load.audio("doorOpen", "assets/doorOpen.mp3"); // Door sound
+          this.load.image("barn", "assets/BarnHouse.png")
+          this.load.image("w_well", "assets/WishingWell.png")
+          this.load.audio("doorOpen", "assets/doorOpen.mp3"); 
+          this.load.image("fountain", "assets/FountainSpout.png")// Door sound
         }
 
         create() {
@@ -81,6 +84,24 @@
             .setOrigin(0, 0)
             .setDepth(10)
             .setScale(0.59);
+
+            this.barn = this.add
+            .image(60, 628, "barn")
+            .setOrigin(0, 0).
+            setDepth(10)
+            .setScale(.59);
+            this.well = this.add
+            .image(1120, 535, "w_well")
+            .setOrigin(0, 0).
+            setDepth(10)
+            .setScale(.59);
+
+            this.fountain = this.add
+            .image(945, 820, "fountain")
+            .setOrigin(0, 0).
+            setDepth(10)
+            .setScale(.59);
+
 
           this.player = this.physics.add
             .sprite(this.startX, this.startY, "guy")
@@ -324,7 +345,7 @@
         physics: {
           default: "arcade",
           arcade: {
-            debug: false, // Set to true to debug/see hitboxes
+            debug: true, // Set to true to debug/see hitboxes
           },
         },
         scene: [MainScene, HouseScene],
