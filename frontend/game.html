@@ -24,8 +24,8 @@
         // Character positioning
         init(data) {
           // Defaults guy start position to 900/800 unless switching scene
-          this.startX = data && data.x ? data.x : 1000; // Default to 900 if no position passed
-          this.startY = data && data.y ? data.y : 1200; // Default to 800 if no position passed
+          this.startX = data && data.x ? data.x : 500; // Default to 900 if no position passed
+          this.startY = data && data.y ? data.y : 1300; // Default to 800 if no position passed
         }
 
         preload() {
@@ -33,7 +33,7 @@
             frameWidth: 630,
             frameHeight: 500,
           });
-          this.load.spritesheet("guy", "assets/guy.png", {
+          this.load.spritesheet("guy", "assets/Guy.png", {
             frameWidth: 32,
             frameHeight: 32,
           });
@@ -89,9 +89,9 @@
             .setScale(0.59);
 
           this.door = this.add
-            .image(1200, 1080, "door")
+            .image(1165, 1060, "door")
             .setOrigin(0, 0)
-            .setScale(1.8);
+            .setScale(1.57);
 
           this.barn = this.add
             .image(60, 628, "barn")
@@ -193,6 +193,13 @@
             .setOrigin(1, 1); // House door TR
           door4.visible = false;
           door4.setData("targetScene", "House4");
+
+          const door5 = this.doorArea
+            .create(535, 1270, "collision")
+            .setSize(40, 60)
+            .setOrigin(1, 1); // House door TR
+          door5.visible = false;
+          door5.setData("targetScene", "House5");
 
           this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
 
@@ -652,6 +659,103 @@
         }
       }
 
+      class HouseScene5 extends Phaser.Scene {
+        constructor() {
+          super({ key: "House5" });
+        }
+
+        preload() {
+          this.load.image("house2", "assets/house2.png");
+          this.load.spritesheet("guy", "assets/guy.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+          });
+          this.load.image("collision", "assets/collision.png");
+          this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+        }
+
+        create() {
+          // Stop BG Music in House
+          const backgroundMusic = this.sound.get("backgroundMusic");
+          if (backgroundMusic) {
+            backgroundMusic.stop();
+          }
+
+          this.cursors = this.input.keyboard.createCursorKeys();
+
+          // House image
+          this.add.image(0, 0, "house2").setOrigin(0, 0).setScale(0.5);
+
+          this.player = this.physics.add
+            .sprite(200, 300, "guy")
+            .setSize(18, 10)
+            .setScale(3.5)
+            .setOrigin(0, 0)
+            .setOffset(6.5, 14);
+
+          this.player.setCollideWorldBounds(true);
+
+          // House collision and door data for HouseScene
+          const houseCollisionBlocks = new HouseCollisionBlocks(this);
+          const houseCollisionGroup = houseCollisionBlocks.getHouseBlocks();
+          this.physics.add.collider(this.player, houseCollisionGroup);
+
+          // Door Area for HouseScene
+          this.doorArea = this.physics.add.staticGroup();
+          const houseDoor = this.doorArea
+            .create(250, 160, "collision")
+            .setSize(30, 70);
+          houseDoor.visible = false;
+
+          this.physics.add.collider(
+            this.player,
+            this.doorArea,
+            function (player, doorArea) {
+              console.log("You are at the door!");
+              this.doorOpenSound.play();
+              this.scene.start("Main", { x: 500, y: 1300 });
+            },
+            null,
+            this
+          );
+ 
+          // World bounds and camera
+          this.physics.world.setBounds(0, 0, 500, 800);
+          this.cameras.main.setBounds(0, 0, 500, 800);
+        }
+
+        update() {
+          this.player.setVelocity(0);
+
+          if (this.cursors.left.isDown) {
+            this.player.setVelocityX(-160);
+            this.player.anims.play("right", true);
+            this.player.setFlipX(true);
+          } else if (this.cursors.right.isDown) {
+            this.player.setVelocityX(160);
+            this.player.anims.play("right", true);
+            this.player.setFlipX(false);
+          }
+
+          if (this.player.body.velocity.x === 0) {
+            if (this.cursors.up.isDown) {
+              this.player.setVelocityY(-160);
+              this.player.anims.play("up", true);
+            } else if (this.cursors.down.isDown) {
+              this.player.setVelocityY(160);
+              this.player.anims.play("down", true);
+            }
+          }
+
+          if (
+            this.player.body.velocity.x === 0 &&
+            this.player.body.velocity.y === 0
+          ) {
+            this.player.anims.play("guyidle", true);
+          }
+        }
+      }
+
       // Game configuration
       var config = {
         type: Phaser.AUTO,
@@ -663,7 +767,7 @@
             debug: true, // Set to true to debug/see hitboxes
           },
         },
-        scene: [MainScene, HouseScene1, HouseScene2, HouseScene3, HouseScene4],
+        scene: [MainScene, HouseScene1, HouseScene2, HouseScene3, HouseScene4, HouseScene5],
       };
 
       var game = new Phaser.Game(config);

@@ -63,14 +63,14 @@ export default class CollisionBlocks {
       .setVisible(false);
     // CL House
     this.collisionBlocks
-      .create(175, 860, "collision")
-      .setSize(180, 190)
+      .create(175, 850, "collision")
+      .setSize(180, 210)
       .setOrigin(1, 1)
       .setVisible(false);
     // BL House
     this.collisionBlocks
-      .create(550, 1200, "collision")
-      .setSize(300, 150)
+      .create(540, 1185, "collision")
+      .setSize(375, 215)
       .setOrigin(1, 1)
       .setVisible(false);
     // TOP House
