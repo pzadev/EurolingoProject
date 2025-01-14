@@ -90,6 +90,12 @@ export default class CollisionBlocks {
       .setSize(190, 200)
       .setOrigin(1, 1)
       .setVisible(false);
+    //Bench
+    this.collisionBlocks
+    .create(1215, 790, "collision")
+    .setSize(90, 20)
+    .setOrigin(1, 1)
+    .setVisible(false);
     // Fountain
     this.collisionBlocks
       .create(999, 900, "collision")
@@ -113,8 +119,13 @@ export default class CollisionBlocks {
       .setOrigin(1, 1)
       .setVisible(false);
     this.collisionBlocks
+      .create(590, 440, "collision")
+      .setSize(140, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+    this.collisionBlocks
       .create(570, 670, "collision")
-      .setSize(80, 50)
+      .setSize(82, 50)
       .setOrigin(1, 1)
       .setVisible(false);
     this.collisionBlocks
