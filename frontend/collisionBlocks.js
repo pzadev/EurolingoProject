@@ -96,6 +96,16 @@ export default class CollisionBlocks {
       .setSize(85, 60)
       .setOrigin(1, 1)
       .setVisible(false);
+      this.collisionBlocks
+      .create(999, 875, "collision")
+      .setSize(90, 10)
+      .setOrigin(1, 1)
+      .setVisible(false);
+      this.collisionBlocks
+      .create(999, 869, "collision")
+      .setSize(50, 10)
+      .setOrigin(1, 1)
+      .setVisible(false);
     // TL House
     this.collisionBlocks
       .create(605, 540, "collision")
@@ -183,6 +193,14 @@ export default class CollisionBlocks {
       .setSize(480, 1)
       .setOrigin(1, 1)
       .setVisible(false);
+
+    //wishingWell 
+    1120, 535
+    this.collisionBlocks
+    .create(1178, 640, "collision")
+    .setSize(50, 30)
+    .setOrigin(1, 1)
+    .setVisible(false);
 
     // Water Boundaries
     this.collisionBlocks
