@@ -75,21 +75,36 @@ export default class CollisionBlocks {
       .setVisible(false);
     // TOP House
     this.collisionBlocks
-      .create(1235, 250, "collision")
-      .setSize(100, 250)
+      .create(1235, 267, "collision")
+      .setSize(100, 220)
       .setOrigin(1, 1)
       .setVisible(false);
     this.collisionBlocks
-      .create(1165, 245, "collision")
+      .create(1165, 258, "collision")
       .setSize(100, 200)
       .setOrigin(1, 1)
       .setVisible(false);
     // Horse's House
     this.collisionBlocks
-      .create(1260, 1050, "collision")
+      .create(1260, 1037, "collision")
       .setSize(190, 200)
       .setOrigin(1, 1)
       .setVisible(false);
+    //Hut
+    this.collisionBlocks
+    .create(1695, 955, "collision")
+    .setSize(100, 115)
+    .setOrigin(1, 1)
+    .setVisible(false);
+
+  //Pole
+  this.collisionBlocks
+    .create(572, 940, "collision")
+    .setSize(10, 10)
+    .setOrigin(1, 1)
+    .setVisible(false);
+
+  550, 841
     //Bench
     this.collisionBlocks
     .create(1215, 790, "collision")
