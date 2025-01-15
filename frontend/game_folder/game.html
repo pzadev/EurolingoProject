@@ -24,8 +24,8 @@
         // Character positioning
         init(data) {
           // Defaults guy start position to 900/800 unless switching scene
-          this.startX = data && data.x ? data.x : 800; // Default to 900 if no position passed
-          this.startY = data && data.y ? data.y : 600; // Default to 800 if no position passed
+          this.startX = data && data.x ? data.x : 300; // Default to 900 if no position passed
+          this.startY = data && data.y ? data.y : 900; // Default to 800 if no position passed
         }
 
         preload() {
@@ -47,6 +47,10 @@
           this.load.audio("doorOpen", "assets/doorOpen.mp3");
           this.load.image("bench", "assets/Bench.png");
           this.load.image("M_house", "assets/MainHouse.png");
+          this.load.image("BR_House", "assets/BR_House.png")
+          this.load.image("y_house", "assets/y_house.png")
+          this.load.image("Hut", "assets/Hut.png")
+          this.load.image("Pole", "assets/Pole.png")
           this.load.image("fountain", "assets/FountainSpout.png"); // Door sound
         }
 
@@ -83,9 +87,22 @@
             .image(1251, 432, "roof1")
             .setOrigin(0, 0)
             .setDepth(10)
-            .setScale(0.5);
+            .setScale(.5);
+
+          this.roof = this.add
+            .image(1098, 65, "y_house")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.69);
+
           this.roof1 = this.add
             .image(334, 943, "roof2")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.59);
+          
+          this.pole = this.add
+          .image(550, 841, "Pole")
             .setOrigin(0, 0)
             .setDepth(10)
             .setScale(0.59);
@@ -120,6 +137,18 @@
 
           this.bench = this.add
             .image(1163, 749, "bench")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.65);
+          
+          this.BR_House = this.add
+            .image(1152, 833, "BR_House")
+            .setOrigin(0, 0)
+            .setDepth(10)
+            .setScale(0.65);
+
+           this.Hut = this.add
+           .image(1635, 815, "Hut")
             .setOrigin(0, 0)
             .setDepth(10)
             .setScale(0.65);
