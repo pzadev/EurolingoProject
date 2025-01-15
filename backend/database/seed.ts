@@ -1,9 +1,9 @@
 import { getDb } from "./connect";
 
 export async function seeding(
-  italianWords: any,
   frenchWords: any,
   germanWords: any,
+  italianWords: any,
   spanishWords: any,
   ukrainianWords: any,
   usersData: any
@@ -12,11 +12,11 @@ export async function seeding(
     const db = getDb();
 
     const collections = [
-      { name: "ukrainian", data: ukrainianWords },
       { name: "french", data: frenchWords },
       { name: "german", data: germanWords },
       { name: "italian", data: italianWords },
       { name: "spanish", data: spanishWords },
+      { name: "ukrainian", data: ukrainianWords },
     ];
 
     for (const { name, data } of collections) {
