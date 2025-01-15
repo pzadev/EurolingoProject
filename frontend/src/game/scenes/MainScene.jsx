@@ -34,6 +34,8 @@ export class MainScene extends Phaser.Scene {
         this.load.image("y_house", "assets/y_house.png");
         this.load.image("Hut", "assets/Hut.png");
         this.load.image("Pole", "assets/Pole.png");
+        this.load.image("France", "game_folder/assets/France.png")
+        this.load.image("FranceFlag", "game_folder/assets/FranceFlag.png")
         this.load.image("fountain", "assets/FountainSpout.png"); // Door sound
     }
 
@@ -65,6 +67,25 @@ export class MainScene extends Phaser.Scene {
             .setScale(3.2); // How zoomed in the map is
 
         background.play("background");
+
+        // ideas for flag/country indetifier for player
+        this.france = this.add
+        .image(465, 1240, "France")
+        .setOrigin(0, 0)
+        .setAlpha(0.8)     
+        this.france.displayWidth = 150; 
+        this.france.displayHeight = 70; 
+
+        this.franceFlag = this.add
+        .image(338, 1229, "FranceFlag")
+        .setOrigin(0, 0)  
+        .setScale(.3)
+
+        this.franceFlag = this.add
+        .image(527, 985, "FranceFlag")
+        .setOrigin(0, 0)  
+        .setScale(.3)
+        .setDepth(11)
 
         this.roof = this.add
             .image(1251, 432, "roof1")

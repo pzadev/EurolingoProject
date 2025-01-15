@@ -14,6 +14,7 @@ class HouseScene5 extends Phaser.Scene {
         });
         this.load.image("collision", "assets/collision.png");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+        this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
     }
 
     create() {
@@ -24,7 +25,12 @@ class HouseScene5 extends Phaser.Scene {
         }
 
         this.cursors = this.input.keyboard.createCursorKeys();
-
+        this.E_T = this.add
+        .image(590, 125, "EifelT")
+        .setOrigin(0, 0)  
+        .setScale(.05)
+        .setDepth(2)
+        .setAlpha(.6)
         // House image
         const gameWidth = this.scale.width;
         const gameHeight = this.scale.height;
