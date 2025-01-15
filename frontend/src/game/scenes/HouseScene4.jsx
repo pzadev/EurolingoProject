@@ -14,6 +14,7 @@ class HouseScene4 extends Phaser.Scene {
         });
         this.load.image("collision", "assets/collision.png");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+        this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
     }
 
     create() {
