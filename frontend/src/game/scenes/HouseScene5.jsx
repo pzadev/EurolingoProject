@@ -18,6 +18,9 @@ class HouseScene5 extends Phaser.Scene {
     }
 
     create() {
+
+        this.triggerApiCall();
+
         // Stop BG Music in House
         const backgroundMusic = this.sound.get("backgroundMusic");
         if (backgroundMusic) {
@@ -75,6 +78,24 @@ class HouseScene5 extends Phaser.Scene {
         // World bounds and camera
         this.physics.world.setBounds(0, 0, 750, 800);
         this.cameras.main.setBounds(0, 0, 800, 800);
+    }
+
+    triggerApiCall() {
+        console.log("Triggering API call upon entering HouseScene5");
+    // make this API for french language
+        fetch("https://pokeapi.co/api/v2/language/1/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("API Response:", data);
+            })
+            .catch((error) => {
+                console.error("API Error:", error);
+            });
     }
 
     update() {
