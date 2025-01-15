@@ -6,34 +6,30 @@ import {
   testUrkainianWords,
   users,
 } from "./data/testData/index";
-import { seeding } from "./database/seeding";
+import { seeding } from "./database/seed";
+import { MongoClient } from "mongodb";
+import { initializeConnection, getDb } from "./database/connect";
+import { MONGODB_URI, DATABASE_NAME } from "./database/config";
 
 import app from "./app";
-import { MongoClient } from "mongodb";
 
 const port: number = 8080;
 
-let dbClient: MongoClient;
 const bootstrap = async () => {
   // await seeding( italianWords, frenchWords, germanWords, spanishWords, urkainianWords )
-  const { db, client } = await seeding(
+  await initializeConnection(MONGODB_URI, DATABASE_NAME);
+  await seeding(
+    testItalianWords,
     testFrenchWords,
     testGermanWords,
-    testItalianWords,
     testSpanishWords,
     testUrkainianWords,
     users
   );
-  dbClient = client;
 
   return app.listen(port, () => {
     console.log("listening on port 8080");
   });
 };
 
-bootstrap().then((server) => {
-  process.on("SIGTERM", () => {
-    server.close();
-    dbClient.close();
-  });
-});
+bootstrap();

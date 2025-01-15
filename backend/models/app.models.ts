@@ -1,20 +1,11 @@
 import { MongoClient, Db, Collection } from "mongodb";
-import { createDatabase } from "../database/db";
-
-let client: MongoClient;
-let db: Db;
-
-export const initializeDatabase = async () => {
-  if (!client) {
-    const createDataBase = await createDatabase();
-    client = createDataBase.client;
-    db = createDataBase.db;
-  }
-};
+import { initializeConnection, getDb } from "../database/connect";
+import { MONGODB_URI, DATABASE_NAME } from "../database/config";
 
 export const fetchAllWord = async (language: string): Promise<any> => {
   try {
-    await initializeDatabase();
+    await initializeConnection(MONGODB_URI, DATABASE_NAME);
+    const db = getDb();
     const collection: Collection = db.collection(language);
     const words = await collection.find({}).toArray();
     if (words.length <= 0) {
@@ -31,7 +22,8 @@ export const fetchAllWord = async (language: string): Promise<any> => {
 
 export const fetchAllUsers = async (): Promise<any> => {
   try {
-    await initializeDatabase();
+    await initializeConnection(MONGODB_URI, DATABASE_NAME);
+    const db = getDb();
     const collection: Collection = db.collection("users");
     const users = await collection.find({}).toArray();
     if (users.length <= 0) {
@@ -48,7 +40,8 @@ export const fetchAllUsers = async (): Promise<any> => {
 
 export const fetchUserByUsername = async (userParam: string): Promise<any> => {
   try {
-    await initializeDatabase();
+    await initializeConnection(MONGODB_URI, DATABASE_NAME);
+    const db = getDb();
     const collection: Collection = db.collection("users");
     const user = await collection.findOne({ username: userParam });
     if (!user) {
@@ -65,7 +58,8 @@ export const fetchUserByUsername = async (userParam: string): Promise<any> => {
 
 export const postUser = async (body: object): Promise<any> => {
   try {
-    await initializeDatabase();
+    await initializeConnection(MONGODB_URI, DATABASE_NAME);
+    const db = getDb();
     const collection: Collection = db.collection("users");
     const result = await collection.insertOne(body);
     const newUser = await collection.findOne({ _id: result.insertedId });

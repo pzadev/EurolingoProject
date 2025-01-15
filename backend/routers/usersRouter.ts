@@ -1,12 +1,16 @@
 import { Router } from "express";
-import { getAllUsers , getUserByUsername, addNewUser } from "../controllers/app.controller";
+import {
+  getAllUsers,
+  getUserByUsername,
+  addNewUser,
+} from "../controllers/app.controller";
 
-const userRouter: Router = Router()
+const userRouter: Router = Router();
 
-userRouter.get('/', getAllUsers)
+userRouter.get("/", getAllUsers);
 
-userRouter.get('/:username', getUserByUsername)
+userRouter.get("/:username", getUserByUsername);
 
-userRouter.post('/', addNewUser)
+userRouter.post("/", addNewUser);
 
-export default userRouter
+export default userRouter;
