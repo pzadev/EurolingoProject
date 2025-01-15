@@ -19,9 +19,9 @@ const bootstrap = async () => {
   // await seeding( italianWords, frenchWords, germanWords, spanishWords, urkainianWords )
   await initializeConnection(MONGODB_URI, DATABASE_NAME);
   await seeding(
-    testItalianWords,
     testFrenchWords,
     testGermanWords,
+    testItalianWords,
     testSpanishWords,
     testUrkainianWords,
     users
