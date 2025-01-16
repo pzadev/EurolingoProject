@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 import { MainScene } from "./game/scenes/MainScene";
 import HouseScene1 from "./game/scenes/HouseScene1";
@@ -8,6 +8,7 @@ import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
 
 const PhaserGame = () => {
+    const [isAllMatched, setIsAllMatched] = useState(false); 
     const gameContainer = useRef(null);
 
     useEffect(() => {
@@ -27,11 +28,15 @@ const PhaserGame = () => {
                 HouseScene2,
                 HouseScene3,
                 HouseScene4,
-                HouseScene5,
+                HouseScene5
             ],
         };
 
         const game = new Phaser.Game(config);
+
+        game.events.on("start-house5", () => {
+            game.scene.start("House5", { onMatchComplete: setIsAllMatched });
+        });
 
         gameContainer.current.appendChild(game.canvas);
 
