@@ -21,3 +21,14 @@ export const errorHandler = (
     res.status(500).send({ msg: "Internal Server Error" });
   }
 };
+
+export const wrongURLError = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.originalUrl) {
+    console.log("Unmatched route triggered:", req.originalUrl);
+    res.status(404).send({ msg: "The wrong URL path" });
+  }
+};

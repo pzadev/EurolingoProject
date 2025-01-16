@@ -92,5 +92,6 @@ export const postUser = async (body: User): Promise<any> => {
     return newUser;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
