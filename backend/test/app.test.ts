@@ -12,6 +12,7 @@ import {
   testUrkainianWords,
   users,
 } from "../../backend/data/testData";
+import { User } from "../data/types";
 
 let testDb: Db;
 
@@ -63,6 +64,10 @@ describe("GET: /api/:language", () => {
     const response = await request(app).get("/api/portugese").expect(404);
     expect(response.body.msg).toBe("data not found");
   });
+  test("400: Responce with an error message when input is unvalide type", async () => {
+    const responce = await request(app).get("/api/5973").expect(404);
+    expect(responce.body.msg).toBe("data not found");
+  });
 });
 
 describe("GET: /api/users", () => {
@@ -76,6 +81,45 @@ describe("GET: /api/users", () => {
   });
 });
 
+describe("User Type Test", () => {
+  test("should have correct structure", () => {
+    const validUserBody: User = {
+      username: "testuser",
+      password: "securepassword",
+      realName: "Test User",
+      progress: [{ french: true }],
+    };
+    expect(typeof validUserBody.username).toBe("string");
+    expect(typeof validUserBody.password).toBe("string");
+    expect(validUserBody.progress).toBeInstanceOf(Array);
+    expect(validUserBody.progress![0]).toHaveProperty("french", true);
+  });
+  test("The test should fail if structure is incorrect", () => {
+    function isValidUserBody(user: any): user is User {
+      return (
+        typeof user.username === "string" &&
+        typeof user.password === "string" &&
+        (user.realName === undefined || typeof user.realName === "string") &&
+        Array.isArray(user.progress) &&
+        user.progress.every(
+          (lang: any) =>
+            typeof lang === "object" &&
+            lang !== null &&
+            Object.values(lang).every((val) => typeof val === "boolean")
+        )
+      );
+    }
+    const invalidUser = {
+      username: "testuser",
+      password: "securepassword",
+      realName: "Test User",
+      progress: [["french"]],
+    };
+
+    expect(isValidUserBody(invalidUser)).toBe(false);
+  });
+});
+
 describe("GET: /api/users/:username", () => {
   test("200: Repsonds with a user object", async () => {
     const response = await request(app).get("/api/users/pezdav").expect(200);
@@ -85,7 +129,6 @@ describe("GET: /api/users/:username", () => {
     const response = await request(app)
       .get("/api/users/not-a-user")
       .expect(404);
-    console.log(response.body);
     expect(response.body.msg).toBe("no user found");
   });
 });
@@ -93,7 +136,7 @@ describe("GET: /api/users/:username", () => {
 describe("POST: /api/users", () => {
   test("201: Repsonds with a user object", async () => {
     const newUser = {
-      username: "pezdav",
+      username: "pezdlove",
       realName: "peter",
       password: "dog123",
       progress: [
@@ -109,7 +152,7 @@ describe("POST: /api/users", () => {
       .post("/api/users")
       .send(newUser)
       .expect(201);
-    expect(response.body.username).toBe("pezdav");
+    expect(response.body.username).toBe("pezdlove");
   });
   test("400: Responds with an appropriate status and error message when user is not posted correctly", async () => {
     const newUser = {
@@ -120,6 +163,18 @@ describe("POST: /api/users", () => {
       .send(newUser)
       .expect(400);
     expect(response.body.msg).toBe("Username and password are required");
+  });
+  test("400: Responds with an appropriate status and error when user alredy exist in database", async () => {
+    const newUser = {
+      username: "pezdav",
+      password: "dog123",
+    };
+
+    const responce = await request(app)
+      .post("/api/users")
+      .send(newUser)
+      .expect(400);
+    expect(responce.body.msg).toBe("User alredy exist in databse");
   });
 });
 

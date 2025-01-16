@@ -4,7 +4,7 @@ import {
   fetchAllUsers,
   fetchUserByUsername,
   postUser,
-  User,
+  UserBody,
 } from "../models/app.models";
 
 export const getApi = (req: Request, res: Response, next: NextFunction) => {
@@ -23,10 +23,8 @@ export const getAllWords = async (
   try {
     const language: string = req.params.language;
     const words = await fetchAllWord(language);
-    console.log(JSON.stringify(words));
     res.status(200).json(words);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -40,7 +38,6 @@ export const getAllUsers = async (
     const users = await fetchAllUsers();
     res.status(200).send(users);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
@@ -55,13 +52,12 @@ export const getUserByUsername = async (
     const user = await fetchUserByUsername(userParam);
     res.status(200).send(user);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
 
 export const addNewUser = async (
-  req: Request<{}, {}, User>,
+  req: Request<{}, {}, UserBody>,
   res: Response,
   next: NextFunction
 ) => {
@@ -69,7 +65,6 @@ export const addNewUser = async (
     const newUser = await postUser(req.body);
     res.status(201).json(newUser);
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
