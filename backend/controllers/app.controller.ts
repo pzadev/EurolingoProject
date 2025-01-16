@@ -21,6 +21,7 @@ export const getAllWords = async (
     res.status(200).send(words);
   } catch (err) {
     console.error(err);
+    next(err)
   }
 };
 
@@ -34,6 +35,7 @@ export const getAllUsers = async (
     res.status(200).send(users);
   } catch (err) {
     console.error(err);
+    next(err)
   }
 };
 
@@ -48,6 +50,7 @@ export const getUserByUsername = async (
     res.status(200).send(user);
   } catch (err) {
     console.error(err);
+    next(err)
   }
 };
 
@@ -58,9 +61,14 @@ export const addNewUser = async (
 ) => {
   try {
     const body: object = req.body;
+    // console.log(req.body.username, req.body.password, req.body.realName)
+    // if (!req.body.username || !req.body.password || !req.body.realName){
+    //   throw { status: 404, msg: "user not posted" };
+    // }
     const newUser = await postUser(body);
     res.status(201).json(newUser);
   } catch (err) {
     console.error(err);
+    next(err)
   }
 };
