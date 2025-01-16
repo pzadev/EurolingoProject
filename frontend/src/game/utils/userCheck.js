@@ -1,4 +1,4 @@
-import { MongoClient} from "mongodb";
+import { MongoClient } from "mongodb";
 
 const uri =
   "mongodb+srv://peterzaustin:ZRNHIgjITfwbGlLM@eurolingo.3walr.mongodb.net/?retryWrites=true&w=majority&appName=EuroLingo";

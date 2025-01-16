@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { checkIfUserExists, createUser, findUser } from "../api";
+import { checkIfUserExists, createUser } from "../api";
 
 const CreateAccount = ({ setShowLogIn }) => {
   const [createUsername, setCreateUsername] = useState("");
@@ -16,9 +16,7 @@ const CreateAccount = ({ setShowLogIn }) => {
         setCreateUsername("");
         setCreatePassword("");
       } else {
-        console.log("before createUser API call");
-        const data = await createUser(createUsername, createPassword);
-        console.log(data);
+        await createUser(createUsername, createPassword);
         setSubmissionFeedback("Account created successfully");
         setCreateUsername("");
         setCreatePassword("");
@@ -27,8 +25,7 @@ const CreateAccount = ({ setShowLogIn }) => {
         }, 2000);
       }
     } catch (err) {
-      console.log("error", error.message);
-      setSubmissionFeedback(error.message);
+      setSubmissionFeedback(err);
     }
   };
 
