@@ -8,13 +8,14 @@
     "test:watch": "jest --watch",
     "dev": "tsx app.ts",
     "tsx": "tsx bootstrap.ts",
-    "start": "tsx listen.ts"
+    "start": "NODE_ENV=test tsx listen.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongodb": "^6.12.0",
@@ -22,6 +23,7 @@
     "tsx": "^4.19.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.2",

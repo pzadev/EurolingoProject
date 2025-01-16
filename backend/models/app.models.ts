@@ -50,8 +50,37 @@ export const fetchUserByUsername = async (userParam: string): Promise<any> => {
   }
 };
 
-export const postUser = async (body: object): Promise<any> => {
+interface Progress {
+  [key: string]: boolean;
+}
+
+export interface User {
+  username: string;
+  password: string;
+  realName?: string;
+  progress?: Progress[];
+}
+
+export const postUser = async (body: User): Promise<any> => {
   try {
+    if (!body.username || !body.password) {
+      throw { status: 400, msg: "Username and password are required" };
+    }
+
+    if (!body.realName) {
+      body.realName = body.username;
+    }
+
+    if (!body.progress) {
+      body.progress = [
+        { french: false },
+        { german: false },
+        { italian: false },
+        { spanish: false },
+        { ukrainian: false },
+      ];
+    }
+
     await initializeConnection(MONGODB_URI, DATABASE_NAME);
     const db = getDb();
     const collection: Collection = db.collection("users");

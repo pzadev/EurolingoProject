@@ -4,10 +4,15 @@ import {
   fetchAllUsers,
   fetchUserByUsername,
   postUser,
+  User,
 } from "../models/app.models";
 
 export const getApi = (req: Request, res: Response, next: NextFunction) => {
-  res.send({ msg: "hello" });
+  try {
+    res.status(200).json({ msg: "hello" });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const getAllWords = async (
@@ -18,10 +23,11 @@ export const getAllWords = async (
   try {
     const language: string = req.params.language;
     const words = await fetchAllWord(language);
-    res.status(200).send(words);
+    console.log(JSON.stringify(words));
+    res.status(200).json(words);
   } catch (err) {
     console.error(err);
-    next(err)
+    next(err);
   }
 };
 
@@ -35,7 +41,7 @@ export const getAllUsers = async (
     res.status(200).send(users);
   } catch (err) {
     console.error(err);
-    next(err)
+    next(err);
   }
 };
 
@@ -50,25 +56,20 @@ export const getUserByUsername = async (
     res.status(200).send(user);
   } catch (err) {
     console.error(err);
-    next(err)
+    next(err);
   }
 };
 
 export const addNewUser = async (
-  req: Request,
+  req: Request<{}, {}, User>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const body: object = req.body;
-    // console.log(req.body.username, req.body.password, req.body.realName)
-    // if (!req.body.username || !req.body.password || !req.body.realName){
-    //   throw { status: 404, msg: "user not posted" };
-    // }
-    const newUser = await postUser(body);
+    const newUser = await postUser(req.body);
     res.status(201).json(newUser);
   } catch (err) {
     console.error(err);
-    next(err)
+    next(err);
   }
 };

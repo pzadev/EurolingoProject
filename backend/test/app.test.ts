@@ -111,7 +111,7 @@ describe("POST: /api/users", () => {
       .expect(201);
     expect(response.body.username).toBe("pezdav");
   });
-  test.only("404: Responds with an appropriate status and error message when user is not posted correctly", async () => {
+  test("400: Responds with an appropriate status and error message when user is not posted correctly", async () => {
     const newUser = {
       username: "pezdav",
       realName: "peter",
@@ -124,9 +124,9 @@ describe("POST: /api/users", () => {
       ],
     };
     const response = await request(app)
-      .post("/api/user")
+      .post("/api/users")
       .send(newUser)
-      .expect(404);
-    expect(response.body.msg).toBe("user not posted");
+      .expect(400);
+    expect(response.body.msg).toBe("Username and password are required");
   });
 });
