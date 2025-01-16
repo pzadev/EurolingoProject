@@ -12,7 +12,7 @@ const CreateAccount = ({ setShowLogIn }) => {
     try {
       const existinguser = await checkIfUserExists(createUsername);
       if (existinguser) {
-        setSubmissionFeedback("Username already taken, please chooose another");
+        setSubmissionFeedback("Username already taken, please choose another");
         setCreateUsername("");
         setCreatePassword("");
       } else {
