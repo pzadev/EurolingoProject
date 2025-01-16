@@ -10,15 +10,14 @@ const CreateAccount = ({ setShowLogIn }) => {
     e.preventDefault();
 
     try {
-      const user = await checkIfUserExists(createUsername);
-      console.log(user)
-      if (createUsername === user) {
-        setSubmissionFeedback("Username already taken, please chooose another");
+      const existinguser = await checkIfUserExists(createUsername);
+      if (existinguser) {
+        setSubmissionFeedback("Username already taken, please choose another");
         setCreateUsername("");
         setCreatePassword("");
       } else {
-        const data = await createUser(createUsername, createPassword);
         console.log("before createUser API call");
+        const data = await createUser(createUsername, createPassword);
         console.log(data);
         setSubmissionFeedback("Account created successfully");
         setCreateUsername("");
