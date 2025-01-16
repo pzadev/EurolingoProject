@@ -114,19 +114,18 @@ describe("POST: /api/users", () => {
   test("400: Responds with an appropriate status and error message when user is not posted correctly", async () => {
     const newUser = {
       username: "pezdav",
-      realName: "peter",
-      progress: [
-        { french: false },
-        { german: false },
-        { italian: false },
-        { spanish: false },
-        { ukrainian: false },
-      ],
     };
     const response = await request(app)
       .post("/api/users")
       .send(newUser)
       .expect(400);
     expect(response.body.msg).toBe("Username and password are required");
+  });
+});
+
+describe("Get an message when the URL path is wrong ", () => {
+  test("200: Repsonds with a user object", async () => {
+    const response = await request(app).get("/Not-url").expect(404);
+    expect(response.body.msg).toBe("The wrong URL path");
   });
 });

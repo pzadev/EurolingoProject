@@ -8,7 +8,8 @@
     "test:watch": "jest --watch",
     "dev": "tsx app.ts",
     "tsx": "tsx bootstrap.ts",
-    "start": "NODE_ENV=test tsx listen.ts"
+    "start": "NODE_ENV=test tsx listen.ts",
+    "seed": "NODE_ENV=production tsx seeding-dev-data.ts"
   },
   "keywords": [],
   "author": "",

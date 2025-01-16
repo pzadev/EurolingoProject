@@ -8,12 +8,14 @@ import {
   spanishWords,
   urkainianWords,
 } from "./data/devData/index";
-import { errorHandler } from "./errorHandler";
+import { errorHandler, wrongURLError } from "./errorHandler";
 
 const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api", apiRouter);
+
+app.get("*", wrongURLError);
 
 app.use(errorHandler);
 
