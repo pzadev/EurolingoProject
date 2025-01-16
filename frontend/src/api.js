@@ -46,13 +46,14 @@ export const checkIfUserExists = async (username) => {
     const response = await fetch("https://eurolingo.onrender.com/api/users", {
       method: "GET",
     });
-    const fetchedUser = await response.json();
-    const user = fetchedUser.find((user) => user.username === username);
-    console.log(fetchedUser)
-    console.log(user)
+    const listOfUsers = await response.json();
+    const user = listOfUsers.find((user) => user.username === username);
 
     if (user) {
-        throw new Error("Username is taken")
+      return user;
+    } else {
+      user = null;
+      return user;
     }
   } catch (error) {
     console.log(error.message);
