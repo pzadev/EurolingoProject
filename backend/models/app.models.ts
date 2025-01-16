@@ -13,7 +13,7 @@ export const fetchAllWord = async (language: string): Promise<any> => {
     }
     return words;
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
@@ -29,7 +29,7 @@ export const fetchAllUsers = async (): Promise<any> => {
     return users;
   } catch (err) {
     console.log(err);
-    throw err
+    throw err;
   }
 };
 
@@ -39,14 +39,14 @@ export const fetchUserByUsername = async (userParam: string): Promise<any> => {
     const db = getDb();
     const collection: Collection = db.collection("users");
     const user = await collection.findOne({ username: userParam });
-    console.log(userParam, '<--userparams')
+    console.log(userParam, "<--userparams");
     if (!user) {
       throw { status: 404, msg: "no user found" };
     }
     return user;
   } catch (err) {
-    console.log(err, '<-- err in model');
-    throw err
+    console.log(err, "<-- err in model");
+    throw err;
   }
 };
 

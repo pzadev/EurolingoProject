@@ -32,4 +32,6 @@ const bootstrap = async () => {
   });
 };
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.log(err);
+});

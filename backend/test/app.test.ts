@@ -61,8 +61,8 @@ describe("GET: /api/:language", () => {
   });
   test("404: Responds with an appropriate status and error message when given a valid but non-existent id", async () => {
     const response = await request(app).get("/api/portugese").expect(404);
-    expect(response.body.msg).toBe('data not found');
-  }); 
+    expect(response.body.msg).toBe("data not found");
+  });
 });
 
 describe("GET: /api/users", () => {
@@ -72,8 +72,8 @@ describe("GET: /api/users", () => {
   });
   test("404: Responds with an appropriate status and error message when given a valid but non-existent id", async () => {
     const response = await request(app).get("/api/user").expect(404);
-    expect(response.body.msg).toBe('data not found');
-  }); 
+    expect(response.body.msg).toBe("data not found");
+  });
 });
 
 describe("GET: /api/users/:username", () => {
@@ -81,10 +81,13 @@ describe("GET: /api/users/:username", () => {
     const response = await request(app).get("/api/users/pezdav").expect(200);
     expect(response.body.username).toBe("pezdav");
   });
-  test.skip("404: Responds with an appropriate status and error message when given a valid but non-existent id", async () => {
-    const response = await request(app).get("/api/user/not-a-user").expect(404);
-    expect(response.body.msg).toBe('no user found');
-  }); 
+  test("404: Responds with an appropriate status and error message when given a valid but non-existent id", async () => {
+    const response = await request(app)
+      .get("/api/users/not-a-user")
+      .expect(404);
+    console.log(response.body);
+    expect(response.body.msg).toBe("no user found");
+  });
 });
 
 describe("POST: /api/users", () => {
@@ -100,12 +103,15 @@ describe("POST: /api/users", () => {
         { spanish: false },
         { ukrainian: false },
       ],
-    }
+    };
 
-    const response = await request(app).post("/api/users").send(newUser).expect(201);
+    const response = await request(app)
+      .post("/api/users")
+      .send(newUser)
+      .expect(201);
     expect(response.body.username).toBe("pezdav");
   });
-  test.skip("404: Responds with an appropriate status and error message when user is not posted correctly", async () => {
+  test.only("404: Responds with an appropriate status and error message when user is not posted correctly", async () => {
     const newUser = {
       username: "pezdav",
       realName: "peter",
@@ -116,9 +122,11 @@ describe("POST: /api/users", () => {
         { spanish: false },
         { ukrainian: false },
       ],
-    }
-    const response = await request(app).post("/api/user").send(newUser).expect(404);
-    expect(response.body.msg).toBe('user not posted');
-  }); 
+    };
+    const response = await request(app)
+      .post("/api/user")
+      .send(newUser)
+      .expect(404);
+    expect(response.body.msg).toBe("user not posted");
+  });
 });
-
