@@ -1,11 +1,15 @@
 import Phaser from "phaser";
 import HouseCollisionBlocks from "../imports/houseCollisionBlocks";
+import { frenchWords } from "../../../game_folder/assets/test.data";
 
 class HouseScene5 extends Phaser.Scene {
     constructor() {
         super({ key: "House5" });
+        this.onMatchComplete = null; // Callback to update React state
+        this.leftWords = []; 
+        this.rightWords = []; 
+        this.matchedPairs = []; 
     }
-
     preload() {
         this.load.image("house2", "assets/house2.png");
         this.load.spritesheet("guy", "assets/guy.png", {
@@ -93,7 +97,7 @@ class HouseScene5 extends Phaser.Scene {
     triggerApiCall() {
         console.log("Triggering API call upon entering HouseScene5");
     
-        fetch("https://pokeapi.co/api/v2/language/1/", {
+        fetch("https://eurolingo.onrender.com/api/ukrainian", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -103,43 +107,52 @@ class HouseScene5 extends Phaser.Scene {
             .then((data) => {
                 console.log("API Response:", data);
     
-                // Extract and display language names
-                const namesArray = data.names;
-                let yOffset = 50; // Start Y position for text placement
+                // Generate 5 random word pairs
+                const randomWords = this.getRandomWords(data, 5);
     
-                // Make text draggable
-                namesArray.forEach((item) => {
-                    const text = this.add
-                        .text(50, yOffset, item.name, {
+                let yOffsetLeft = 50; // Start Y position for the left side
+                let yOffsetRight = 50; // Start Y position for the right side
+    
+                randomWords.forEach((item) => {
+                    // Left Side (English words)
+                    const leftText = this.add
+                        .text(50, yOffsetLeft, item.englishWord, {
                             fontSize: "20px",
                             color: "#ffffff",
                         })
-                        .setDepth(5) // Ensure the text is above other elements
+                        .setDepth(5)
                         .setInteractive(); // Enable interaction for the text
     
-                    this.input.setDraggable(text); // Make the text draggable
+                    this.input.setDraggable(leftText);
+                    leftText.wordName = item.englishWord; // Store the word's name
+                    leftText.rank = item.rank; // Store the rank for matching
+                    this.leftWords.push(leftText); // Add to leftWords array
     
-                    // Add drag events for the text
-                    this.input.on("dragstart", (pointer, gameObject) => {
-                        if (gameObject === text) {
-                            gameObject.setTint(0xff0000); // Highlight text during dragging
-                        }
-                    });
+                    // Right Side (French words)
+                    const rightText = this.add
+                        .text(850, yOffsetRight, item.targetWord, {
+                            fontSize: "20px",
+                            color: "#ffffff",
+                        })
+                        .setDepth(5)
+                        .setInteractive(); // Enable interaction for the text
     
-                    this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
-                        if (gameObject === text) {
-                            gameObject.x = dragX; // Update the text's X position
-                            gameObject.y = dragY; // Update the text's Y position
-                        }
-                    });
+                    this.input.setDraggable(rightText);
+                    rightText.wordName = item.targetWord; // Store the word's name
+                    rightText.rank = item.rank; // Store the rank for matching
+                    this.rightWords.push(rightText); // Add to rightWords array
     
-                    this.input.on("dragend", (pointer, gameObject) => {
-                        if (gameObject === text) {
-                            gameObject.clearTint(); // Remove the highlight after dragging
-                        }
-                    });
+                    yOffsetLeft += 70; // Space between each word on the left
+                    yOffsetRight += 70; // Space between each word on the right
+                });
     
-                    yOffset += 70; // Move down for the next text item
+                // Add drag events
+                this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
+                    gameObject.x = dragX;
+                    gameObject.y = dragY;
+    
+                    // Check for matches
+                    this.checkForMatches();
                 });
             })
             .catch((error) => {
@@ -147,37 +160,100 @@ class HouseScene5 extends Phaser.Scene {
             });
     }
     
+    
 
-    update() {
-        this.player.setVelocity(0);
-
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play("right", true);
-            this.player.setFlipX(true);
-        } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(160);
-            this.player.anims.play("right", true);
-            this.player.setFlipX(false);
-        }
-
-        if (this.player.body.velocity.x === 0) {
-            if (this.cursors.up.isDown) {
-                this.player.setVelocityY(-160);
-                this.player.anims.play("up", true);
-            } else if (this.cursors.down.isDown) {
-                this.player.setVelocityY(160);
-                this.player.anims.play("down", true);
-            }
-        }
-
-        if (
-            this.player.body.velocity.x === 0 &&
-            this.player.body.velocity.y === 0
-        ) {
-            this.player.anims.play("guyidle", true);
+    init(data) {
+        if (data.onMatchComplete) {
+            this.onMatchComplete = data.onMatchComplete;
         }
     }
+
+    getRandomWords(array, count) {
+        // Shuffle the array
+        const shuffled = Phaser.Utils.Array.Shuffle(array);
+        // Return the first `count` elements
+        return shuffled.slice(0, count);
+    }
+    checkForMatches() {
+        this.leftWords.forEach((leftWord) => {
+            this.rightWords.forEach((rightWord) => {
+                const overlap = Phaser.Geom.Intersects.RectangleToRectangle(
+                    leftWord.getBounds(),
+                    rightWord.getBounds()
+                );
+    
+                // Match based on overlapping and the same rank
+                if (overlap && leftWord.rank === rightWord.rank) {
+                    const pairKey = `${leftWord.wordName}-${rightWord.wordName}`;
+    
+                    // Check if the pair has already been matched
+                    if (!this.matchedPairs.includes(pairKey)) {
+                        this.matchedPairs.push(pairKey); // Mark as matched
+    
+                        // Display "Well done" message
+                        this.showWellDoneMessage();
+    
+                        // Optionally, destroy the words
+                        leftWord.destroy();
+                        rightWord.destroy();
+                    }
+                }
+            });
+        });
+    }
+    
+
+    showWellDoneMessage() {
+        const message = this.add
+            .text(this.scale.width / 2, this.scale.height / 2, "Well done!", {
+                fontSize: "40px",
+                color: "#00ff00",
+            })
+            .setOrigin(0.5)
+            .setDepth(10);
+    
+        // Fade out the message after 2 seconds
+        this.tweens.add({
+            targets: message,
+            alpha: 0,
+            duration: 2500,
+            onComplete: () => {
+                message.destroy();
+            },
+        });
+    }
+update() {
+
+    // Player movement logic
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-160);
+        this.player.anims.play("right", true);
+        this.player.setFlipX(true);
+    } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(160);
+        this.player.anims.play("right", true);
+        this.player.setFlipX(false);
+    }
+
+    if (this.player.body.velocity.x === 0) {
+        if (this.cursors.up.isDown) {
+            this.player.setVelocityY(-160);
+            this.player.anims.play("up", true);
+        } else if (this.cursors.down.isDown) {
+            this.player.setVelocityY(160);
+            this.player.anims.play("down", true);
+        }
+    }
+
+    if (
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0
+    ) {
+        this.player.anims.play("guyidle", true);
+    }
+}
 }
 export default HouseScene5;
 
