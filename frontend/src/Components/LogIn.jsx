@@ -5,26 +5,29 @@ const LogIn = ({ setGameStart, setShowLogIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
+  // do we using this statment somewhere?
   const [submissionFeedback, setSubmissionFeedback] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = await findUser(username, password);
-      if (data.username && data.password) {
-        setSubmissionFeedback("Account created successfully");
+      if (data.password === password) {
+        setSubmissionFeedback("Log in successfully");
         setGameStart(true);
-        setLoading(false);
         setUsername("");
         setPassword("");
-      } else if (!data.password) {
+      } else if (data.password !== password) {
         setSubmissionFeedback("Incorrect password");
         setPassword("");
       }
     } catch (err) {
-      console.log("error", error.message);
-      setSubmissionFeedback("User doesn't exist");
+      // console.log("error", error.message); this is not working
+      setSubmissionFeedback("User doesn't exist, check your log in details");
+    } finally {
+      setLoading(false);
     }
   };
 
