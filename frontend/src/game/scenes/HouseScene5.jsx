@@ -15,6 +15,7 @@ class HouseScene5 extends Phaser.Scene {
         this.load.image("collision", "assets/collision.png");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
         this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
+        this.load.image("Inspect", "game_folder/assets/Look_At_Me.png")
     }
 
     create() {
@@ -28,6 +29,14 @@ class HouseScene5 extends Phaser.Scene {
         }
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.inspect = this.add
+        .image(509, 195, "Inspect")
+        .setOrigin(0, 0)  
+        .setScale(.08)
+        .setDepth(2)
+        .setAlpha(1)
+
         this.E_T = this.add
         .image(590, 125, "EifelT")
         .setOrigin(0, 0)  
@@ -47,7 +56,8 @@ class HouseScene5 extends Phaser.Scene {
             .setSize(18, 10)
             .setScale(3.5)
             .setOrigin(0, 0)
-            .setOffset(6.5, 14);
+            .setOffset(6.5, 14)
+            .setDepth(4)
 
         this.player.setCollideWorldBounds(true);
 
@@ -82,7 +92,7 @@ class HouseScene5 extends Phaser.Scene {
 
     triggerApiCall() {
         console.log("Triggering API call upon entering HouseScene5");
-    // make this API for french language
+    
         fetch("https://pokeapi.co/api/v2/language/1/", {
             method: "GET",
             headers: {
@@ -92,11 +102,51 @@ class HouseScene5 extends Phaser.Scene {
             .then((response) => response.json())
             .then((data) => {
                 console.log("API Response:", data);
+    
+                // Extract and display language names
+                const namesArray = data.names;
+                let yOffset = 50; // Start Y position for text placement
+    
+                // Make text draggable
+                namesArray.forEach((item) => {
+                    const text = this.add
+                        .text(50, yOffset, item.name, {
+                            fontSize: "20px",
+                            color: "#ffffff",
+                        })
+                        .setDepth(5) // Ensure the text is above other elements
+                        .setInteractive(); // Enable interaction for the text
+    
+                    this.input.setDraggable(text); // Make the text draggable
+    
+                    // Add drag events for the text
+                    this.input.on("dragstart", (pointer, gameObject) => {
+                        if (gameObject === text) {
+                            gameObject.setTint(0xff0000); // Highlight text during dragging
+                        }
+                    });
+    
+                    this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
+                        if (gameObject === text) {
+                            gameObject.x = dragX; // Update the text's X position
+                            gameObject.y = dragY; // Update the text's Y position
+                        }
+                    });
+    
+                    this.input.on("dragend", (pointer, gameObject) => {
+                        if (gameObject === text) {
+                            gameObject.clearTint(); // Remove the highlight after dragging
+                        }
+                    });
+    
+                    yOffset += 70; // Move down for the next text item
+                });
             })
             .catch((error) => {
                 console.error("API Error:", error);
             });
     }
+    
 
     update() {
         this.player.setVelocity(0);
