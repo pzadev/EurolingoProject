@@ -1,13 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
 import apiRouter from "./routers";
-import {
-  italianWords,
-  frenchWords,
-  germanWords,
-  spanishWords,
-  urkainianWords,
-} from "./data/devData/index";
 import { errorHandler, wrongURLError } from "./errorHandler";
 
 const app: Application = express();
