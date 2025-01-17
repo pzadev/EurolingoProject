@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { findUser } from "../api";
 
-const LogIn = ({ setGameStart, setShowLogIn }) => {
-  const [username, setUsername] = useState("");
+const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   // const [error, setError] = useState("");
@@ -17,7 +16,6 @@ const LogIn = ({ setGameStart, setShowLogIn }) => {
       if (data.password === password) {
         setSubmissionFeedback("Log in successfully");
         setGameStart(true);
-        setUsername("");
         setPassword("");
       } else if (data.password !== password) {
         setSubmissionFeedback("Incorrect password");
