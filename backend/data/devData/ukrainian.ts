@@ -48,7 +48,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 10,
-    targetWord: "еякі",
+    targetWord: "з",
     englishWord: "with",
   },
   {
@@ -88,12 +88,12 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 18,
-    targetWord: "по",
+    targetWord: "біля",
     englishWord: "by",
   },
   {
     rank: 19,
-    targetWord: "гаряча",
+    targetWord: "гаряче",
     englishWord: "hot",
   },
   {
@@ -119,7 +119,7 @@ export const urkainianWords: Language[] = [
   {
     rank: 24,
     targetWord: "вогонь",
-    englishWord: "is",
+    englishWord: "fire",
   },
   {
     rank: 25,
@@ -144,7 +144,7 @@ export const urkainianWords: Language[] = [
   {
     rank: 29,
     targetWord: "план",
-    englishWord: "the",
+    englishWord: "plan",
   },
   {
     rank: 30,
@@ -164,7 +164,7 @@ export const urkainianWords: Language[] = [
   {
     rank: 33,
     targetWord: "кішка",
-    englishWord: "a",
+    englishWord: "cat",
   },
   {
     rank: 34,
@@ -183,7 +183,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 37,
-    targetWord: "чере",
+    targetWord: "через",
     englishWord: "out",
   },
   {
@@ -203,7 +203,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 41,
-    targetWord: "зробити",
+    targetWord: "робити",
     englishWord: "do",
   },
   {
@@ -233,13 +233,13 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 47,
-    targetWord: "аначений",
+    targetWord: "сказав",
     englishWord: "said",
   },
   {
     rank: 48,
     targetWord: "вона",
-    englishWord: "an",
+    englishWord: "she",
   },
   {
     rank: 49,
@@ -293,7 +293,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 59,
-    targetWord: "невеликої",
+    targetWord: "маленька",
     englishWord: "small",
   },
   {
@@ -333,7 +333,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 67,
-    targetWord: "аклинань",
+    targetWord: "вимовляти",
     englishWord: "spell",
   },
   {
@@ -348,7 +348,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 70,
-    targetWord: "емля",
+    targetWord: "земля",
     englishWord: "land",
   },
   {
@@ -393,7 +393,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 79,
-    targetWord: "спитаєте",
+    targetWord: "питати",
     englishWord: "ask",
   },
   {
@@ -403,7 +403,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 81,
-    targetWord: "мінення",
+    targetWord: "змінени",
     englishWord: "change",
   },
   {
@@ -453,12 +453,12 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 91,
-    targetWord: "ову",
+    targetWord: "знову",
     englishWord: "again",
   },
   {
     rank: 92,
-    targetWord: "тварин",
+    targetWord: "тварини",
     englishWord: "animal",
   },
   {
@@ -468,7 +468,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 94,
-    targetWord: "мать",
+    targetWord: "мати",
     englishWord: "mother",
   },
   {
@@ -493,7 +493,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 99,
-    targetWord: "емля",
+    targetWord: "земля",
     englishWord: "earth",
   },
   {
@@ -503,7 +503,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 101,
-    targetWord: "будь",
+    targetWord: "будь-який",
     englishWord: "any",
   },
   {
@@ -689,7 +689,7 @@ export const urkainianWords: Language[] = [
   {
     rank: 138,
     targetWord: "відрізняються",
-    englishWord: "differ",
+    englishWord: "different",
   },
   {
     rank: 139,
@@ -773,7 +773,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 155,
-    targetWord: "використання",
+    targetWord: "використовувати",
     englishWord: "use",
   },
   {
@@ -783,7 +783,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 157,
-    targetWord: "спосіб",
+    targetWord: "шлях",
     englishWord: "way",
   },
   {
@@ -813,7 +813,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 163,
-    targetWord: "б",
+    targetWord: "би",
     englishWord: "would",
   },
   {
@@ -823,7 +823,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 165,
-    targetWord: "так",
+    targetWord: "отже",
     englishWord: "so",
   },
   {
@@ -873,7 +873,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 175,
-    targetWord: "дивитися",
+    targetWord: "дивитись",
     englishWord: "look",
   },
   {
@@ -898,7 +898,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 180,
-    targetWord: "приходять",
+    targetWord: "прийти",
     englishWord: "come",
   },
   {
@@ -919,7 +919,7 @@ export const urkainianWords: Language[] = [
   {
     rank: 184,
     targetWord: "немає",
-    englishWord: "no",
+    englishWord: "there is no",
   },
   {
     rank: 185,
@@ -948,7 +948,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 190,
-    targetWord: "води",
+    targetWord: "вода",
     englishWord: "water",
   },
   {
@@ -958,7 +958,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 192,
-    targetWord: "Телефонуйте",
+    targetWord: "дзвінок",
     englishWord: "call",
   },
   {
@@ -1003,8 +1003,8 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 201,
-    targetWord: "керівник",
-    englishWord: "head",
+    targetWord: "менеджер",
+    englishWord: "manager",
   },
   {
     rank: 202,
@@ -1064,17 +1064,17 @@ export const urkainianWords: Language[] = [
   {
     rank: 213,
     targetWord: "дізнатися",
-    englishWord: "learn",
+    englishWord: "to find out",
   },
   {
     rank: 214,
     targetWord: "завод",
-    englishWord: "plant",
+    englishWord: "factory",
   },
   {
     rank: 215,
     targetWord: "кришка",
-    englishWord: "cover",
+    englishWord: "lid",
   },
   {
     rank: 216,
