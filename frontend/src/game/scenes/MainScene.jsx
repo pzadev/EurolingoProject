@@ -2,14 +2,14 @@ import Phaser from "phaser";
 import CollisionBlocks from "../imports/collisionBlocks";
 
 export class MainScene extends Phaser.Scene {
-  constructor() {
-    super({ key: "Main" });
-  }
-  init(data) {
-    // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 600; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 500; // Default to 800 if no position passed
-  }
+    constructor() {
+        super({ key: "Main" });
+    }
+    init(data) {
+        // Defaults guy start position to 900/800 unless switching scene
+        this.startX = data && data.x ? data.x : 1300; // Default to 900 if no position passed
+        this.startY = data && data.y ? data.y : 700; // Default to 800 if no position passed
+    }
 
   preload() {
     this.load.spritesheet("background", "assets/background.png", {
