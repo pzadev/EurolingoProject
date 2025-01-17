@@ -593,7 +593,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 119,
-    targetWord: "show",
+    targetWord: "mostrar",
     englishWord: "show",
   },
   {
@@ -608,7 +608,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 122,
-    targetWord: "me",
+    targetWord: "a mí",
     englishWord: "me",
   },
   {
@@ -1223,7 +1223,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 245,
-    targetWord: "Cerrar",
+    targetWord: "cerrar",
     englishWord: "close",
   },
   {
@@ -1308,7 +1308,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 262,
-    targetWord: "Deténgase",
+    targetWord: "deténgase",
     englishWord: "stop",
   },
   {
@@ -2238,7 +2238,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 448,
-    targetWord: "Produce",
+    targetWord: "produce",
     englishWord: "produce",
   },
   {
@@ -2678,7 +2678,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 536,
-    targetWord: "bola",
+    targetWord: "pelota",
     englishWord: "ball",
   },
   {
@@ -2703,7 +2703,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 541,
-    targetWord: "am",
+    targetWord: "soy",
     englishWord: "am",
   },
   {
@@ -3653,7 +3653,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 731,
-    targetWord: "bit",
+    targetWord: "poco",
     englishWord: "bit",
   },
   {
@@ -3918,7 +3918,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 784,
-    targetWord: "Radio",
+    targetWord: "radio",
     englishWord: "radio",
   },
   {
@@ -4158,7 +4158,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 832,
-    targetWord: "mina",
+    targetWord: "mío",
     englishWord: "mine",
   },
   {
@@ -4253,7 +4253,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 851,
-    targetWord: "master",
+    targetWord: "maestro",
     englishWord: "master",
   },
   {
@@ -4473,7 +4473,7 @@ export const spanishWords: Language[] = [
   },
   {
     rank: 895,
-    targetWord: "log",
+    targetWord: "tronco",
     englishWord: "log",
   },
   {

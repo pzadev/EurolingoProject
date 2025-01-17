@@ -98,7 +98,7 @@ export const germanWords: Language[] = [
   },
   {
     rank: 20,
-    targetWord: "Wort",
+    targetWord: "wort",
     englishWord: "word",
   },
   {
@@ -213,7 +213,7 @@ export const germanWords: Language[] = [
   },
   {
     rank: 43,
-    targetWord: "Zeit",
+    targetWord: "zeit",
     englishWord: "time",
   },
   {
@@ -258,7 +258,7 @@ export const germanWords: Language[] = [
   },
   {
     rank: 52,
-    targetWord: "Satz",
+    targetWord: "satz",
     englishWord: "set",
   },
   {

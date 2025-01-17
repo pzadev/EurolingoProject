@@ -1222,7 +1222,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 245,
-    targetWord: "close",
+    targetWord: "chiudere",
     englishWord: "close",
   },
   {
@@ -1307,7 +1307,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 262,
-    targetWord: "stop",
+    targetWord: "fermare",
     englishWord: "stop",
   },
   {
@@ -1562,7 +1562,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 313,
-    targetWord: "Discussioni",
+    targetWord: "discussioni",
     englishWord: "talk",
   },
   {
@@ -1672,7 +1672,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 335,
-    targetWord: "area",
+    targetWord: "zona",
     englishWord: "area",
   },
   {
@@ -1732,7 +1732,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 347,
-    targetWord: "top",
+    targetWord: "cima",
     englishWord: "top",
   },
   {
@@ -1842,7 +1842,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 369,
-    targetWord: "test",
+    targetWord: "prova",
     englishWord: "test",
   },
   {
@@ -2017,7 +2017,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 404,
-    targetWord: "fine",
+    targetWord: "bene",
     englishWord: "fine",
   },
   {
@@ -2117,7 +2117,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 424,
-    targetWord: "done",
+    targetWord: "fatto",
     englishWord: "done",
   },
   {
@@ -2172,7 +2172,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 435,
-    targetWord: "oh",
+    targetWord: "ehi",
     englishWord: "oh",
   },
   {
@@ -2657,7 +2657,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 532,
-    targetWord: "divide",
+    targetWord: "dividere",
     englishWord: "divide",
   },
   {
@@ -2702,7 +2702,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 541,
-    targetWord: "am",
+    targetWord: "sono",
     englishWord: "am",
   },
   {
@@ -2857,7 +2857,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 572,
-    targetWord: "sat",
+    targetWord: "sedersi",
     englishWord: "sat",
   },
   {
@@ -2992,7 +2992,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 599,
-    targetWord: "gone",
+    targetWord: "andato",
     englishWord: "gone",
   },
   {
@@ -3057,7 +3057,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 612,
-    targetWord: "shout",
+    targetWord: "gridare",
     englishWord: "shout",
   },
   {
@@ -3147,7 +3147,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 630,
-    targetWord: "cent",
+    targetWord: "centesimo",
     englishWord: "cent",
   },
   {
@@ -3422,7 +3422,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 685,
-    targetWord: "design",
+    targetWord: "designare",
     englishWord: "design",
   },
   {
@@ -3652,7 +3652,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 731,
-    targetWord: "bit",
+    targetWord: "un po'",
     englishWord: "bit",
   },
   {
@@ -4217,7 +4217,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 844,
-    targetWord: "spot",
+    targetWord: "individuare",
     englishWord: "spot",
   },
   {
@@ -4297,7 +4297,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 860,
-    targetWord: "Messaggio",
+    targetWord: "inviare",
     englishWord: "post",
   },
   {
@@ -4472,7 +4472,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 895,
-    targetWord: "log",
+    targetWord: "tronco",
     englishWord: "log",
   },
   {
@@ -4832,7 +4832,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 967,
-    targetWord: "spread",
+    targetWord: "diffusione",
     englishWord: "spread",
   },
   {
@@ -4917,7 +4917,7 @@ export const italianWords: Language[] = [
   },
   {
     rank: 984,
-    targetWord: "shine",
+    targetWord: "brillare",
     englishWord: "shine",
   },
   {
