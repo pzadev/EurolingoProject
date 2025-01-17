@@ -25,7 +25,7 @@ class HouseScene2 extends Phaser.Scene {
     this.load.image("collision", "assets/collision.png");
     this.load.image("lafamilia", "public/assets/lafamilia.png");
     this.load.audio("spain", "assets/spainSong.mp3");
-    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
   }
 
   create() {
@@ -38,11 +38,11 @@ class HouseScene2 extends Phaser.Scene {
     if (!this.sound.get("spain")) {
       this.backgroundMusic = this.sound.add("spain", {
         loop: true,
-        volume: 0.5,
+        volume: 0.2,
       });
       this.backgroundMusic.play();
     } else {
-      const backgroundMusic = this.sound.get("italy");
+      const backgroundMusic = this.sound.get("spain");
       if (!backgroundMusic.isPlaying) {
         backgroundMusic.play();
       }

@@ -22,6 +22,7 @@ class HouseScene3 extends Phaser.Scene {
         });
         this.load.image("exMark","game_folder/assets/Look_At_Me.png");
         this.load.image("collision", "assets/collision.png");
+        this.load.audio("gerSong", "assets/gerSong.mp3");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
     }
 
@@ -31,6 +32,19 @@ class HouseScene3 extends Phaser.Scene {
         if (backgroundMusic) {
             backgroundMusic.stop();
         }
+
+        if (!this.sound.get("gerSong")) {
+            this.backgroundMusic = this.sound.add("gerSong", {
+              loop: true,
+              volume: 0.2,
+            });
+            this.backgroundMusic.play();
+          } else {
+            const backgroundMusic = this.sound.get("gerSong");
+            if (!backgroundMusic.isPlaying) {
+              backgroundMusic.play();
+            }
+          }
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
