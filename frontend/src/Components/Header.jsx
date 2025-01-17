@@ -5,7 +5,7 @@ const Header = ({ username }) => {
     <header className="header">
       <div className="header-content">
         <div className="header-logo">
-          <h1>EuroLingo</h1>
+          <h1></h1>
         </div>
         <nav className="header-nav">
           <p>Hello {username}</p>
