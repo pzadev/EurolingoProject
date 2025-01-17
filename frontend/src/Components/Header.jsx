@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Header.css";
 const Header = ({ username }) => {
+
+  console.log(username);
   return (
     <header className="header">
       <div className="header-content">
