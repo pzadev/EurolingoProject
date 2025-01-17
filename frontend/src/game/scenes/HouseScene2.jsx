@@ -141,7 +141,7 @@ class HouseScene2 extends Phaser.Scene {
 
   triggerWordMatching() {
     console.log("Triggering word matching!");
-    fetch("https://eurolingo.onrender.com/api/ukrainian", {
+    fetch("https://eurolingo.onrender.com/api/spanish", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
