@@ -462,7 +462,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 93,
-    targetWord: "point",
+    targetWord: "indiquer",
     englishWord: "point",
   },
   {
@@ -572,7 +572,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 115,
-    targetWord: "tour",
+    targetWord: "rond",
     englishWord: "round",
   },
   {
@@ -692,7 +692,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 139,
-    targetWord: "tour",
+    targetWord: "tourner",
     englishWord: "turn",
   },
   {
@@ -1207,7 +1207,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 242,
-    targetWord: "needs a context",
+    targetWord: "ne le faites pas",
     englishWord: "don’t",
   },
   {
@@ -1307,7 +1307,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 262,
-    targetWord: "Arrêtez",
+    targetWord: "arrêtez",
     englishWord: "stop",
   },
   {
@@ -1352,7 +1352,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 271,
-    targetWord: "face",
+    targetWord: "visage",
     englishWord: "face",
   },
   {
@@ -1682,7 +1682,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 337,
-    targetWord: "rock",
+    targetWord: "rocher",
     englishWord: "rock",
   },
   {
@@ -1907,7 +1907,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 382,
-    targetWord: "ran",
+    targetWord: "couru",
     englishWord: "ran",
   },
   {
@@ -2057,7 +2057,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 412,
-    targetWord: "Note",
+    targetWord: "note",
     englishWord: "note",
   },
   {
@@ -2072,7 +2072,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 415,
-    targetWord: "figure",
+    targetWord: "chiffre",
     englishWord: "figure",
   },
   {
@@ -2102,7 +2102,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 421,
-    targetWord: "correct",
+    targetWord: "exacte",
     englishWord: "correct",
   },
   {
@@ -2117,7 +2117,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 424,
-    targetWord: "Terminé",
+    targetWord: "terminé",
     englishWord: "done",
   },
   {
@@ -2362,7 +2362,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 473,
-    targetWord: "Voyage",
+    targetWord: "voyage",
     englishWord: "travel",
   },
   {
@@ -3432,7 +3432,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 687,
-    targetWord: "lot",
+    targetWord: "parcelle",
     englishWord: "lot",
   },
   {
@@ -3642,7 +3642,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 729,
-    targetWord: "type",
+    targetWord: "genre",
     englishWord: "type",
   },
   {
@@ -3667,7 +3667,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 734,
-    targetWord: "phrase",
+    targetWord: "l' expression",
     englishWord: "phrase",
   },
   {
@@ -3877,7 +3877,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 776,
-    targetWord: "dont",
+    targetWord: "duquel",
     englishWord: "whose",
   },
   {
@@ -4087,7 +4087,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 818,
-    targetWord: "rub",
+    targetWord: "frotter",
     englishWord: "rub",
   },
   {
@@ -4157,7 +4157,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 832,
-    targetWord: "mine",
+    targetWord: "le mien",
     englishWord: "mine",
   },
   {
@@ -4642,7 +4642,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 929,
-    targetWord: "LED",
+    targetWord: "dirigé",
     englishWord: "led",
   },
   {
@@ -4997,7 +4997,7 @@ export const frenchWords: Language[] = [
   },
   {
     rank: 1000,
-    targetWord: "continent…",
+    targetWord: "continent",
     englishWord: "continent",
   },
 ];
