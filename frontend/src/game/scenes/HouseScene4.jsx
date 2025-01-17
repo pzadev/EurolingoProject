@@ -123,69 +123,94 @@ class HouseScene4 extends Phaser.Scene {
 
     triggerWordMatching() {
         console.log("Triggering word matching!");
-
         fetch("https://eurolingo.onrender.com/api/ukrainian", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("API Response:", data);
-
-                // Generate 5 random word pairs
-                const randomWords = this.getRandomWords(data, 5);
-
-                let yOffsetLeft = 50; // Start Y position for the left side
-                let yOffsetRight = 50; // Start Y position for the right side
-
-                randomWords.forEach((item) => {
-                    // Left Side (English words)
-                    const leftText = this.add
-                        .text(50, yOffsetLeft, item.englishWord, {
-                            fontSize: "20px",
-                            color: "#ffffff",
-                        })
-                        .setDepth(5)
-                        .setInteractive(); // Enable interaction for the text
-
-                    this.input.setDraggable(leftText);
-                    leftText.wordName = item.englishWord; // Store the word's name
-                    leftText.rank = item.rank; // Store the rank for matching
-                    this.leftWords.push(leftText); // Add to leftWords array
-
-                    // Right Side (Target language words)
-                    const rightText = this.add
-                        .text(850, yOffsetRight, item.targetWord, {
-                            fontSize: "20px",
-                            color: "#ffffff",
-                        })
-                        .setDepth(5)
-                        .setInteractive(); // Enable interaction for the text
-
-                    this.input.setDraggable(rightText);
-                    rightText.wordName = item.targetWord; // Store the word's name
-                    rightText.rank = item.rank; // Store the rank for matching
-                    this.rightWords.push(rightText); // Add to rightWords array
-
-                    yOffsetLeft += 70; // Space between each word on the left
-                    yOffsetRight += 70; // Space between each word on the right
-                });
-
-                // Add drag events
-                this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
-                    gameObject.x = dragX;
-                    gameObject.y = dragY;
-
-                    // Check for matches
-                    this.checkForMatches();
-                });
-            })
-            .catch((error) => {
-                console.error("API Error:", error);
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("API Response:", data);
+            // Generate 5 random word pairs
+            const randomWords = this.getRandomWords(data, 5);
+            // Split the words into left and right arrays
+            const leftWordsData = randomWords.map((item) => ({
+              text: item.englishWord,
+              rank: item.rank,
+            }));
+            const rightWordsData = randomWords.map((item) => ({
+              text: item.targetWord,
+              rank: item.rank,
+            }));
+            // Shuffle the right words to mix them up
+            Phaser.Utils.Array.Shuffle(rightWordsData);
+            leftWordsData.forEach((leftItem, index) => {
+              // Calculate starting position near the chest
+              const startX = this.chest.x;
+              const startY = this.chest.y - 20;
+              // Left Side (English words)
+              const leftText = this.add
+                .text(startX, startY, leftItem.text, {
+                  fontSize: "20px",
+                  color: "#FFFFFF",
+                })
+                .setDepth(5)
+                .setAlpha(0) // Start fully transparent
+                .setInteractive(); // Enable interaction for the text
+              this.input.setDraggable(leftText);
+              leftText.wordName = leftItem.text; // Store the word's name
+              leftText.rank = leftItem.rank; // Store the rank for matching
+              this.leftWords.push(leftText); // Add to leftWords array
+              // Right Side (Shuffled Target language words)
+              const rightItem = rightWordsData[index];
+              const rightText = this.add
+                .text(startX, startY, rightItem.text, {
+                  fontSize: "20px",
+                  color: "#FFFFFF",
+                })
+                .setDepth(5)
+                .setAlpha(0) // Start fully transparent
+                .setInteractive(); // Enable interaction for the text
+              this.input.setDraggable(rightText);
+              rightText.wordName = rightItem.text; // Store the word's name
+              rightText.rank = rightItem.rank; // Store the rank for matching
+              this.rightWords.push(rightText); // Add to rightWords array
+              // Animate the words to their respective sides
+              const leftTargetX = 50; // Target X position for left words
+              const rightTargetX = 850; // Target X position for right words
+              const targetY = 50 + index * 70; // Calculate target Y position based on index
+              // Animate left words
+              this.tweens.add({
+                targets: leftText,
+                x: leftTargetX,
+                y: targetY,
+                alpha: 1, // Fade in
+                duration: 1000,
+                ease: "Power2",
+              });
+              // Animate right words
+              this.tweens.add({
+                targets: rightText,
+                x: rightTargetX,
+                y: targetY,
+                alpha: 1, // Fade in
+                duration: 1000,
+                ease: "Power2",
+              });
             });
-    }
+            // Add drag events
+            this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
+              gameObject.x = dragX;
+              gameObject.y = dragY;
+              // Check for matches
+              this.checkForMatches();
+            });
+          })
+          .catch((error) => {
+            console.error("API Error:", error);
+          });
+      }
 
     getRandomWords(array, count) {
         // Shuffle the array
