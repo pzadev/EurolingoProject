@@ -19,7 +19,7 @@ const PhaserGame = () => {
             physics: {
                 default: "arcade",
                 arcade: {
-                    debug: false, // Set to true to debug/see hitboxes
+                    debug: true, // Set to true to debug/see hitboxes
                 },
             },
             scene: [
