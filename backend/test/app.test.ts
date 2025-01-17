@@ -64,7 +64,7 @@ describe("GET: /api/:language", () => {
     const response = await request(app).get("/api/portugese").expect(404);
     expect(response.body.msg).toBe("data not found");
   });
-  test("400: Responce with an error message when input is unvalide type", async () => {
+  test("404: Responce with an error message when input is unvalide type", async () => {
     const responce = await request(app).get("/api/5973").expect(404);
     expect(responce.body.msg).toBe("data not found");
   });
