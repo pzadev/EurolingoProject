@@ -7,8 +7,8 @@ export class MainScene extends Phaser.Scene {
     }
     init(data) {
         // Defaults guy start position to 900/800 unless switching scene
-        this.startX = data && data.x ? data.x : 1300; // Default to 900 if no position passed
-        this.startY = data && data.y ? data.y : 700; // Default to 800 if no position passed
+        this.startX = data && data.x ? data.x : 1090; // Default to 900 if no position passed
+        this.startY = data && data.y ? data.y : 340; // Default to 800 if no position passed
     }
 
   preload() {
@@ -43,7 +43,6 @@ export class MainScene extends Phaser.Scene {
     this.load.image("itaFlag", "assets/itaFlag.png");
     this.load.image("freFlag", "assets/freFlag.png");
     // House Objects
-    this.load.image("pisa", "assets/pisa.png")
   }
 
   create() {
