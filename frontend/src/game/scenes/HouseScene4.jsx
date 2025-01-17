@@ -22,8 +22,9 @@ class HouseScene4 extends Phaser.Scene {
 
         this.load.image("exMark","game_folder/assets/Look_At_Me.png")
         this.load.image("collision", "assets/collision.png");
-        this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+        this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
         this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
+        this.load.audio("ukrSong", "assets/ukrSong.mp3");
     }
 
     create() {
@@ -32,6 +33,19 @@ class HouseScene4 extends Phaser.Scene {
         if (backgroundMusic) {
             backgroundMusic.stop();
         }
+
+        if (!this.sound.get("ukrSong")) {
+            this.backgroundMusic = this.sound.add("ukrSong", {
+              loop: true,
+              volume: 0.2,
+            });
+            this.backgroundMusic.play();
+          } else {
+            const backgroundMusic = this.sound.get("ukrSong");
+            if (!backgroundMusic.isPlaying) {
+              backgroundMusic.play();
+            }
+          }
 
         this.cursors = this.input.keyboard.createCursorKeys();
 

@@ -2,14 +2,14 @@ import Phaser from "phaser";
 import CollisionBlocks from "../imports/collisionBlocks";
 
 export class MainScene extends Phaser.Scene {
-    constructor() {
-        super({ key: "Main" });
-    }
-    init(data) {
-        // Defaults guy start position to 900/800 unless switching scene
-        this.startX = data && data.x ? data.x : 1090; // Default to 900 if no position passed
-        this.startY = data && data.y ? data.y : 340; // Default to 800 if no position passed
-    }
+  constructor() {
+    super({ key: "Main" });
+  }
+  init(data) {
+    // Defaults guy start position to 900/800 unless switching scene
+    this.startX = data && data.x ? data.x : 500; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 600; // Default to 800 if no position passed
+  }
 
   preload() {
     this.load.spritesheet("background", "assets/background.png", {
@@ -46,6 +46,8 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
+
+    this.game.sound.stopAll();
     // Character animations/frames
 
     this.anims.create({
@@ -75,7 +77,6 @@ export class MainScene extends Phaser.Scene {
     background.play("background");
 
     // ideas for flag/country indetifier for player
-    
 
     this.roof = this.add
       .image(1251, 432, "roof1")
@@ -176,12 +177,11 @@ export class MainScene extends Phaser.Scene {
       .setScale(1.2);
 
     this.itaFlag = this.add
-    .image(479, 630, "itaFlag")
-    .setOrigin(0, 0)
-    .setAlpha(0.7)
-    .setDepth(10)
-    .setScale(1.25);
-
+      .image(479, 630, "itaFlag")
+      .setOrigin(0, 0)
+      .setAlpha(0.7)
+      .setDepth(10)
+      .setScale(1.25);
 
     this.player = this.physics.add
       .sprite(this.startX, this.startY, "guy")
@@ -274,7 +274,7 @@ export class MainScene extends Phaser.Scene {
     door5.visible = false;
     door5.setData("targetScene", "House5");
 
-    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
     this.physics.add.collider(
       this.player,
@@ -298,10 +298,15 @@ export class MainScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    const backgroundMusic = this.sound.get("backgroundMusic");
+    if (backgroundMusic) {
+      backgroundMusic.stop();
+    }
+
     if (!this.sound.get("backgroundMusic")) {
       this.backgroundMusic = this.sound.add("backgroundMusic", {
         loop: true,
-        volume: 0.0,
+        volume: 0.1,
       });
       this.backgroundMusic.play();
     } else {

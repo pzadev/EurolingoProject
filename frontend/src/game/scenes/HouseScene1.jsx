@@ -25,7 +25,7 @@ class HouseScene1 extends Phaser.Scene {
     this.load.image("collision", "assets/collision.png");
     this.load.image("rome", "assets/rome.png");
     this.load.audio("italy", "assets/italySong.mp3");
-    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
   }
 
   create() {
@@ -38,7 +38,7 @@ class HouseScene1 extends Phaser.Scene {
     if (!this.sound.get("italy")) {
       this.backgroundMusic = this.sound.add("italy", {
         loop: true,
-        volume: 0.5,
+        volume: 0.2,
       });
       this.backgroundMusic.play();
     } else {
