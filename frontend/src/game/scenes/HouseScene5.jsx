@@ -16,6 +16,10 @@ class HouseScene5 extends Phaser.Scene {
             frameWidth: 32,
             frameHeight: 32,
         });
+        this.load.spritesheet("chest", "game_folder/assets/Chest_Anim.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+          });
         this.load.image("collision", "assets/collision.png");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
         this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
@@ -24,9 +28,6 @@ class HouseScene5 extends Phaser.Scene {
     }
 
     create() {
-
-        this.triggerApiCall();
-
         // Stop BG Music in House
         const backgroundMusic = this.sound.get("backgroundMusic");
         if (backgroundMusic) {
@@ -102,10 +103,34 @@ class HouseScene5 extends Phaser.Scene {
             null,
             this
         );
+        this.chestOpened = false;
+        this.chest = this.physics.add.staticSprite(540, 223, 'chest')
+            .setScale(4)
+            .refreshBody();
+        this.exMark = this.physics.add.staticSprite(540, 223, 'exMark')
+            .setScale(0.06)
+            .refreshBody();
+        this.physics.add.collider(this.player, this.chest, this.openChest, null, this);
+
+        this.anims.create({
+            key: 'openChest',
+            frames: this.anims.generateFrameNumbers('chest', { start: 0, end: 5 }),
+            frameRate: 8,
+            repeat: 0,
+        });
 
         // World bounds and camera
         this.physics.world.setBounds(0, 0, 750, 800);
         this.cameras.main.setBounds(0, 0, 800, 800);
+    }
+
+    openChest(player, chest) {
+        if (!this.chestOpened) {
+            this.chestOpened = true; // Set the flag to true
+            chest.anims.play('openChest', true);
+            console.log('Chest opened!');
+            this.triggerWordMatching(); // Trigger the word matching when chest is opened
+        }
     }
 
     triggerWordMatching() {
