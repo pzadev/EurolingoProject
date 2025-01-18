@@ -7,6 +7,9 @@ class HouseScene4 extends Phaser.Scene {
         this.leftWords = []; // Left words (English)
         this.rightWords = []; // Right words (Target language)
         this.matchedPairs = []; // Matched word pairs
+        this.isComplete = false
+        this.interaction = false
+        this.attainFlag = 0
     }
 
     preload() {
@@ -19,16 +22,23 @@ class HouseScene4 extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16,
         });
-
+        this.load.image('test', 'game_folder/assets/French_Round.png')
         this.load.image("exMark","game_folder/assets/Look_At_Me.png")
         this.load.image("collision", "assets/collision.png");
         this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
         this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png")
         this.load.audio("ukrSong", "assets/ukrSong.mp3");
+        this.load.image("guide", 'game_folder/assets/Guide.png')
+        this.load.image('journal', 'game_folder/assets/Learn_Journal.png')
     }
 
     create() {
         // Stop BG Music in House
+
+        this.add.image(320,290, 'guide')
+        .setDepth(2)
+        .setScale(.18)
+        .setAlpha(0.8)
         const backgroundMusic = this.sound.get("backgroundMusic");
         if (backgroundMusic) {
             backgroundMusic.stop();
@@ -37,7 +47,7 @@ class HouseScene4 extends Phaser.Scene {
         if (!this.sound.get("ukrSong")) {
             this.backgroundMusic = this.sound.add("ukrSong", {
               loop: true,
-              volume: 0.2,
+              volume: 0,
             });
             this.backgroundMusic.play();
           } else {
@@ -91,15 +101,21 @@ class HouseScene4 extends Phaser.Scene {
         );
 
         // Chest and exclamation mark
-        this.chestOpened = false;
-        this.chest = this.physics.add.staticSprite(540, 223, 'chest')
-            .setScale(4)
-            .refreshBody();
-        this.exMark = this.physics.add.staticSprite(540, 223, 'exMark')
+        // this.chestOpened = false;
+        // this.chest = this.physics.add.staticSprite(540, 223, 'chest')
+        //     .setScale(4)
+        //     .refreshBody();
+        this.exMark = this.physics.add.staticSprite(320, 235, 'exMark')
             .setScale(0.06)
             .refreshBody();
+        this.Book_exMark = this.physics.add.staticSprite(308, 360, 'exMark')
+            .setScale(0.06)
+            .refreshBody();
+
         this.physics.add.collider(this.player, this.chest, this.openChest, null, this);
 
+        this.physics.add.collider(this.player, this.Book_exMark, this.lookAtJournal, null, this)
+        this.journalTriggered = false
         this.anims.create({
             key: 'openChest',
             frames: this.anims.generateFrameNumbers('chest', { start: 0, end: 5 }),
@@ -112,6 +128,24 @@ class HouseScene4 extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 800, 800);
     }
 
+    lookAtJournal() {
+        if (!this.journalTriggered) {
+            this.journalTriggered = true; 
+            this.inspsectApi();
+            this.Book_exMark.destroy()
+            this.Chest_exMark = this.physics.add.staticSprite(540, 223, 'exMark')
+            .setScale(0.06)
+            .setDepth(2)
+            .refreshBody();
+            this.interaction = true
+            this.chestOpened = false;
+            this.chest = this.physics.add.staticSprite(540, 223, 'chest')
+            .setScale(4)
+            .refreshBody();
+            this.physics.add.collider(this.player, this.chest, this.openChest, null, this);
+        }
+    }
+
     openChest(player, chest) {
         if (!this.chestOpened) {
             this.chestOpened = true; // Set the flag to true
@@ -121,7 +155,23 @@ class HouseScene4 extends Phaser.Scene {
         }
     }
 
+    inspsectApi(){
+        console.log("Triggering learning!");
+        fetch("https://eurolingo.onrender.com/api/ukrainian", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("API Response:", data);
+          })
+    }
+
     triggerWordMatching() {
+
+        if(this.interaction === true){
         console.log("Triggering word matching!");
         fetch("https://eurolingo.onrender.com/api/ukrainian", {
           method: "GET",
@@ -210,6 +260,8 @@ class HouseScene4 extends Phaser.Scene {
           .catch((error) => {
             console.error("API Error:", error);
           });
+          this.Chest_exMark.destroy()
+        }
       }
 
     getRandomWords(array, count) {
@@ -226,26 +278,36 @@ class HouseScene4 extends Phaser.Scene {
                     leftWord.getBounds(),
                     rightWord.getBounds()
                 );
-
+    
                 // Match based on overlapping and the same rank
                 if (overlap && leftWord.rank === rightWord.rank) {
                     const pairKey = `${leftWord.wordName}-${rightWord.wordName}`;
-
+    
                     // Check if the pair has already been matched
                     if (!this.matchedPairs.includes(pairKey)) {
                         this.matchedPairs.push(pairKey); // Mark as matched
-
+    
                         // Optionally, destroy the words
                         leftWord.destroy();
                         rightWord.destroy();
-
+    
+                        // Remove from arrays to prevent further checks
+                        Phaser.Utils.Array.Remove(this.leftWords, leftWord);
+                        Phaser.Utils.Array.Remove(this.rightWords, rightWord);
+    
                         // Display "Well done" message
                         this.showWellDoneMessage();
                     }
                 }
             });
         });
+    
+        // Check if all pairs for the current round are matched
+        if (this.matchedPairs.length === 5) { // Ensure this matches the round pair count
+            this.roundComplete();
+        }
     }
+    
 
     showWellDoneMessage() {
         const message = this.add
@@ -265,6 +327,30 @@ class HouseScene4 extends Phaser.Scene {
                 message.destroy();
             },
         });
+    }
+
+    // round complete function, triggered after this.matchedPairs.length === 5 i.e all words matched
+    // new image 
+    roundComplete() {
+        if (this.isComplete) {
+            return; // Prevent triggering multiple times
+        }
+    
+        this.isComplete = true; // Mark as complete
+        console.log("Round Complete!");
+    
+        // Display the round completion image
+        this.add
+            .image(420, 200, "test")
+            .setScale(0.2);
+    
+        // Reset round state for next round
+        this.matchedPairs = [];
+        this.leftWords = [];
+        this.rightWords = [];
+        this.attainFlag ++
+        this.isComplete = false
+        console.log(this.attainFlag)
     }
 
     update() {
