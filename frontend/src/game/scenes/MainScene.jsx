@@ -7,8 +7,8 @@ export class MainScene extends Phaser.Scene {
   }
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1180; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 1110; // Default to 800 if no position passed
+    this.startX = data && data.x ? data.x : 1850; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
   }
 
   preload() {
@@ -42,14 +42,34 @@ export class MainScene extends Phaser.Scene {
     this.load.image("ukrFlag", "assets/ukrFlag.png");
     this.load.image("itaFlag", "assets/itaFlag.png");
     this.load.image("freFlag", "assets/freFlag.png");
-    // House Objects
+    // Progress bar
+    this.load.image("progressBar", "assets/gamebartest.png");
+    this.load.image("globe", "assets/globe.png");
+    this.load.image("globe2", "assets/globe2.png");
   }
 
   create() {
-
     this.game.sound.stopAll();
     // Character animations/frames
 
+    this.progressBar = this.add
+      .image(55, 110, "progressBar")
+      .setScale(0.5)
+      .setDepth(20)
+      .setScrollFactor(0)
+      .setAlpha(0.95)
+      .setRotation(1.57);
+    this.globe = this.add
+      .image(53, 51, "globe")
+      .setScale(0.06)
+      .setDepth(21)
+      .setScrollFactor(0);
+
+    // this.globe2 = this.add
+    // .image(42, 53, "globe2")
+    // .setScale(0.08)
+    // .setDepth(21)
+    // .setScrollFactor(0);
     this.anims.create({
       key: "guyidle",
       frames: this.anims.generateFrameNumbers("guy", {
@@ -182,7 +202,41 @@ export class MainScene extends Phaser.Scene {
       .setAlpha(0.7)
       .setDepth(10)
       .setScale(1.25);
+    // Completion Badges
+    this.itaBadge = this.add
+      .image(55, 97, "itaFlag")
+      .setScale(0.77)
+      .setDepth(22)
+      .setAlpha(0.8)
+      .setScrollFactor(0);
 
+    this.spaBadge = this.add
+      .image(55, 117, "spaFlag")
+      .setScale(0.77)
+      .setDepth(22)
+      .setAlpha(0.8)
+      .setScrollFactor(0);
+
+    this.gerBadge = this.add
+      .image(55, 137, "gerFlag")
+      .setScale(0.77)
+      .setDepth(22)
+      .setAlpha(0.8)
+      .setScrollFactor(0);
+
+    this.ukrBadge = this.add
+      .image(55, 157, "ukrFlag")
+      .setScale(0.77)
+      .setDepth(22)
+      .setAlpha(0.8)
+      .setScrollFactor(0);
+
+    this.freFlag = this.add
+      .image(55, 180, "freFlag")
+      .setScale(0.75)
+      .setDepth(22)
+      .setAlpha(0.8)
+      .setScrollFactor(0);
     this.player = this.physics.add
       .sprite(this.startX, this.startY, "guy")
       .setSize(18, 10)
@@ -239,6 +293,7 @@ export class MainScene extends Phaser.Scene {
 
     // Door Area for MainScene
     this.doorArea = this.physics.add.staticGroup();
+    this.teleport = this.physics.add.staticGroup();
     const door1 = this.doorArea
       .create(495, 665, "collision")
       .setSize(40, 60)
@@ -274,6 +329,13 @@ export class MainScene extends Phaser.Scene {
     door5.visible = false;
     door5.setData("targetScene", "House5");
 
+    const teleport = this.teleport
+      .create(1985, 850, "collision")
+      .setSize(50, 40)
+      .setOrigin(1, 1);
+    teleport.visible = true;
+    teleport.setData("targetScene", "BridgeScene");
+
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
     this.physics.add.collider(
@@ -284,6 +346,19 @@ export class MainScene extends Phaser.Scene {
         if (targetScene) {
           this.doorOpenSound.play();
           console.log(`You are close to the ${targetScene} door!`);
+          this.scene.start(targetScene);
+        }
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.teleport,
+      (player, teleport) => {
+        const targetScene = teleport.getData("targetScene");
+        if (targetScene) {
           this.scene.start(targetScene);
         }
       },
