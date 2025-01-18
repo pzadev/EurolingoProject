@@ -7,7 +7,7 @@ import HouseScene3 from "./game/scenes/HouseScene3";
 import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
 
-const PhaserGame = () => {
+const PhaserGame = ({setProgressData}) => {
     const [isAllMatched, setIsAllMatched] = useState(false); 
     const gameContainer = useRef(null);
 
@@ -19,7 +19,7 @@ const PhaserGame = () => {
             physics: {
                 default: "arcade",
                 arcade: {
-                    debug: true, // Set to true to debug/see hitboxes
+                    debug: false, // Set to true to debug/see hitboxes
                 },
             },
             scene: [
