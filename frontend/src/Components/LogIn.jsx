@@ -16,6 +16,7 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
       if (data.password === password) {
         setSubmissionFeedback("Log in successfully");
         setGameStart(true);
+        setUsername(username)
         setPassword("");
       } else if (data.password !== password) {
         setSubmissionFeedback("Incorrect password");
