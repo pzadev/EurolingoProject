@@ -15,7 +15,7 @@ const App = () => {
       <Header username={username} />
       <img src="/logo.png" alt="EuroLingo Logo" />
       {gameStart ? (
-        <PhaserGame />
+        <PhaserGame username={username}/>
       ) : showLogIn ? (
         <LogIn setGameStart={setGameStart} setShowLogIn={setShowLogIn} username={username} setUsername={setUsername} />
       ) : (

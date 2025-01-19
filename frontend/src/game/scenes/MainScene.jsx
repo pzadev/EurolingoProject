@@ -1,14 +1,29 @@
 import Phaser from "phaser";
 import CollisionBlocks from "../imports/collisionBlocks";
+import { checkUserProgress } from "../../api";
 
 export class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "Main" });
+    this.userProgress = null;
+    this.username = "pezdav"; // testing
   }
+
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
     this.startX = data && data.x ? data.x : 1850; // Default to 900 if no position passed
     this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
+
+    this.loadUserProgress();
+  }
+
+  async loadUserProgress() {
+    try {
+      this.userProgress = await checkUserProgress(this.username);
+      console.log("User progress loaded:", this.userProgress);
+    } catch (err) {
+      console.log("Error getting user progress:", err);
+    }
   }
 
   preload() {
@@ -356,10 +371,25 @@ export class MainScene extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.teleport,
-      (player, teleport) => {
-        const targetScene = teleport.getData("targetScene");
-        if (targetScene) {
+      async (player, teleport) => {
+        if (!this.userProgress) {
+          console.log("Progress data not yet loaded.");
+          return;
+        }
+        // Change below to true to test restriction to bridge/cave
+        const completedLanguages = this.userProgress.filter(
+          (language) => Object.values(language)[0] === true
+        ).length;
+
+        if (completedLanguages === 5) {
+          const targetScene = teleport.getData("targetScene");
           this.scene.start(targetScene);
+        } else {
+          console.log("Not completed all 5 languages.");
+          this.add.text(1780, 770, "Collect all 5 badges first!", {
+            font: "20px Montserrat",
+            fill: "#000000",
+          });
         }
       },
       null,

@@ -6,11 +6,10 @@ import HouseScene2 from "./game/scenes/HouseScene2";
 import HouseScene3 from "./game/scenes/HouseScene3";
 import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
-
 import BridgeScene from "./game/scenes/BridgeScene";
 import CaveScene from "./game/scenes/CaveScene";
 
-const PhaserGame = ({ setProgressData }) => {
+const PhaserGame = ({ username }) => {
   const [isAllMatched, setIsAllMatched] = useState(false);
   const gameContainer = useRef(null);
 
@@ -52,7 +51,6 @@ const PhaserGame = ({ setProgressData }) => {
   }, []);
 
   return <div ref={gameContainer}></div>;
-
 };
 
 export default PhaserGame;
