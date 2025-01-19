@@ -11,7 +11,7 @@ export class MainScene extends Phaser.Scene {
 
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1850; // Default to 900 if no position passed
+    this.startX = data && data.x ? data.x : 1800; // Default to 900 if no position passed
     this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
 
     if (data && data.username) {
@@ -26,6 +26,7 @@ export class MainScene extends Phaser.Scene {
     try {
       this.userProgress = await checkUserProgress(this.username);
       console.log(this.userProgress);
+      console.log(this.username) // testing in/out of scene username state
 
       const badgeMapping = {
         italian: { x: 55, y: 97, image: "itaFlag" },
@@ -341,7 +342,7 @@ export class MainScene extends Phaser.Scene {
       .setSize(50, 40)
       .setOrigin(1, 1);
     teleport.visible = true;
-    teleport.setData("targetScene", "BridgeScene");
+    teleport.setData("targetScene", "BridgeScene"); // CHANGE TO BRIDGE AFTER EDIT
 
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
@@ -371,7 +372,7 @@ export class MainScene extends Phaser.Scene {
         }
         // Change below to true to test restriction to bridge/cave
         const completedLanguages = this.userProgress.filter(
-          (language) => Object.values(language)[0] === true
+          (language) => Object.values(language)[0] === false
         ).length;
 
         if (completedLanguages === 5) {

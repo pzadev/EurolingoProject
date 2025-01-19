@@ -17,11 +17,19 @@ class BridgeScene extends Phaser.Scene {
     });
 
     this.load.image("collision", "assets/collision.png");
+    this.load.audio("waterfall", "/assets/waterfall.mp3");
   }
 
   create() {
+    this.game.sound.stopAll();
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    const waterfall = this.sound.add("waterfall", {
+      loop: true,
+      volume: 0.2,
+    });
+
+    waterfall.play();
 
     this.anims.create({
       key: "bridge",
@@ -80,7 +88,6 @@ class BridgeScene extends Phaser.Scene {
       this
     );
     bridge.play("bridge");
-
 
     // House collision and door data for HouseScene
     const bridgeBlocks = new BridgeCollisions(this);

@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-
+import CaveCollisions from "../imports/caveCollisions";
 class CaveScene extends Phaser.Scene {
   constructor() {
     super({ key: "CaveScene" });
@@ -14,10 +14,13 @@ class CaveScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+    this.load.image("collision", "assets/collision.png");
   }
 
   create() {
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.game.sound.stopAll();
 
     const cave = this.add
       .image(0, 0, "cave")
@@ -53,8 +56,11 @@ class CaveScene extends Phaser.Scene {
       this
     );
 
-    this.player.setCollideWorldBounds(true);
+    const caveBlocks = new CaveCollisions(this);
+    const caveCollisionGroup = caveBlocks.getCaveBlocks();
+    this.physics.add.collider(this.player, caveCollisionGroup);
 
+    this.player.setCollideWorldBounds(true);
   }
 
   update() {
