@@ -70,7 +70,6 @@ class BridgeScene extends Phaser.Scene {
       (player, teleport) => {
         const targetScene = teleport.getData("targetScene");
         if (targetScene) {
-
           this.scene.start(targetScene, {
             targetX: teleport.getData("targetX"),
             targetY: teleport.getData("targetY"),
