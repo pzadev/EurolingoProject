@@ -39,6 +39,8 @@ const PhaserGame = ({ username }) => {
 
     const game = new Phaser.Game(config);
 
+    game.scene.start("Main", { username });
+
     game.events.on("start-house5", () => {
       game.scene.start("House5", { onMatchComplete: setIsAllMatched });
     });
@@ -52,7 +54,6 @@ const PhaserGame = ({ username }) => {
   }, []);
 
   return <div ref={gameContainer}></div>;
-
 };
 
 export default PhaserGame;

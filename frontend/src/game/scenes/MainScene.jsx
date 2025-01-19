@@ -6,7 +6,7 @@ export class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "Main" });
     this.userProgress = null;
-    this.username = "pezdav"; // testing
+    this.username = null; // testing
   }
 
   init(data) {
@@ -14,13 +14,39 @@ export class MainScene extends Phaser.Scene {
     this.startX = data && data.x ? data.x : 1850; // Default to 900 if no position passed
     this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
 
+    if (data && data.username) {
+      this.username = data.username;
+      console.log(`Logged in user is ${this.username}`);
+    }
+
     this.loadUserProgress();
   }
 
   async loadUserProgress() {
     try {
       this.userProgress = await checkUserProgress(this.username);
-      console.log("User progress loaded:", this.userProgress);
+      console.log(this.userProgress);
+
+      const badgeMapping = {
+        italian: { x: 55, y: 97, image: "itaFlag" },
+        spanish: { x: 55, y: 117, image: "spaFlag" },
+        german: { x: 55, y: 137, image: "gerFlag" },
+        ukrainian: { x: 55, y: 157, image: "ukrFlag" },
+        french: { x: 55, y: 180, image: "freFlag" },
+      };
+
+      this.userProgress.forEach((language) => {
+        const [languageKey, isCompleted] = Object.entries(language)[0];
+        if (isCompleted) {
+          const { x, y, image } = badgeMapping[languageKey];
+          this.add
+            .image(x, y, image)
+            .setScale(0.77)
+            .setDepth(22)
+            .setAlpha(0.8)
+            .setScrollFactor(0);
+        }
+      });
     } catch (err) {
       console.log("Error getting user progress:", err);
     }
@@ -217,41 +243,7 @@ export class MainScene extends Phaser.Scene {
       .setAlpha(0.7)
       .setDepth(10)
       .setScale(1.25);
-    // Completion Badges
-    this.itaBadge = this.add
-      .image(55, 97, "itaFlag")
-      .setScale(0.77)
-      .setDepth(22)
-      .setAlpha(0.8)
-      .setScrollFactor(0);
 
-    this.spaBadge = this.add
-      .image(55, 117, "spaFlag")
-      .setScale(0.77)
-      .setDepth(22)
-      .setAlpha(0.8)
-      .setScrollFactor(0);
-
-    this.gerBadge = this.add
-      .image(55, 137, "gerFlag")
-      .setScale(0.77)
-      .setDepth(22)
-      .setAlpha(0.8)
-      .setScrollFactor(0);
-
-    this.ukrBadge = this.add
-      .image(55, 157, "ukrFlag")
-      .setScale(0.77)
-      .setDepth(22)
-      .setAlpha(0.8)
-      .setScrollFactor(0);
-
-    this.freFlag = this.add
-      .image(55, 180, "freFlag")
-      .setScale(0.75)
-      .setDepth(22)
-      .setAlpha(0.8)
-      .setScrollFactor(0);
     this.player = this.physics.add
       .sprite(this.startX, this.startY, "guy")
       .setSize(18, 10)
@@ -368,6 +360,7 @@ export class MainScene extends Phaser.Scene {
       this
     );
 
+    // Bridge & Cave Completion Area Teleport
     this.physics.add.overlap(
       this.player,
       this.teleport,
@@ -385,7 +378,6 @@ export class MainScene extends Phaser.Scene {
           const targetScene = teleport.getData("targetScene");
           this.scene.start(targetScene);
         } else {
-          console.log("Not completed all 5 languages.");
           this.add.text(1780, 770, "Collect all 5 badges first!", {
             font: "20px Montserrat",
             fill: "#000000",
