@@ -6,6 +6,11 @@ class BridgeScene extends Phaser.Scene {
     super({ key: "BridgeScene" });
   }
 
+  init(data) {
+    this.startX = data && data.x ? data.x : 150; // Default to 100 if no position passed
+    this.startY = data && data.y ? data.y : 400; // Default to 400 if no position passed
+  }
+
   preload() {
     this.load.spritesheet("bridge", "assets/bridge.png", {
       frameWidth: 630,
@@ -17,11 +22,19 @@ class BridgeScene extends Phaser.Scene {
     });
 
     this.load.image("collision", "assets/collision.png");
+    this.load.audio("waterfall", "/assets/waterfall.mp3");
   }
 
   create() {
+    this.game.sound.stopAll();
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    const waterfall = this.sound.add("waterfall", {
+      loop: true,
+      volume: 0.2,
+    });
+
+    waterfall.play();
 
     this.anims.create({
       key: "bridge",
@@ -53,7 +66,7 @@ class BridgeScene extends Phaser.Scene {
       .create(910, 150, "collision")
       .setSize(30, 40)
       .setOrigin(1, 1);
-    teleport.visible = true;
+    teleport.visible = false;
     teleport.setData("targetScene", "CaveScene");
 
     const teleport2 = this.teleport
@@ -80,7 +93,6 @@ class BridgeScene extends Phaser.Scene {
       this
     );
     bridge.play("bridge");
-
 
     // House collision and door data for HouseScene
     const bridgeBlocks = new BridgeCollisions(this);
