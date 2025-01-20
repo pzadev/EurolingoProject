@@ -33,6 +33,7 @@ class HouseScene4 extends Phaser.Scene {
     this.load.image("guide", "game_folder/assets/Guide.png");
     this.load.image("journal", "game_folder/assets/Learn_Journal.png");
     this.load.image("back", "game_folder/assets/Back_BTN.png");
+    this.load.image("speech", "game_folder/assets/Speech Bubble.png")
   }
 
   create() {
@@ -47,7 +48,7 @@ class HouseScene4 extends Phaser.Scene {
     if (!this.sound.get("ukrSong")) {
       this.backgroundMusic = this.sound.add("ukrSong", {
         loop: true,
-        volume: 0.1,
+        volume: 0,
       });
       this.backgroundMusic.play();
     } else {
@@ -150,13 +151,16 @@ class HouseScene4 extends Phaser.Scene {
   }
 
   guideInteraction() {
-    if (this.reminder) {
-          this.reminder.destroy();}
+    if (this.reminder && this.speech) {
+          this.reminder.destroy()
+          this.speech.destroy();}
 
     if(this.journalTriggered === true){
         console.log("box")
-        this.reminder = this.add.text(200, 200, "Hey!\nI think you should\nlook in the box!", {
-            fontSize: "16px",
+        this.speech = this.add.image(420, 200, 'speech')
+        .setScale(0.15)
+        this.reminder = this.add.text(310, 154, "Hey!\nI think you should\nlook in the box!", {
+            fontSize: "18px",
             color: "#ffffff",
             align: "center",
             padding: {
@@ -165,17 +169,19 @@ class HouseScene4 extends Phaser.Scene {
             },
           });
           this.time.delayedCall(3000, () => {
-            if (this.reminder) {
+            if (this.reminder && this.speech) {
               this.reminder.destroy(); 
+              this.speech.destroy()
               this.reminder = null;
             }
           });
     }
         
     if(this.journalTriggered === false){
-
-    this.reminder = this.add.text(200, 200, "Hey!\nI think you should\nlook in the book!", {
-      fontSize: "16px",
+    this.speech = this.add.image(420, 200, 'speech')
+    .setScale(0.15)
+    this.reminder = this.add.text(310, 154, "Hey!\nI think you should\nlook in the book!", {
+      fontSize: "18px",
       color: "#ffffff",
       align: "center",
       padding: {
@@ -185,8 +191,9 @@ class HouseScene4 extends Phaser.Scene {
     });
 
     this.time.delayedCall(3000, () => {
-      if (this.reminder) {
+      if (this.reminder && this.speech) {
         this.reminder.destroy(); 
+        this.speech.destroy()
         this.reminder = null;
       }
     });
@@ -508,11 +515,28 @@ triggerWordMatching() {
 
     this.isComplete = true; // Mark as complete
     console.log("Round Complete!");
+    const message = "Well done!\nSee you soon!"
+    this.speech = this.add.image(420, 200, 'speech')
+    .setScale(0.15)
+    
+    this.reminder = this.add.text(310, 154, message, {
+      fontSize: "18px",
+      color: "#ffffff",
+      align: "center",
+      padding: {
+        x: 10,
+        y: 5,
+      }
+    })
+    this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy(); 
+          this.speech.destroy()
+          this.reminder = null;
+        }
+      });
 
-    // Display the round completion image
-    this.add.image(420, 200, "test").setScale(0.2);
-
-    // Reset round state for next round
+    // Display the round completion imag   // Reset round state for next round
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
