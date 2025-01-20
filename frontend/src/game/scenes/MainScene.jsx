@@ -11,8 +11,8 @@ export class MainScene extends Phaser.Scene {
 
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 480; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 640; // Default to 800 if no position passed
+    this.startX = data && data.x ? data.x : 1100; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 300; // Default to 800 if no position passed
 
     this.username = this.game.registry.get("username") || data?.username;
 

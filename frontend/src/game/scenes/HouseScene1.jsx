@@ -10,7 +10,6 @@ class HouseScene1 extends Phaser.Scene {
     this.rightWordData = [];
     this.leftWOrdData = [];
     this.roundCount = 0;
-    this.guideTriggered = false;
     this.guideMessageDisplayed = false;
   }
 
@@ -35,6 +34,7 @@ class HouseScene1 extends Phaser.Scene {
     this.load.image("journal", "game_folder/assets/Learn_Journal.png");
     this.load.image("back", "game_folder/assets/Back_BTN.png");
     this.load.image("test", "game_folder/assets/Ukr_Congrats.png");
+    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
   }
 
   create() {
@@ -170,18 +170,20 @@ class HouseScene1 extends Phaser.Scene {
   //pop-up-message-on-guide
 
   guideInteraction() {
-    if (this.reminder) {
+    if (this.reminder && this.speech) {
       this.reminder.destroy();
+      this.speech.destroy();
     }
 
     if (this.journalTriggered === true) {
       console.log("box");
+      this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
-        200,
-        200,
-        `Hey!\nRound ${this.roundCount}\nI think you should\nlook in the box!`,
+        310,
+        154,
+        "Hey!\nI think you should\nlook in the box!",
         {
-          fontSize: "16px",
+          fontSize: "18px",
           color: "#ffffff",
           align: "center",
           padding: {
@@ -191,20 +193,22 @@ class HouseScene1 extends Phaser.Scene {
         }
       );
       this.time.delayedCall(3000, () => {
-        if (this.reminder) {
+        if (this.reminder && this.speech) {
           this.reminder.destroy();
+          this.speech.destroy();
           this.reminder = null;
         }
       });
     }
 
     if (this.journalTriggered === false) {
+      this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
-        200,
-        200,
-        `Hey!\nRound ${this.roundCount}\nI think you should\nlook in the book!`,
+        310,
+        154,
+        "Hey!\nI think you should\nlook in the book!",
         {
-          fontSize: "16px",
+          fontSize: "18px",
           color: "#ffffff",
           align: "center",
           padding: {
@@ -215,8 +219,9 @@ class HouseScene1 extends Phaser.Scene {
       );
 
       this.time.delayedCall(3000, () => {
-        if (this.reminder) {
+        if (this.reminder && this.speech) {
           this.reminder.destroy();
+          this.speech.destroy();
           this.reminder = null;
         }
       });
