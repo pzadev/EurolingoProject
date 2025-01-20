@@ -38,7 +38,7 @@ class HouseScene2 extends Phaser.Scene {
     if (!this.sound.get("spain")) {
       this.backgroundMusic = this.sound.add("spain", {
         loop: true,
-        volume: 0.2,
+        volume: 0.1,
       });
       this.backgroundMusic.play();
     } else {

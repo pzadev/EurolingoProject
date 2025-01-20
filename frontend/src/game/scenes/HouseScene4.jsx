@@ -47,7 +47,7 @@ class HouseScene4 extends Phaser.Scene {
     if (!this.sound.get("ukrSong")) {
       this.backgroundMusic = this.sound.add("ukrSong", {
         loop: true,
-        volume: 0,
+        volume: 0.1,
       });
       this.backgroundMusic.play();
     } else {
