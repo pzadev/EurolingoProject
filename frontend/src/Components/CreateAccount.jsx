@@ -1,3 +1,5 @@
+import Lottie from 'lottie-react'; // Default export, not named
+import loadingAnimation from '../../public/assets/loadingAnimation.json'; // Direct import for JSON
 import { useState } from "react";
 import { checkIfUserExists, createUser } from "../api";
 
@@ -5,10 +7,11 @@ const CreateAccount = ({ setShowLogIn }) => {
   const [createUsername, setCreateUsername] = useState("");
   const [createPassword, setCreatePassword] = useState("");
   const [submissionFeedback, setSubmissionFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const existinguser = await checkIfUserExists(createUsername);
       if (existinguser) {
@@ -26,8 +29,18 @@ const CreateAccount = ({ setShowLogIn }) => {
       }
     } catch (err) {
       setSubmissionFeedback(err);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Lottie animationData={loadingAnimation} loop={true} autoplay={true} height={200} width={200} />
+      </div>
+    );
+  }
 
   return (
     <div>

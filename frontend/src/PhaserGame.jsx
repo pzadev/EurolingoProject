@@ -6,7 +6,7 @@ import HouseScene2 from "./game/scenes/HouseScene2";
 import HouseScene3 from "./game/scenes/HouseScene3";
 import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
-
+import "./PhaserGame.css";
 import BridgeScene from "./game/scenes/BridgeScene";
 import CaveScene from "./game/scenes/CaveScene";
 
@@ -35,6 +35,7 @@ const PhaserGame = ({ username }) => {
         BridgeScene,
         CaveScene,
       ],
+      parent: gameContainer.current,
     };
 
     const game = new Phaser.Game(config);
@@ -53,7 +54,8 @@ const PhaserGame = ({ username }) => {
     };
   }, []);
 
-  return <div ref={gameContainer}></div>;
+  return <div ref={gameContainer} className="gameContainer"></div>;
+
 };
 
 export default PhaserGame;

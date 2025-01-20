@@ -1,11 +1,11 @@
 import { useState } from "react";
+import Lottie from 'lottie-react'; // Default export, not named
+import loadingAnimation from '../../public/assets/loadingAnimation2.json'; // Loading animation JSON import
 import { findUser } from "../api";
 
 const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // do we using this statment somewhere?
   const [submissionFeedback, setSubmissionFeedback] = useState("");
 
   const handleSubmit = async (e) => {
@@ -23,7 +23,6 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
         setPassword("");
       }
     } catch (err) {
-      // console.log("error", error.message); this is not working
       setSubmissionFeedback("User doesn't exist, check your log in details");
     } finally {
       setLoading(false);
@@ -31,7 +30,17 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div>
+        <Lottie 
+          animationData={loadingAnimation} 
+          loop={true} 
+          autoplay={true} 
+          height={2000} 
+          width={2000} 
+        />
+      </div>
+    );
   }
 
   return (
