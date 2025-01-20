@@ -40,16 +40,21 @@ class CaveScene extends Phaser.Scene {
       .create(555, 170, "collision")
       .setSize(20, 20)
       .setOrigin(1, 1);
-    teleport.visible = true;
+    teleport.visible = false;
     teleport.setData("targetScene", "BridgeScene");
+    teleport.setData("startX", 600);
+    teleport.setData("startY", 400);
 
     this.physics.add.overlap(
       this.player,
       this.teleport,
       (player, teleport) => {
         const targetScene = teleport.getData("targetScene");
+        const startX = teleport.getData("startX");
+        const startY = teleport.getData("startY");
+
         if (targetScene) {
-          this.scene.start(targetScene);
+          this.scene.start(targetScene, { startX, startY });
         }
       },
       null,
@@ -61,6 +66,14 @@ class CaveScene extends Phaser.Scene {
     this.physics.add.collider(this.player, caveCollisionGroup);
 
     this.player.setCollideWorldBounds(true);
+
+    this.lighting = this.make.graphics({ x: 0, y: 0, add: false });
+    this.lighting.fillStyle(0x000000, 0.9);
+
+    this.mask = this.lighting.createGeometryMask();
+    cave.setMask(this.mask);
+
+    this.lightRadius = 75;
   }
 
   update() {
@@ -92,6 +105,14 @@ class CaveScene extends Phaser.Scene {
     ) {
       this.player.anims.play("guyidle", true);
     }
+
+    this.lighting.clear();
+    this.lighting.fillStyle(0x000000, 0.9);
+    this.lighting.fillCircle(
+      this.player.x + this.player.width + 5 / 1.6,
+      this.player.y + this.player.height + 5 / 1.6,
+      this.lightRadius
+    );
   }
 }
 

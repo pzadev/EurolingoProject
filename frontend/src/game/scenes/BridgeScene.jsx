@@ -6,6 +6,11 @@ class BridgeScene extends Phaser.Scene {
     super({ key: "BridgeScene" });
   }
 
+  init(data) {
+    this.startX = data && data.x ? data.x : 150; // Default to 100 if no position passed
+    this.startY = data && data.y ? data.y : 400; // Default to 400 if no position passed
+  }
+
   preload() {
     this.load.spritesheet("bridge", "assets/bridge.png", {
       frameWidth: 630,
@@ -61,7 +66,7 @@ class BridgeScene extends Phaser.Scene {
       .create(910, 150, "collision")
       .setSize(30, 40)
       .setOrigin(1, 1);
-    teleport.visible = true;
+    teleport.visible = false;
     teleport.setData("targetScene", "CaveScene");
 
     const teleport2 = this.teleport

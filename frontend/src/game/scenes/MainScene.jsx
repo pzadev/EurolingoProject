@@ -11,7 +11,7 @@ export class MainScene extends Phaser.Scene {
 
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1800; // Default to 900 if no position passed
+    this.startX = data && data.x ? data.x : 900; // Default to 900 if no position passed
     this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
 
     if (data && data.username) {
@@ -341,7 +341,7 @@ export class MainScene extends Phaser.Scene {
       .create(1985, 850, "collision")
       .setSize(50, 40)
       .setOrigin(1, 1);
-    teleport.visible = true;
+    teleport.visible = false;
     teleport.setData("targetScene", "BridgeScene"); // CHANGE TO BRIDGE AFTER EDIT
 
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
