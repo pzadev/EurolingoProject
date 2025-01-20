@@ -463,7 +463,7 @@ triggerWordMatching() {
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
-    this.attainFlag++;
+    this.roundCount++;
     this.isComplete = false;
     console.log(this.roundCount);
   }
