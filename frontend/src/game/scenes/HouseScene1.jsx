@@ -581,21 +581,41 @@ class HouseScene1 extends Phaser.Scene {
   }
 
   roundComplete() {
+    const username = this.game.registry.get("username");
+    console.log(username);
     if (this.isComplete) {
       return; // Prevent triggering multiple times
     }
-
+    this.roundCount++;
     this.isComplete = true; // Mark as complete
     console.log("Round Complete!");
 
     // Display the round completion image
     this.add.image(420, 200, "test").setScale(0.2);
 
+    if (this.roundCount === 5) {
+      fetch(`https://eurolingo.onrender.com/api/users/${username}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          language: "italian",
+        }),
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log(response);
+        return response.json();
+      });
+    }
+
     // Reset round state for next round
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
-    this.roundCount++;
+
     this.isComplete = false;
     console.log(this.roundCount);
   }

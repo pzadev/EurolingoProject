@@ -14,9 +14,12 @@ export class MainScene extends Phaser.Scene {
     this.startX = data && data.x ? data.x : 900; // Default to 900 if no position passed
     this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
 
-    if (data && data.username) {
-      this.username = data.username;
-      console.log(`Logged in user is ${this.username}`);
+    this.username = this.game.registry.get("username") || data?.username;
+
+    if (!this.username) {
+      console.warn("Username is not defined. User progress might not load.");
+    } else {
+      console.log(`Initializing MainScene for user: ${this.username}`);
     }
 
     this.loadUserProgress();
@@ -26,7 +29,7 @@ export class MainScene extends Phaser.Scene {
     try {
       this.userProgress = await checkUserProgress(this.username);
       console.log(this.userProgress);
-      console.log(this.username) // testing in/out of scene username state
+      console.log(this.username); // testing in/out of scene username state
 
       const badgeMapping = {
         italian: { x: 55, y: 97, image: "itaFlag" },
@@ -91,6 +94,8 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
+    const username = this.game.registry.get("username");
+    this.username = username;
     this.game.sound.stopAll();
     // Character animations/frames
 
@@ -417,6 +422,10 @@ export class MainScene extends Phaser.Scene {
 
   update() {
     this.player.setVelocity(0);
+
+    if (!this.userProgress) {
+      console.warn("User progress not loaded yet.");
+    }
 
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
