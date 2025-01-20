@@ -6,6 +6,7 @@ import HouseScene2 from "./game/scenes/HouseScene2";
 import HouseScene3 from "./game/scenes/HouseScene3";
 import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
+import "./PhaserGame.css";
 
 const PhaserGame = () => {
     const [isAllMatched, setIsAllMatched] = useState(false); 
@@ -30,6 +31,7 @@ const PhaserGame = () => {
                 HouseScene4,
                 HouseScene5
             ],
+            parent: gameContainer.current,
         };
 
         const game = new Phaser.Game(config);
@@ -46,7 +48,7 @@ const PhaserGame = () => {
         };
     }, []);
 
-    return <div ref={gameContainer}></div>;
+    return <div ref={gameContainer} className="gameContainer"></div>;
 };
 
 export default PhaserGame;
