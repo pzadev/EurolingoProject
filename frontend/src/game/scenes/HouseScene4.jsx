@@ -6,7 +6,7 @@ class HouseScene4 extends Phaser.Scene {
     super({ key: "House4" });
     this.leftWords = []; // Left words (English)
     this.rightWords = []; // Right words (Target language)
-    this.matchedPairs = []; // Matched word pairs
+    this.matchedPairs = [];
     this.rightWordData = []
     this.leftWordData = []
     this.isComplete = false;
@@ -38,7 +38,7 @@ class HouseScene4 extends Phaser.Scene {
   create() {
     // Stop BG Music in House
 
-    this.add.image(320, 290, "guide").setDepth(2).setScale(0.18).setAlpha(0.8);
+
     const backgroundMusic = this.sound.get("backgroundMusic");
     if (backgroundMusic) {
       backgroundMusic.stop();
@@ -74,6 +74,15 @@ class HouseScene4 extends Phaser.Scene {
       .setOrigin(0, 0)
       .setOffset(6.5, 14);
 
+
+      this.guide = this.physics.add.staticImage(320, 290, "guide")
+      .setDepth(2)
+      .setScale(0.18)
+      .setAlpha(0.9);
+
+    this.guide.body.setSize(20, 20); // Set width and height of the collision box
+    this.guide.body.setOffset(230, 170);
+
     this.player.setCollideWorldBounds(true);
 
     // House collision and door data for HouseScene
@@ -100,15 +109,6 @@ class HouseScene4 extends Phaser.Scene {
       this
     );
 
-    // Chest and exclamation mark
-    // this.chestOpened = false;
-    // this.chest = this.physics.add.staticSprite(540, 223, 'chest')
-    //     .setScale(4)
-    //     .refreshBody();
-    this.exMark = this.physics.add
-      .staticSprite(320, 235, "exMark")
-      .setScale(0.06)
-      .refreshBody();
     this.Book_exMark = this.physics.add
       .staticSprite(308, 360, "exMark")
       .setScale(0.06)
@@ -121,6 +121,14 @@ class HouseScene4 extends Phaser.Scene {
       null,
       this
     );
+
+    this.physics.add.collider(
+        this.player,
+        this.guide,
+        this.guideInteraction,
+        null,
+        this
+    )
 
     this.physics.add.collider(
       this.player,
@@ -137,10 +145,55 @@ class HouseScene4 extends Phaser.Scene {
       repeat: 0,
     });
 
-    // World bounds and camera
     this.physics.world.setBounds(0, 0, 750, 800);
     this.cameras.main.setBounds(0, 0, 800, 800);
   }
+
+  guideInteraction() {
+    if (this.reminder) {
+          this.reminder.destroy();}
+
+    if(this.journalTriggered === true){
+        console.log("box")
+        this.reminder = this.add.text(200, 200, "Hey!\nI think you should\nlook in the box!", {
+            fontSize: "16px",
+            color: "#ffffff",
+            align: "center",
+            padding: {
+              x: 10,
+              y: 5,
+            },
+          });
+          this.time.delayedCall(3000, () => {
+            if (this.reminder) {
+              this.reminder.destroy(); 
+              this.reminder = null;
+            }
+          });
+    }
+        
+    if(this.journalTriggered === false){
+
+    this.reminder = this.add.text(200, 200, "Hey!\nI think you should\nlook in the book!", {
+      fontSize: "16px",
+      color: "#ffffff",
+      align: "center",
+      padding: {
+        x: 10,
+        y: 5,
+      },
+    });
+
+    this.time.delayedCall(3000, () => {
+      if (this.reminder) {
+        this.reminder.destroy(); 
+        this.reminder = null;
+      }
+    });
+}
+  }
+
+  
 
   lookAtJournal() {
     if (!this.journalTriggered) {
