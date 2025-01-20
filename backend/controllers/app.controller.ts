@@ -5,6 +5,7 @@ import {
   fetchUserByUsername,
   postUser,
   UserBody,
+  updateUserProgress
 } from "../models/app.models";
 
 export const getApi = (req: Request, res: Response, next: NextFunction) => {
@@ -68,3 +69,20 @@ export const addNewUser = async (
     next(err);
   }
 };
+
+export const patchUserProgress = async (
+  req: Request<UserBody>,
+  res: Response,
+  next: NextFunction
+) => {
+    try {
+      const { username } = req.params;
+      const { language } = req.body;
+      const patchedUser = await updateUserProgress(username, language)
+      res.status(200).json(patchedUser)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+

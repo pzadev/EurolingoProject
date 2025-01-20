@@ -105,3 +105,37 @@ export const postUser = async (body: UserBody): Promise<User> => {
     throw err;
   }
 };
+
+export const updateUserProgress = async (
+  username: string,
+  language: string
+): Promise<User> => {
+  try {
+    await initializeConnection(MONGODB_URI, DATABASE_NAME);
+    const db = getDb();
+    const collection: Collection<User> = db.collection("users");
+    const result = await collection.updateOne(
+      { username },
+      { $set: { 
+        [`progress.$[elem].${language}`]: true,
+       } },
+      {
+        arrayFilters: [
+          { "elem": { [language]: false } },
+        ], 
+        })
+
+        if (result.matchedCount === 0) {
+         throw { status: 404, msg: "User or language not found" };
+        }
+
+        const updatedUser = await collection.findOne({ username });
+        if (!updatedUser) {
+         throw { status: 404, msg: "User not found after update" };
+         }
+    return updatedUser
+  } catch (err) {
+    throw err
+  }
+}
+
