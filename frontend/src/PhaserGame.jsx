@@ -42,10 +42,6 @@ const PhaserGame = ({ username }) => {
 
     game.scene.start("Main", { username });
 
-    game.events.on("start-house5", () => {
-      game.scene.start("House5", { onMatchComplete: setIsAllMatched });
-    });
-
     gameContainer.current.appendChild(game.canvas);
 
     // Clean up the game instance when the component unmounts
