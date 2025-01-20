@@ -126,17 +126,7 @@ class HouseScene1 extends Phaser.Scene {
 
     // Chest and Exclamation mark setup
     this.chestOpened = false;
-    // this.chest = this.physics.add
-    //   .staticSprite(540, 223, "chest")
-    //   .setScale(4)
-    //   .setSize(16, 16) // Adjusted hitbox size to match sprite
-    //   .refreshBody();
 
-    // this.exMark = this.physics.add
-    //   .staticSprite(320, 235, "exMark")
-    //   .setScale(0.06)
-    // .setSize(16, 16) // Adjusted hitbox size to match sprite
-    // .refreshBody();
     this.Book_exMark = this.physics.add
       .staticSprite(320, 370, "exMark")
       .setScale(0.06)
@@ -157,12 +147,6 @@ class HouseScene1 extends Phaser.Scene {
       this
     );
 
-    // this.anims.create({
-    //   key: "openChest",
-    //   frames: this.anims.generateFrameNumbers("chest", { start: 0, end: 5 }),
-    //   frameRate: 8,
-    //   repeat: 0,
-    // });
     this.physics.add.collider(
       this.player,
       this.Book_exMark,
@@ -238,39 +222,6 @@ class HouseScene1 extends Phaser.Scene {
       });
     }
   }
-
-  // showGuideMessage() {
-  //   if (!this.guideMessageDisplayed) {
-  //     // Ensure it only shows once
-  //     this.guideMessageDisplayed = true; // Set a flag to prevent multiple displays
-
-  //     // Create the message
-  //     const message = this.add
-  //       .text(
-  //         this.scale.width / 2,
-  //         this.scale.height / 2,
-  //         `This is round ${this.roundCount}
-  //         Read a book to complete all rounds
-  //       `,
-  //         {
-  //           fontSize: "20px",
-  //           color: "#00ff00",
-  //         }
-  //       )
-  //       .setOrigin(0.5)
-  //       .setDepth(10);
-
-  //     // Fade out the message after 2 seconds
-  //     this.tweens.add({
-  //       targets: message,
-  //       alpha: 0,
-  //       duration: 2500,
-  //       onComplete: () => {
-  //         message.destroy();
-  //       },
-  //     });
-  //   }
-  // }
 
   guideZone() {
     this.guideMessageDisplayed = false;
