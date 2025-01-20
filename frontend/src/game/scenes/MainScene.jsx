@@ -96,6 +96,8 @@ export class MainScene extends Phaser.Scene {
   create() {
     const username = this.game.registry.get("username");
     this.username = username;
+
+    this.loadUserProgress();
     this.game.sound.stopAll();
     // Character animations/frames
 
