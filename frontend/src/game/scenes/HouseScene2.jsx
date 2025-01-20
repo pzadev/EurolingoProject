@@ -23,7 +23,6 @@ class HouseScene2 extends Phaser.Scene {
 
     this.load.image("exMark", "game_folder/assets/Look_At_Me.png");
     this.load.image("collision", "assets/collision.png");
-    this.load.image("lafamilia", "public/assets/lafamilia.png");
     this.load.audio("spain", "assets/spainSong.mp3");
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
   }
@@ -65,12 +64,6 @@ class HouseScene2 extends Phaser.Scene {
       .setOrigin(0, 0)
       .setOffset(6.5, 14);
 
-    this.lafamilia = this.add
-      .image(380, 130, "lafamilia")
-      .setOrigin(0, 0)
-      .setAlpha(0.9)
-      .setScale(0.05);
-
     this.player.setCollideWorldBounds(true);
 
     // House collision and door data for HouseScene
@@ -103,9 +96,8 @@ class HouseScene2 extends Phaser.Scene {
       .staticSprite(460, 360, "chest")
       .setScale(4)
       .setOffset(0, -15)
-      // .setAngle(-90)
       .refreshBody();
-    this.chest.body.setSize(0, 150, true);
+    this.chest.body.setSize(0, 20, true);
     this.exMark = this.physics.add
       .staticSprite(460, 360, "exMark")
       .setScale(0.06)

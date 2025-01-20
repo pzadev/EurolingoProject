@@ -29,6 +29,40 @@ export default class HouseCollisionBlocks {
       .setSize(1, 150)
       .setOrigin(1, 1)
       .setVisible(false);
+
+    this.HouseCollisionBlocks.create(338, 485, "collision")
+      .setSize(100, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.HouseCollisionBlocks.create(300, 400, "collision")
+      .setSize(40, 100)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.HouseCollisionBlocks.create(680, 280, "collision")
+      .setSize(40, 120)
+      .setOrigin(1, 1)
+      .setVisible(false);
+    this.HouseCollisionBlocks.create(570, 220, "collision")
+      .setSize(130, 40)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.HouseCollisionBlocks.create(320, 225, "collision")
+      .setSize(50, 50)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+      this.HouseCollisionBlocks.create(390, 220, "collision")
+      .setSize(40, 50)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+      this.HouseCollisionBlocks.create(470, 485, "collision")
+      .setSize(30, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
   }
   getHouseBlocks() {
     return this.HouseCollisionBlocks;

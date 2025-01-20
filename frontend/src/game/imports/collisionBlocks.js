@@ -92,37 +92,37 @@ export default class CollisionBlocks {
       .setVisible(false);
     //Hut
     this.collisionBlocks
-    .create(1695, 955, "collision")
-    .setSize(100, 115)
-    .setOrigin(1, 1)
-    .setVisible(false);
+      .create(1695, 955, "collision")
+      .setSize(100, 115)
+      .setOrigin(1, 1)
+      .setVisible(false);
 
-  //Pole
-  this.collisionBlocks
-    .create(572, 940, "collision")
-    .setSize(10, 10)
-    .setOrigin(1, 1)
-    .setVisible(false);
+    //Pole
+    this.collisionBlocks
+      .create(572, 940, "collision")
+      .setSize(10, 10)
+      .setOrigin(1, 1)
+      .setVisible(false);
 
-  550, 841
+    550, 841;
     //Bench
     this.collisionBlocks
-    .create(1215, 790, "collision")
-    .setSize(90, 20)
-    .setOrigin(1, 1)
-    .setVisible(false);
+      .create(1215, 790, "collision")
+      .setSize(90, 20)
+      .setOrigin(1, 1)
+      .setVisible(false);
     // Fountain
     this.collisionBlocks
       .create(999, 900, "collision")
       .setSize(85, 60)
       .setOrigin(1, 1)
       .setVisible(false);
-      this.collisionBlocks
+    this.collisionBlocks
       .create(999, 875, "collision")
       .setSize(90, 10)
       .setOrigin(1, 1)
       .setVisible(false);
-      this.collisionBlocks
+    this.collisionBlocks
       .create(999, 869, "collision")
       .setSize(50, 10)
       .setOrigin(1, 1)
@@ -220,13 +220,13 @@ export default class CollisionBlocks {
       .setOrigin(1, 1)
       .setVisible(false);
 
-    //wishingWell 
-    1120, 535
+    //wishingWell
+    1120, 535;
     this.collisionBlocks
-    .create(1178, 640, "collision")
-    .setSize(50, 30)
-    .setOrigin(1, 1)
-    .setVisible(false);
+      .create(1178, 640, "collision")
+      .setSize(50, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
 
     // Water Boundaries
     this.collisionBlocks
@@ -361,7 +361,99 @@ export default class CollisionBlocks {
       .setSize(50, 1)
       .setOrigin(1, 1)
       .setVisible(false);
+
+    this.collisionBlocks
+      .create(170, 1360, "collision")
+      .setSize(45, 35)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(515, 1430, "collision")
+      .setSize(45, 35)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(650, 1330, "collision")
+      .setSize(30, 50)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(295, 1240, "collision")
+      .setSize(80, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+    this.collisionBlocks
+      .create(310, 1265, "collision")
+      .setSize(50, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1085, 1160, "collision")
+      .setSize(30, 40)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1135, 1175, "collision")
+      .setSize(30, 40)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1115, 1130, "collision")
+      .setSize(30, 40)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1340, 1180, "collision")
+      .setSize(35, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1310, 382, "collision")
+      .setSize(35, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1365, 370, "collision")
+      .setSize(35, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1338, 340, "collision")
+      .setSize(35, 30)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1352, 210, "collision")
+      .setSize(25, 45)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1065, 280, "collision")
+      .setSize(25, 45)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    this.collisionBlocks
+      .create(1088, 400, "collision")
+      .setSize(10, 35)
+      .setOrigin(1, 1)
+      .setVisible(false);
+
+    
   }
+
   getBlocks() {
     return this.collisionBlocks;
   }
