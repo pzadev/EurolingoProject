@@ -1,15 +1,57 @@
 import Phaser from "phaser";
 import CollisionBlocks from "../imports/collisionBlocks";
+import { checkUserProgress } from "../../api";
 
 export class MainScene extends Phaser.Scene {
-    constructor() {
-        super({ key: "Main" });
+  constructor() {
+    super({ key: "Main" });
+    this.userProgress = null;
+    this.username = null; // testing
+  }
+
+  init(data) {
+    // Defaults guy start position to 900/800 unless switching scene
+    this.startX = data && data.x ? data.x : 900; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
+
+    if (data && data.username) {
+      this.username = data.username;
+      console.log(`Logged in user is ${this.username}`);
     }
-    init(data) {
-        // Defaults guy start position to 900/800 unless switching scene
-        this.startX = data && data.x ? data.x : 1300; // Default to 900 if no position passed
-        this.startY = data && data.y ? data.y : 700; // Default to 800 if no position passed
+
+    this.loadUserProgress();
+  }
+
+  async loadUserProgress() {
+    try {
+      this.userProgress = await checkUserProgress(this.username);
+      console.log(this.userProgress);
+      console.log(this.username) // testing in/out of scene username state
+
+      const badgeMapping = {
+        italian: { x: 55, y: 97, image: "itaFlag" },
+        spanish: { x: 55, y: 117, image: "spaFlag" },
+        german: { x: 55, y: 137, image: "gerFlag" },
+        ukrainian: { x: 55, y: 157, image: "ukrFlag" },
+        french: { x: 55, y: 180, image: "freFlag" },
+      };
+
+      this.userProgress.forEach((language) => {
+        const [languageKey, isCompleted] = Object.entries(language)[0];
+        if (isCompleted) {
+          const { x, y, image } = badgeMapping[languageKey];
+          this.add
+            .image(x, y, image)
+            .setScale(0.77)
+            .setDepth(22)
+            .setAlpha(0.8)
+            .setScrollFactor(0);
+        }
+      });
+    } catch (err) {
+      console.log("Error getting user progress:", err);
     }
+  }
 
   preload() {
     this.load.spritesheet("background", "assets/background.png", {
@@ -42,13 +84,34 @@ export class MainScene extends Phaser.Scene {
     this.load.image("ukrFlag", "assets/ukrFlag.png");
     this.load.image("itaFlag", "assets/itaFlag.png");
     this.load.image("freFlag", "assets/freFlag.png");
-    // House Objects
-    this.load.image("pisa", "assets/pisa.png")
+    // Progress bar
+    this.load.image("progressBar", "assets/gamebartest.png");
+    this.load.image("globe", "assets/globe.png");
+    this.load.image("globe2", "assets/globe2.png");
   }
 
   create() {
+    this.game.sound.stopAll();
     // Character animations/frames
 
+    this.progressBar = this.add
+      .image(55, 110, "progressBar")
+      .setScale(0.5)
+      .setDepth(20)
+      .setScrollFactor(0)
+      .setAlpha(0.95)
+      .setRotation(1.57);
+    this.globe = this.add
+      .image(53, 51, "globe")
+      .setScale(0.06)
+      .setDepth(21)
+      .setScrollFactor(0);
+
+    // this.globe2 = this.add
+    // .image(42, 53, "globe2")
+    // .setScale(0.08)
+    // .setDepth(21)
+    // .setScrollFactor(0);
     this.anims.create({
       key: "guyidle",
       frames: this.anims.generateFrameNumbers("guy", {
@@ -76,7 +139,6 @@ export class MainScene extends Phaser.Scene {
     background.play("background");
 
     // ideas for flag/country indetifier for player
-    
 
     this.roof = this.add
       .image(1251, 432, "roof1")
@@ -177,12 +239,11 @@ export class MainScene extends Phaser.Scene {
       .setScale(1.2);
 
     this.itaFlag = this.add
-    .image(479, 630, "itaFlag")
-    .setOrigin(0, 0)
-    .setAlpha(0.7)
-    .setDepth(10)
-    .setScale(1.25);
-
+      .image(479, 630, "itaFlag")
+      .setOrigin(0, 0)
+      .setAlpha(0.7)
+      .setDepth(10)
+      .setScale(1.25);
 
     this.player = this.physics.add
       .sprite(this.startX, this.startY, "guy")
@@ -240,6 +301,7 @@ export class MainScene extends Phaser.Scene {
 
     // Door Area for MainScene
     this.doorArea = this.physics.add.staticGroup();
+    this.teleport = this.physics.add.staticGroup();
     const door1 = this.doorArea
       .create(495, 665, "collision")
       .setSize(40, 60)
@@ -275,7 +337,14 @@ export class MainScene extends Phaser.Scene {
     door5.visible = false;
     door5.setData("targetScene", "House5");
 
-    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+    const teleport = this.teleport
+      .create(1985, 850, "collision")
+      .setSize(50, 40)
+      .setOrigin(1, 1);
+    teleport.visible = false;
+    teleport.setData("targetScene", "BridgeScene"); // CHANGE TO BRIDGE AFTER EDIT
+
+    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
     this.physics.add.collider(
       this.player,
@@ -292,6 +361,34 @@ export class MainScene extends Phaser.Scene {
       this
     );
 
+    // Bridge & Cave Completion Area Teleport
+    this.physics.add.overlap(
+      this.player,
+      this.teleport,
+      async (player, teleport) => {
+        if (!this.userProgress) {
+          console.log("Progress data not yet loaded.");
+          return;
+        }
+        // Change below to true to test restriction to bridge/cave
+        const completedLanguages = this.userProgress.filter(
+          (language) => Object.values(language)[0] === false
+        ).length;
+
+        if (completedLanguages === 5) {
+          const targetScene = teleport.getData("targetScene");
+          this.scene.start(targetScene);
+        } else {
+          this.add.text(1780, 770, "Collect all 5 badges first!", {
+            font: "20px Montserrat",
+            fill: "#000000",
+          });
+        }
+      },
+      null,
+      this
+    );
+
     // World bounds and camera
     this.physics.world.setBounds(0, 0, 2000, 1600);
     this.cameras.main.setBounds(0, 0, 2000, 1600);
@@ -299,10 +396,15 @@ export class MainScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    const backgroundMusic = this.sound.get("backgroundMusic");
+    if (backgroundMusic) {
+      backgroundMusic.stop();
+    }
+
     if (!this.sound.get("backgroundMusic")) {
       this.backgroundMusic = this.sound.add("backgroundMusic", {
         loop: true,
-        volume: 0.0,
+        volume: 0.1,
       });
       this.backgroundMusic.play();
     } else {

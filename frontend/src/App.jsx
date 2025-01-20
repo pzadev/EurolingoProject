@@ -7,16 +7,17 @@ import "./App.css";
 
 const App = () => {
   const [gameStart, setGameStart] = useState(false);
+  const [username, setUsername] = useState("");
   const [showLogIn, setShowLogIn] = useState(true);
 
   return (
     <div>
-      <Header username="test" />
+      <Header username={username} />
       <img src="/logo.png" alt="EuroLingo Logo" />
       {gameStart ? (
-        <PhaserGame />
+        <PhaserGame username={username}/>
       ) : showLogIn ? (
-        <LogIn setGameStart={setGameStart} setShowLogIn={setShowLogIn} />
+        <LogIn setGameStart={setGameStart} setShowLogIn={setShowLogIn} username={username} setUsername={setUsername} />
       ) : (
         <CreateAccount setShowLogIn={setShowLogIn} />
       )}

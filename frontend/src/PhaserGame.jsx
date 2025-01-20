@@ -7,49 +7,55 @@ import HouseScene3 from "./game/scenes/HouseScene3";
 import HouseScene4 from "./game/scenes/HouseScene4";
 import HouseScene5 from "./game/scenes/HouseScene5";
 import "./PhaserGame.css";
+import BridgeScene from "./game/scenes/BridgeScene";
+import CaveScene from "./game/scenes/CaveScene";
 
-const PhaserGame = () => {
-    const [isAllMatched, setIsAllMatched] = useState(false); 
-    const gameContainer = useRef(null);
+const PhaserGame = ({ username }) => {
+  const [isAllMatched, setIsAllMatched] = useState(false);
+  const gameContainer = useRef(null);
 
-    useEffect(() => {
-        const config = {
-            type: Phaser.AUTO,
-            width: 1000,
-            height: 600,
-            physics: {
-                default: "arcade",
-                arcade: {
-                    debug: true, // Set to true to debug/see hitboxes
-                },
-            },
-            scene: [
-                MainScene,
-                HouseScene1,
-                HouseScene2,
-                HouseScene3,
-                HouseScene4,
-                HouseScene5
-            ],
-            parent: gameContainer.current,
-        };
+  useEffect(() => {
+    const config = {
+      type: Phaser.AUTO,
+      width: 1000,
+      height: 600,
+      physics: {
+        default: "arcade",
+        arcade: {
+          debug: true, // Set to true to debug/see hitboxes
+        },
+      },
+      scene: [
+        MainScene,
+        HouseScene1,
+        HouseScene2,
+        HouseScene3,
+        HouseScene4,
+        HouseScene5,
+        BridgeScene,
+        CaveScene,
+      ],
+      parent: gameContainer.current,
+    };
 
-        const game = new Phaser.Game(config);
+    const game = new Phaser.Game(config);
 
-        game.events.on("start-house5", () => {
-            game.scene.start("House5", { onMatchComplete: setIsAllMatched });
-        });
+    game.scene.start("Main", { username });
 
-        gameContainer.current.appendChild(game.canvas);
+    game.events.on("start-house5", () => {
+      game.scene.start("House5", { onMatchComplete: setIsAllMatched });
+    });
 
-        // Clean up the game instance when the component unmounts
-        return () => {
-            game.destroy(true);
-        };
-    }, []);
+    gameContainer.current.appendChild(game.canvas);
 
-    return <div ref={gameContainer} className="gameContainer"></div>;
+    // Clean up the game instance when the component unmounts
+    return () => {
+      game.destroy(true);
+    };
+  }, []);
+
+  return <div ref={gameContainer} className="gameContainer"></div>;
+
 };
 
 export default PhaserGame;
-

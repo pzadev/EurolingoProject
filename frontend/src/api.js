@@ -56,3 +56,19 @@ export const checkIfUserExists = async (username) => {
     console.log(error.message);
   }
 };
+
+export const checkUserProgress = async (username) => {
+  try {
+    const response = await fetch(
+      `https://eurolingo.onrender.com/api/users/${username}`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    const { progress } = data;
+    return progress;
+  } catch (err) {
+    console.log(err);
+  }
+};
