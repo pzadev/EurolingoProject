@@ -125,6 +125,16 @@ describe("GET: /api/users/:username", () => {
     const response = await request(app).get("/api/users/pezdav").expect(200);
     expect(response.body.username).toBe("pezdav");
   });
+  test("200: Repsonds with a user object with updated progress", async () => {
+    const response = await request(app).patch("/api/users/pezdav").send({ language: 'italian' }).expect(200);
+    expect(response.body.progress).toEqual([
+      { french: false },
+      { german: false },
+      { italian: true },
+      { spanish: false },
+      { ukrainian: false },
+    ]);
+  });
   test("404: Responds with an appropriate status and error message when given a valid but non-existent id", async () => {
     const response = await request(app)
       .get("/api/users/not-a-user")
