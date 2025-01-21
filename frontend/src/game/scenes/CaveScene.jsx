@@ -9,6 +9,7 @@ class CaveScene extends Phaser.Scene {
     this.isTaskActive = false;
     this.rightWordData = []; // Initialize rightWordData
     this.leftWordData = []; // Initialize leftWordData
+    this.skippedWordsCount = 0;
   }
 
   preload() {
@@ -206,45 +207,45 @@ class CaveScene extends Phaser.Scene {
 
     // Handle skip button click
     skipButton.addEventListener("click", () => {
-      // Skip the current task
-      this.showInGameFeedback("You skipped the word.", 3000);
+      this.skippedWordsCount++;
+      if (this.skippedWordsCount < 9) {
+        this.showInGameFeedback("You skipped the word.", 3000);
+      }
+      if (this.skippedWordsCount === 9) {
+        this.showInGameFeedback("You have one more word.", 3000);
+      }
 
-      // Clean up and reset task state
-      this.isTaskActive = false;
       document.body.removeChild(this.inputElement);
-      this.inputElement = null; // Reset the input element reference
-
-      // Move to the next word after skip
-      this.moveToNextWord();
+      this.inputElement = null;
+      this.isTaskActive = false;
+      if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
+        this.skippedWordsCount = 0;
+        this.chest.destroy();
+        this.showInGameFeedback(
+          "Congratulations! You've completed all tasks.",
+          5000
+        );
+        return;
+      } else {
+        this.moveToNextWord();
+      }
     });
-
-    // Set the task to active so the player cannot move while the task is active
-    this.isTaskActive = true;
   }
 
   moveToNextWord() {
     if (this.rightWordData.length > 0) {
-      // Remove the first word from the rightWordData (i.e., the current task)
       this.rightWordData.shift();
-
-      // If there are still words left, show the next word
-      if (this.rightWordData.length > 0) {
+      if (this.rightWordData.length === 0) {
+        this.showInGameFeedback(
+          "Congratulations! You've completed all tasks.",
+          5000
+        );
+      } else {
         const nextWord = this.rightWordData[0];
         const correctAnswer = this.leftWordData.find(
           (word) => word.rank === nextWord.rank
         ).text;
-
-        // Call the modal again for the next word
         this.showTextInputModal(nextWord.text, correctAnswer);
-      } else {
-        // If there are no more words, display a message or finish the task
-        this.delayedCall(
-          this.showInGameFeedback(
-            "Congratulations! You've completed all tasks.",
-            10000
-          ),
-          3000
-        );
       }
     }
   }
