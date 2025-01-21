@@ -10,8 +10,8 @@ class BridgeScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.startX = data && data.x ? data.x : 150; // Default to 100 if no position passed
-    this.startY = data && data.y ? data.y : 400; // Default to 400 if no position passed
+    this.startX = data && data.x ? data.x : 100; // Default to 100 if no position passed
+    this.startY = data && data.y ? data.y : 275; // Default to 400 if no position passed
   }
 
   preload() {
@@ -53,16 +53,16 @@ class BridgeScene extends Phaser.Scene {
         end: 14,
       }),
       frameRate: 8,
-      repeat: -1, // Loops through indefinitely
+      repeat: -1,
     });
 
     const bridge = this.add
       .sprite(0, 0, "bridge")
       .setOrigin(0, 0)
-      .setScale(1.587, 1.2); // How zoomed in the map is
+      .setScale(1.587, 1.2); 
 
     this.player = this.physics.add
-      .sprite(50, 280, "guy")
+      .sprite(this.startX, this.startY, "player")
       .setSize(18, 10)
       .setScale(3) // Size of character
       .setOrigin(0, 0) // Do not change

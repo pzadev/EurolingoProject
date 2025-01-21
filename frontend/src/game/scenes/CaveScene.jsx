@@ -7,8 +7,8 @@ class CaveScene extends Phaser.Scene {
     this.playerScore = 0;
     this.inputElement = null;
     this.isTaskActive = false;
-    this.rightWordData = []; // Initialize rightWordData
-    this.leftWordData = []; // Initialize leftWordData
+    this.rightWordData = [];
+    this.leftWordData = [];
     this.skippedWordsCount = 0;
   }
 
@@ -34,9 +34,18 @@ class CaveScene extends Phaser.Scene {
     this.playerScore = savedScore ? parseInt(savedScore, 10) : 0;
     this.game.sound.stopAll();
 
-    // Chest creation (it will be visible but surrounded by low lighting)
+    const possibleChestPositions = [
+      { x: 840, y: 560 },
+      { x: 280, y: 200 },
+      { x: 730, y: 250 },
+      { x: 500, y: 460 },
+      { x: 670, y: 550 },
+    ];
+
+    const randomPosition = Phaser.Utils.Array.GetRandom(possibleChestPositions);
+
     this.chest = this.physics.add
-      .staticSprite(650, 400, "chest")
+      .staticSprite(randomPosition.x, randomPosition.y, "chest")
       .setScale(2)
       .setDepth(10)
       .setVisible(true)
@@ -66,8 +75,8 @@ class CaveScene extends Phaser.Scene {
       .setOrigin(1, 1);
     teleport.visible = false;
     teleport.setData("targetScene", "BridgeScene");
-    teleport.setData("startX", 600);
-    teleport.setData("startY", 400);
+    teleport.setData("startX", 850);
+    teleport.setData("startY", 200);
 
     this.physics.add.overlap(
       this.player,
@@ -78,14 +87,13 @@ class CaveScene extends Phaser.Scene {
         const startY = teleport.getData("startY");
 
         if (targetScene) {
-          this.scene.start(targetScene, { startX, startY });
+          this.scene.start(targetScene, { x: startX, y: startY });
         }
       },
       null,
       this
     );
 
-    // Create cave blocks (collisions)
     const caveBlocks = new CaveCollisions(this);
     const caveCollisionGroup = caveBlocks.getCaveBlocks();
     this.physics.add.collider(this.player, caveCollisionGroup);
@@ -97,12 +105,10 @@ class CaveScene extends Phaser.Scene {
     this.mask = this.lighting.createGeometryMask();
     cave.setMask(this.mask);
 
-    this.lightRadius = 100;
+    this.lightRadius = 80;
 
-    // Fetch and display the words
     this.fetchAndDisplayWords();
 
-    // Add overlap check for chest (to trigger task when player reaches chest)
     this.physics.add.overlap(
       this.player,
       this.chest,
@@ -113,11 +119,7 @@ class CaveScene extends Phaser.Scene {
   }
 
   triggerTaskOnChestInteraction(player, chest) {
-    console.log("Chest overlap detected!");
-    console.log("Right Word Data:", this.rightWordData); // Debug log to check if the data exists
-    console.log("Task active?", this.isTaskActive);
-    if (this.isTaskActive) return; // Ensure the task isn't already active
-
+    if (this.isTaskActive) return;
     if (this.rightWordData.length > 0) {
       const firstWord = this.rightWordData[0];
       const correctAnswer = this.leftWordData.find(
@@ -129,13 +131,8 @@ class CaveScene extends Phaser.Scene {
   }
 
   showTextInputModal(targetWord, correctAnswer) {
-    console.log(`Displaying modal for word: ${targetWord}`);
-    console.log(`Correct answer: ${correctAnswer}`);
-
-    // Prevent multiple modals from opening at the same time
     if (this.inputElement) return;
 
-    // Create input and button elements dynamically
     this.inputElement = document.createElement("div");
     this.inputElement.style.position = "absolute";
     this.inputElement.style.top = "50%";
@@ -149,20 +146,17 @@ class CaveScene extends Phaser.Scene {
 
     const wordDisplay = document.createElement("h3");
 
-    // Create two span elements for different colors
     const redText = document.createElement("span");
-    redText.textContent = "Find the word for: ";
-    redText.style.color = "red"; // Red color for this part
+    redText.textContent = "Translate this word into English: ";
+    redText.style.color = "white";
 
     const targetWordText = document.createElement("span");
-    targetWordText.textContent = targetWord; // Add the target word to the sentence
-    targetWordText.style.color = "red"; // Make target word red
+    targetWordText.textContent = targetWord;
+    targetWordText.style.color = "white";
 
-    // Append the span elements together
     wordDisplay.appendChild(redText);
     wordDisplay.appendChild(targetWordText);
 
-    // Append wordDisplay to the inputElement
     this.inputElement.appendChild(wordDisplay);
 
     const input = document.createElement("input");
@@ -170,42 +164,36 @@ class CaveScene extends Phaser.Scene {
     input.placeholder = "Enter the correct word";
     this.inputElement.appendChild(input);
 
-    // Add Submit button
     const submitButton = document.createElement("button");
     submitButton.textContent = "Submit";
     this.inputElement.appendChild(submitButton);
 
-    // Add Skip button
     const skipButton = document.createElement("button");
     skipButton.textContent = "Skip";
     this.inputElement.appendChild(skipButton);
 
     document.body.appendChild(this.inputElement);
 
-    // Handle submit button click
     submitButton.addEventListener("click", () => {
       const userAnswer = input.value.trim().toLowerCase();
       const correctAnswerLower = correctAnswer.toLowerCase();
 
       if (userAnswer === correctAnswerLower) {
-        this.addPoints(1); // Add points for the correct answer
+        this.addPoints(1);
         this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
       } else {
         this.showInGameFeedback("Incorrect. Try again!", 3000);
       }
 
-      // Clean up and reset task state
       this.isTaskActive = false;
       document.body.removeChild(this.inputElement);
-      this.inputElement = null; // Reset the input element reference
+      this.inputElement = null;
 
-      // Move to the next word after correct answer or skip
       this.moveToNextWord();
       console.log("User Answer:", userAnswer);
       console.log("Correct Answer:", correctAnswer);
     });
 
-    // Handle skip button click
     skipButton.addEventListener("click", () => {
       this.skippedWordsCount++;
       if (this.skippedWordsCount < 9) {
@@ -251,7 +239,6 @@ class CaveScene extends Phaser.Scene {
   }
 
   showInGameFeedback(message, duration) {
-    // Create an in-game feedback text element
     const feedbackText = this.add.text(
       this.cameras.main.centerX,
       this.cameras.main.centerY - 50,
@@ -264,7 +251,6 @@ class CaveScene extends Phaser.Scene {
     );
     feedbackText.setOrigin(0.5);
 
-    // Fade out the feedback text after the specified duration
     this.tweens.add({
       targets: feedbackText,
       alpha: 0,
@@ -284,13 +270,11 @@ class CaveScene extends Phaser.Scene {
       .then((data) => {
         const randomWords = this.getRandomWords(data, 10);
         this.displayWords(randomWords);
-        console.log(randomWords);
       })
       .catch((error) => console.error("API Error:", error));
   }
 
   displayWords(data) {
-    // Populate the word data
     this.leftWordData = data.map((item) => ({
       text: item.englishWord,
       rank: item.rank,
@@ -321,7 +305,6 @@ class CaveScene extends Phaser.Scene {
   }
 
   shutdown() {
-    // Clean up the input element when the scene is stopped
     if (this.inputElement && document.body.contains(this.inputElement)) {
       document.body.removeChild(this.inputElement);
     }
@@ -329,12 +312,11 @@ class CaveScene extends Phaser.Scene {
 
   update() {
     if (this.isTaskActive) {
-      return; // Don't allow movement while the task is active
+      return;
     }
 
     this.player.setVelocity(0);
 
-    // Movement logic
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-130);
       this.player.anims.play("right", true);
@@ -362,7 +344,6 @@ class CaveScene extends Phaser.Scene {
       this.player.anims.play("guyidle", true);
     }
 
-    // Update lighting mask
     this.lighting.clear();
     this.lighting.fillStyle(0x000000, 0.9);
     this.lighting.fillCircle(
@@ -371,7 +352,6 @@ class CaveScene extends Phaser.Scene {
       this.lightRadius
     );
 
-    // Distance check for chest visibility
     const distance = Phaser.Math.Distance.Between(
       this.player.x,
       this.player.y,
@@ -379,13 +359,9 @@ class CaveScene extends Phaser.Scene {
       this.chest.y
     );
 
-    console.log(`Distance to chest: ${distance}`); // Debug distance
-
-    if (distance <= 100) {
-      console.log("Player is near the chest. Making it visible."); // Debug log
+    if (distance <= 80) {
       this.chest.setVisible(true);
     } else {
-      console.log("Player is far from the chest. Hiding it."); // Debug log
       this.chest.setVisible(false);
     }
   }

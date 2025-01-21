@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Lottie from 'lottie-react'; // Default export, not named
-import loadingAnimation from '../../public/assets/loadingAnimation2.json'; // Loading animation JSON import
 import { findUser } from "../api";
 import '../../public/assets/loadingBox.gif'
 
