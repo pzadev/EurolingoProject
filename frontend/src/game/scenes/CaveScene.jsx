@@ -12,9 +12,18 @@ class CaveScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("cave", "assets/cave.png", { frameWidth: 630, frameHeight: 500 });
-    this.load.spritesheet("guy", "assets/guy.png", { frameWidth: 32, frameHeight: 32 });
-    this.load.spritesheet("chest", "game_folder/assets/Chest_Anim.png", { frameWidth: 16, frameHeight: 16 });
+    this.load.image("cave", "assets/cave.png", {
+      frameWidth: 630,
+      frameHeight: 500,
+    });
+    this.load.spritesheet("guy", "assets/guy.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("chest", "game_folder/assets/Chest_Anim.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
     this.load.image("collision", "assets/collision.png");
   }
 
@@ -28,7 +37,8 @@ class CaveScene extends Phaser.Scene {
     this.chest = this.physics.add
       .staticSprite(650, 400, "chest")
       .setScale(2)
-      .setDepth(1)
+      .setDepth(10)
+      .setVisible(true)
       .refreshBody();
 
     this.scoreText = this.add.text(10, 10, `Score: ${this.playerScore}`, {
@@ -49,7 +59,10 @@ class CaveScene extends Phaser.Scene {
       .setOffset(6.5, 14);
 
     this.teleport = this.physics.add.staticGroup();
-    const teleport = this.teleport.create(555, 170, "collision").setSize(20, 20).setOrigin(1, 1);
+    const teleport = this.teleport
+      .create(555, 170, "collision")
+      .setSize(20, 20)
+      .setOrigin(1, 1);
     teleport.visible = false;
     teleport.setData("targetScene", "BridgeScene");
     teleport.setData("startX", 600);
@@ -102,7 +115,6 @@ class CaveScene extends Phaser.Scene {
     console.log("Chest overlap detected!");
     console.log("Right Word Data:", this.rightWordData); // Debug log to check if the data exists
     console.log("Task active?", this.isTaskActive);
-
     if (this.isTaskActive) return; // Ensure the task isn't already active
 
     if (this.rightWordData.length > 0) {
@@ -321,6 +333,7 @@ class CaveScene extends Phaser.Scene {
 
     this.player.setVelocity(0);
 
+    // Movement logic
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-130);
       this.player.anims.play("right", true);
@@ -348,6 +361,7 @@ class CaveScene extends Phaser.Scene {
       this.player.anims.play("guyidle", true);
     }
 
+    // Update lighting mask
     this.lighting.clear();
     this.lighting.fillStyle(0x000000, 0.9);
     this.lighting.fillCircle(
@@ -355,6 +369,24 @@ class CaveScene extends Phaser.Scene {
       this.player.y + this.player.height + 5 / 1.6,
       this.lightRadius
     );
+
+    // Distance check for chest visibility
+    const distance = Phaser.Math.Distance.Between(
+      this.player.x,
+      this.player.y,
+      this.chest.x,
+      this.chest.y
+    );
+
+    console.log(`Distance to chest: ${distance}`); // Debug distance
+
+    if (distance <= 100) {
+      console.log("Player is near the chest. Making it visible."); // Debug log
+      this.chest.setVisible(true);
+    } else {
+      console.log("Player is far from the chest. Hiding it."); // Debug log
+      this.chest.setVisible(false);
+    }
   }
 }
 
