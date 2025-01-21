@@ -11,8 +11,8 @@ export class MainScene extends Phaser.Scene {
 
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1800; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
+    this.startX = data && data.x ? data.x : 1400; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 950; // Default to 800 if no position passed
 
     this.username = this.game.registry.get("username") || data?.username;
 
@@ -66,6 +66,10 @@ export class MainScene extends Phaser.Scene {
       frameHeight: 32,
     });
 
+    this.load.image("spost", 'game_folder/assets/Sign_Post.png')
+    this.load.image("tree", 'game_folder/assets/Another_tree.png')
+    this.load.image("bush", 'game_folder/assets/Bush.png')
+    this.load.image("bush1", 'game_folder/assets/Bush1.png')
     this.load.image("collision", "assets/collision.png");
     this.load.image("roof1", "assets/rooftop.png");
     this.load.image("roof2", "assets/Rooftop2.1.png");
@@ -146,6 +150,30 @@ export class MainScene extends Phaser.Scene {
     background.play("background");
 
     // ideas for flag/country indetifier for player
+
+    this.bush = this.add
+        .image(662,958, 'bush')
+        .setOrigin(0, 0)
+        .setDepth(10)
+        .setScale(0.5);
+
+    this.bush = this.add
+        .image(1028,1007, 'bush1')
+        .setOrigin(0, 0)
+        .setDepth(10)
+        .setScale(0.5);
+    
+    this.bush = this.add
+        .image(1392,983, 'tree')
+        .setOrigin(0, 0)
+        .setDepth(10)
+        .setScale(0.5);
+
+    this.bush = this.add
+        .image(1508,887, 'spost')
+        .setOrigin(0, 0)
+        .setDepth(10)
+        .setScale(0.5);
 
     this.roof = this.add
       .image(1251, 432, "roof1")
