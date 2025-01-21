@@ -10,6 +10,7 @@ class CaveScene extends Phaser.Scene {
     this.rightWordData = [];
     this.leftWordData = [];
     this.skippedWordsCount = 0;
+    this.gameFinished = false;
   }
 
   preload() {
@@ -26,6 +27,8 @@ class CaveScene extends Phaser.Scene {
       frameHeight: 16,
     });
     this.load.image("collision", "assets/collision.png");
+    this.load.image("guide", "game_folder/assets/Guide.png");
+    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
   }
 
   create() {
@@ -68,6 +71,28 @@ class CaveScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setOffset(6.5, 14);
 
+    //create npc-probably reset
+    this.guide = this.physics.add
+      .staticSprite(300, 230, "guide")
+      .setScale(0.15)
+      .setDepth(3)
+      .setAlpha(0.8)
+      .setVisible(true)
+      .refreshBody();
+    this.guideArea = this.physics.add.staticGroup();
+    const guideCollision = this.guideArea
+      .create(300, 230, "collision")
+      .setSize(50, 50);
+    guideCollision.setAlpha(0);
+
+    this.physics.add.collider(
+      this.player,
+      guideCollision,
+      this.guideInteraction,
+      null,
+      this
+    );
+
     this.teleport = this.physics.add.staticGroup();
     const teleport = this.teleport
       .create(555, 170, "collision")
@@ -88,6 +113,7 @@ class CaveScene extends Phaser.Scene {
 
         if (targetScene) {
           this.scene.start(targetScene, { x: startX, y: startY });
+          this.gameFinished = false;
         }
       },
       null,
@@ -118,6 +144,94 @@ class CaveScene extends Phaser.Scene {
     );
   }
 
+  //guide interaction
+  //guide interaction
+  guideInteraction() {
+    const username = this.game.registry.get("username");
+    if (this.reminder && this.speech) {
+      this.reminder.destroy();
+      this.speech.destroy();
+    }
+    console.log(this.gameFinished);
+
+    if (this.gameFinished) {
+      this.speech = this.add
+        .image(380, 150, "speech")
+        .setScale(0.15)
+        .setDepth(9);
+
+      this.reminder = this.add
+        .text(280, 100, `Hey!\nDo you want\nrestart the game?`, {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        })
+        .setDepth(10);
+
+      this.yesButton = this.add
+        .text(300, 200, "Yes", {
+          fontSize: "20px",
+          color: "#00ff00",
+          backgroundColor: "#000",
+          padding: { x: 10, y: 5 },
+        })
+        .setInteractive()
+        .on("pointerdown", () => {
+          this.skippedWordsCount = 0;
+          this.scene.restart();
+        })
+        .setDepth(10);
+
+      this.noButton = this.add
+        .text(400, 200, "No", {
+          fontSize: "20px",
+          color: "#ff0000",
+          backgroundColor: "#000",
+          padding: { x: 10, y: 5 },
+        })
+        .setInteractive()
+        .on("pointerdown", () => {
+          if (this.reminder) this.reminder.destroy();
+          if (this.speech) this.speech.destroy();
+          if (this.yesButton) this.yesButton.destroy();
+          if (this.noButton) this.noButton.destroy();
+
+          this.reminder = null;
+          this.speech = null;
+          this.yesButton = null;
+          this.noButton = null;
+        })
+        .setDepth(10);
+
+      return;
+    }
+
+    this.speech = this.add.image(380, 150, "speech").setScale(0.15).setDepth(9);
+    this.reminder = this.add
+      .text(280, 100, `Hey!\nYou need \nto find a chest!`, {
+        fontSize: "18px",
+        color: "#ffffff",
+        align: "center",
+        padding: {
+          x: 10,
+          y: 5,
+        },
+      })
+      .setDepth(10);
+
+    this.time.delayedCall(3000, () => {
+      if (this.reminder && this.speech) {
+        this.reminder.destroy();
+        this.speech.destroy();
+        this.reminder = null;
+      }
+    });
+  }
+
   triggerTaskOnChestInteraction(player, chest) {
     if (this.isTaskActive) return;
     if (this.rightWordData.length > 0) {
@@ -130,94 +244,211 @@ class CaveScene extends Phaser.Scene {
     }
   }
 
+  // showTextInputModal(targetWord, correctAnswer) {
+  //   if (this.inputElement) return;
+
+  //   this.inputElement = document.createElement("div");
+  //   this.inputElement.style.position = "absolute";
+  //   this.inputElement.style.top = "50%";
+  //   this.inputElement.style.left = "50%";
+  //   this.inputElement.style.transform = "translate(-50%, -50%)";
+  //   this.inputElement.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  //   this.inputElement.style.padding = "20px";
+  //   this.inputElement.style.borderRadius = "10px";
+  //   this.inputElement.style.color = "red";
+  //   this.inputElement.style.textAlign = "center";
+
+  //   const wordDisplay = document.createElement("h3");
+
+  //   const redText = document.createElement("span");
+  //   redText.textContent = "Translate this word into English: ";
+  //   redText.style.color = "white";
+
+  //   const targetWordText = document.createElement("span");
+  //   targetWordText.textContent = targetWord;
+  //   targetWordText.style.color = "white";
+
+  //   wordDisplay.appendChild(redText);
+  //   wordDisplay.appendChild(targetWordText);
+
+  //   this.inputElement.appendChild(wordDisplay);
+
+  //   const input = document.createElement("input");
+  //   input.type = "text";
+  //   input.placeholder = "Enter the correct word";
+  //   this.inputElement.appendChild(input);
+
+  //   const submitButton = document.createElement("button");
+  //   submitButton.textContent = "Submit";
+  //   this.inputElement.appendChild(submitButton);
+
+  //   const skipButton = document.createElement("button");
+  //   skipButton.textContent = "Skip";
+  //   this.inputElement.appendChild(skipButton);
+
+  //   document.body.appendChild(this.inputElement);
+
+  //   submitButton.addEventListener("click", () => {
+  //     const userAnswer = input.value.trim().toLowerCase();
+  //     const correctAnswerLower = correctAnswer.toLowerCase();
+
+  //     if (userAnswer === correctAnswerLower) {
+  //       this.addPoints(1);
+  //       this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
+  //     } else {
+  //       this.showInGameFeedback("Incorrect. Try again!", 3000);
+  //     }
+
+  //     this.isTaskActive = false;
+  //     document.body.removeChild(this.inputElement);
+  //     this.inputElement = null;
+
+  //     this.moveToNextWord();
+  //     console.log("User Answer:", userAnswer);
+  //     console.log("Correct Answer:", correctAnswer);
+  //   });
+
+  //   skipButton.addEventListener("click", () => {
+  //     this.skippedWordsCount++;
+  //     if (this.skippedWordsCount < 9) {
+  //       this.showInGameFeedback("You skipped the word.", 3000);
+  //     }
+  //     if (this.skippedWordsCount === 9) {
+  //       this.showInGameFeedback("You have one more word.", 3000);
+  //     }
+
+  //     document.body.removeChild(this.inputElement);
+  //     this.inputElement = null;
+  //     this.isTaskActive = false;
+  //     if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
+  //       this.skippedWordsCount = 0;
+  //       this.chest.destroy();
+  //       this.showInGameFeedback(
+  //         "Congratulations! You've completed all tasks.",
+  //         5000
+  //       );
+  //       return;
+  //     } else {
+  //       this.moveToNextWord();
+  //     }
+  //   });
+  // }
+
   showTextInputModal(targetWord, correctAnswer) {
-    if (this.inputElement) return;
+    console.log(`Displaying modal for word: ${targetWord}`);
+    console.log(`Correct answer: ${correctAnswer}`);
 
-    this.inputElement = document.createElement("div");
-    this.inputElement.style.position = "absolute";
-    this.inputElement.style.top = "50%";
-    this.inputElement.style.left = "50%";
-    this.inputElement.style.transform = "translate(-50%, -50%)";
-    this.inputElement.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-    this.inputElement.style.padding = "20px";
-    this.inputElement.style.borderRadius = "10px";
-    this.inputElement.style.color = "red";
-    this.inputElement.style.textAlign = "center";
+    if (this.modalContainer) return;
 
-    const wordDisplay = document.createElement("h3");
+    this.modalContainer = this.add
+      .container(this.scale.width / 2, this.scale.height / 2)
+      .setDepth(100);
 
-    const redText = document.createElement("span");
-    redText.textContent = "Translate this word into English: ";
-    redText.style.color = "white";
+    const background = this.add
+      .rectangle(0, 0, 400, 250, 0x000000, 0.8)
+      .setOrigin(0.5);
+    this.modalContainer.add(background);
 
-    const targetWordText = document.createElement("span");
-    targetWordText.textContent = targetWord;
-    targetWordText.style.color = "white";
+    const wordText = this.add
+      .text(0, -70, `Find the word for:`, {
+        fontSize: "20px",
+        color: "#ffffff",
+        align: "center",
+      })
+      .setOrigin(0.5);
+    const targetWordText = this.add
+      .text(0, -40, targetWord, {
+        fontSize: "22px",
+        color: "#ff0000",
+        fontStyle: "bold",
+      })
+      .setOrigin(0.5);
+    this.modalContainer.add([wordText, targetWordText]);
 
-    wordDisplay.appendChild(redText);
-    wordDisplay.appendChild(targetWordText);
-
-    this.inputElement.appendChild(wordDisplay);
-
+    // Create the HTML input element dynamically
     const input = document.createElement("input");
     input.type = "text";
-    input.placeholder = "Enter the correct word";
-    this.inputElement.appendChild(input);
+    input.placeholder = "Enter the transtation";
+    input.style.position = "absolute";
+    input.style.top = `600px`;
+    input.style.left = `620px`;
+    input.style.width = "200px";
+    input.style.height = "30px";
+    input.style.fontSize = "16px";
+    input.style.textAlign = "center";
+    input.style.color = "#000000";
+    input.style.border = "1px solid #000";
+    input.style.borderRadius = "5px";
+    document.body.appendChild(input);
 
-    const submitButton = document.createElement("button");
-    submitButton.textContent = "Submit";
-    this.inputElement.appendChild(submitButton);
+    const submitButton = this.add
+      .text(-110, 80, "Submit", {
+        fontSize: "18px",
+        color: "#00ff00",
+        backgroundColor: "#000",
+        padding: { x: 10, y: 5 },
+      })
+      .setInteractive()
+      .on("pointerdown", () => {
+        const userAnswer = input.value.trim().toLowerCase();
+        const correctAnswerLower = correctAnswer.toLowerCase();
 
-    const skipButton = document.createElement("button");
-    skipButton.textContent = "Skip";
-    this.inputElement.appendChild(skipButton);
+        if (userAnswer === correctAnswerLower) {
+          this.addPoints(1);
+          this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
+        } else {
+          this.showInGameFeedback("Incorrect. Try again!", 3000);
+        }
 
-    document.body.appendChild(this.inputElement);
-
-    submitButton.addEventListener("click", () => {
-      const userAnswer = input.value.trim().toLowerCase();
-      const correctAnswerLower = correctAnswer.toLowerCase();
-
-      if (userAnswer === correctAnswerLower) {
-        this.addPoints(1);
-        this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
-      } else {
-        this.showInGameFeedback("Incorrect. Try again!", 3000);
-      }
-
-      this.isTaskActive = false;
-      document.body.removeChild(this.inputElement);
-      this.inputElement = null;
-
-      this.moveToNextWord();
-      console.log("User Answer:", userAnswer);
-      console.log("Correct Answer:", correctAnswer);
-    });
-
-    skipButton.addEventListener("click", () => {
-      this.skippedWordsCount++;
-      if (this.skippedWordsCount < 9) {
-        this.showInGameFeedback("You skipped the word.", 3000);
-      }
-      if (this.skippedWordsCount === 9) {
-        this.showInGameFeedback("You have one more word.", 3000);
-      }
-
-      document.body.removeChild(this.inputElement);
-      this.inputElement = null;
-      this.isTaskActive = false;
-      if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
-        this.skippedWordsCount = 0;
-        this.chest.destroy();
-        this.showInGameFeedback(
-          "Congratulations! You've completed all tasks.",
-          5000
-        );
-        return;
-      } else {
+        this.cleanupModal(input);
         this.moveToNextWord();
-      }
-    });
+      });
+    this.modalContainer.add(submitButton);
+
+    const skipButton = this.add
+      .text(60, 80, "Skip", {
+        fontSize: "18px",
+        color: "#ff0000",
+        backgroundColor: "#000",
+        padding: { x: 10, y: 5 },
+      })
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.skippedWordsCount++;
+        if (this.skippedWordsCount < 9) {
+          this.showInGameFeedback("You skipped the word.", 3000);
+        }
+        if (this.skippedWordsCount === 9) {
+          this.showInGameFeedback("You have one more word.", 3000);
+        }
+
+        this.cleanupModal(input);
+
+        if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
+          this.skippedWordsCount = 0;
+          this.gameFinished = true;
+          this.chest.destroy();
+          this.showInGameFeedback(
+            "Congratulations! You've completed all tasks.",
+            5000
+          );
+          return;
+        } else {
+          this.moveToNextWord();
+        }
+      });
+    this.modalContainer.add(skipButton);
+  }
+
+  cleanupModal(input) {
+    if (this.modalContainer) {
+      this.modalContainer.destroy();
+      this.modalContainer = null;
+    }
+
+    if (input) {
+      document.body.removeChild(input);
+    }
   }
 
   moveToNextWord() {
@@ -241,7 +472,7 @@ class CaveScene extends Phaser.Scene {
   showInGameFeedback(message, duration) {
     const feedbackText = this.add.text(
       this.cameras.main.centerX,
-      this.cameras.main.centerY - 50,
+      this.cameras.main.centerY - 160,
       message,
       {
         fontSize: "24px",
@@ -358,11 +589,26 @@ class CaveScene extends Phaser.Scene {
       this.chest.x,
       this.chest.y
     );
+    const distanceToNPC = Phaser.Math.Distance.Between(
+      this.player.x,
+      this.player.y,
+      this.guide.x,
+      this.guide.y
+    );
+
+    // console.log(`Distance to chest: ${distance}`); // Debug distance
 
     if (distance <= 80) {
       this.chest.setVisible(true);
     } else {
       this.chest.setVisible(false);
+    }
+    if (distanceToNPC <= 100) {
+      // console.log("Player is near the chest. Making it visible."); // Debug log
+      this.guide.setVisible(true);
+    } else {
+      // console.log("Player is far from the chest. Hiding it."); // Debug log
+      this.guide.setVisible(false);
     }
   }
 }
