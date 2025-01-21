@@ -1083,7 +1083,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 217,
-    targetWord: "НД",
+    targetWord: "сонце",
     englishWord: "sun",
   },
   {
