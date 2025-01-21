@@ -11,6 +11,7 @@ class HouseScene1 extends Phaser.Scene {
     this.leftWOrdData = [];
     this.roundCount = 0;
     this.guideMessageDisplayed = false;
+    this.countMatches = 0;
   }
 
   preload() {
@@ -38,6 +39,7 @@ class HouseScene1 extends Phaser.Scene {
   }
 
   create() {
+    this.welcomeFunction();
     // Stop BG Music in House
 
     const backgroundMusic = this.sound.get("backgroundMusic");
@@ -84,13 +86,12 @@ class HouseScene1 extends Phaser.Scene {
     this.add.image(320, 290, "guide").setDepth(3).setScale(0.18).setAlpha(0.8);
     //guide area
     this.guideArea = this.physics.add.staticGroup();
-    this.guideArea = this.physics.add.staticGroup();
     const guideCollision = this.guideArea
       .create(320, 290, "collision")
       .setSize(50, 50);
     guideCollision.setAlpha(0);
 
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.player,
       guideCollision,
       this.guideInteraction,
@@ -119,7 +120,9 @@ class HouseScene1 extends Phaser.Scene {
         console.log("You are at the door!");
         this.doorOpenSound.play();
         this.scene.start("Main", { x: 500, y: 685 });
+        this.countMatches = 0;
       },
+
       null,
       this
     );
@@ -167,21 +170,181 @@ class HouseScene1 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 800, 800);
   }
 
-  //pop-up-message-on-guide
+  // welcome function
 
-  guideInteraction() {
+  welcomeFunction() {
+    console.log("Hello, welcome");
+
     if (this.reminder && this.speech) {
       this.reminder.destroy();
       this.speech.destroy();
     }
 
-    if (this.journalTriggered === true) {
+    if (this.roundCount > 4) {
+      this.speech = this.add
+        .image(420, 200, "speech")
+        .setScale(0.15)
+        .setDepth(9);
+      this.reminder = this.add
+        .text(310, 154, `Hey!\nYou comleted this house!`, {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        })
+        .setDepth(10);
+      this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy();
+          this.speech.destroy();
+          this.reminder = null;
+        }
+      });
+    }
+
+    if (this.roundCount === 4) {
+      this.speech = this.add
+        .image(420, 200, "speech")
+        .setScale(0.15)
+        .setDepth(9);
+      this.reminder = this.add
+        .text(310, 154, `Hey !\nIt's one round left!`, {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        })
+        .setDepth(10);
+      this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy();
+          this.speech.destroy();
+          this.reminder = null;
+        }
+      });
+    } else if (this.roundCount === 0) {
+      this.speech = this.add
+        .image(420, 200, "speech")
+        .setScale(0.15)
+        .setDepth(9);
+      this.reminder = this.add
+        .text(310, 154, `Hey!\nWelcome to Italy!`, {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        })
+        .setDepth(10);
+
+      this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy();
+          this.speech.destroy();
+          this.reminder = null;
+        }
+      });
+    } else if (this.roundCount < 4) {
+      this.speech = this.add
+        .image(420, 200, "speech")
+        .setScale(0.15)
+        .setDepth(9);
+      this.reminder = this.add
+        .text(310, 154, `Hey!\nWelcome back!`, {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        })
+        .setDepth(10);
+
+      this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy();
+          this.speech.destroy();
+          this.reminder = null;
+        }
+      });
+    }
+  }
+
+  //pop-up-message-on-guide
+
+  guideInteraction() {
+    const username = this.game.registry.get("username");
+    if (this.reminder && this.speech) {
+      this.reminder.destroy();
+      this.speech.destroy();
+    }
+
+    if (this.countMatches < 5 && this.chestOpened === true) {
+      console.log("we are in line 183");
+      this.speech = this.add.image(420, 200, "speech").setScale(0.15);
+      this.reminder = this.add.text(
+        310,
+        154,
+        `Hey ${username}!\nYou need to match\na words!`,
+        {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        }
+      );
+      this.time.delayedCall(3000, () => {
+        if (this.reminder && this.speech) {
+          this.reminder.destroy();
+          this.speech.destroy();
+          this.reminder = null;
+        }
+      });
+    }
+
+    if (
+      this.chestOpened === true &&
+      this.journalTriggered === true &&
+      this.leftWords.length === 0
+    ) {
+      console.log("we are in line 183");
+      this.speech = this.add.image(420, 200, "speech").setScale(0.15);
+      this.reminder = this.add.text(
+        310,
+        154,
+        `Hey ${username}!\nTry different houses\nbefore next round!`,
+        {
+          fontSize: "18px",
+          color: "#ffffff",
+          align: "center",
+          padding: {
+            x: 10,
+            y: 5,
+          },
+        }
+      );
+      return;
+    }
+
+    if (this.journalTriggered === true && this.chestOpened === false) {
       console.log("box");
       this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
         310,
         154,
-        "Hey!\nI think you should\nlook in the box!",
+        `Hey ${username}!\nI think you should\nlook in the box!`,
         {
           fontSize: "18px",
           color: "#ffffff",
@@ -206,7 +369,7 @@ class HouseScene1 extends Phaser.Scene {
       this.reminder = this.add.text(
         310,
         154,
-        "Hey!\nI think you should\nlook in the book!",
+        `Hey ${username}!\nI think you should\nlook in the book!`,
         {
           fontSize: "18px",
           color: "#ffffff",
@@ -242,8 +405,6 @@ class HouseScene1 extends Phaser.Scene {
       .setScale(0.06)
       .setDepth(2)
       .refreshBody();
-    this.interaction = true;
-    this.chestOpened = false;
     this.chest = this.physics.add
       .staticSprite(540, 223, "chest")
       .setScale(4)
@@ -252,6 +413,18 @@ class HouseScene1 extends Phaser.Scene {
       this.player,
       this.chest,
       this.openChest,
+      null,
+      this
+    );
+    this.journal_Block = this.physics.add
+      .staticSprite(540, 223, "collision")
+      .setScale(7)
+      .setOffset(0, -15)
+      .refreshBody();
+    this.physics.add.collider(
+      this.player,
+      this.journal_Block,
+      this.createBackButton,
       null,
       this
     );
@@ -334,7 +507,10 @@ class HouseScene1 extends Phaser.Scene {
       .image(860, 565, "back")
       .setDepth(3)
       .setInteractive();
-    this.back_btn.on("pointerdown", () => this.cleanJournal());
+    this.back_btn.on("pointerdown", () => {
+      this.cleanJournal();
+      this.journal_Block.destroy();
+    });
   }
 
   cleanJournal() {
@@ -487,7 +663,7 @@ class HouseScene1 extends Phaser.Scene {
             if (!this.matchedPairs.includes(pairKey)) {
               console.log("Matched Pair:", pairKey);
               this.matchedPairs.push(pairKey);
-
+              this.countMatches++;
               // Destroy matched words
               leftWord.destroy();
               rightWord.destroy();
@@ -543,11 +719,31 @@ class HouseScene1 extends Phaser.Scene {
       return; // Prevent triggering multiple times
     }
     this.roundCount++;
-    this.isComplete = true; // Mark as complete
     console.log("Round Complete!");
 
     // Display the round completion image
-    this.add.image(420, 200, "test").setScale(0.2);
+    this.isComplete = true; // Mark as complete
+    console.log("Round Complete!");
+    const message = `Well done ${username}!\nSee you soon!`;
+    this.speech = this.add.image(420, 200, "speech").setScale(0.15);
+
+    this.reminder = this.add.text(310, 154, message, {
+      fontSize: "18px",
+      color: "#ffffff",
+      align: "center",
+      padding: {
+        x: 10,
+        y: 5,
+      },
+    });
+
+    this.time.delayedCall(3000, () => {
+      if (this.reminder && this.speech) {
+        this.reminder.destroy();
+        this.speech.destroy();
+        this.reminder = null;
+      }
+    });
 
     if (this.roundCount === 5) {
       fetch(`https://eurolingo.onrender.com/api/users/${username}`, {
@@ -573,7 +769,6 @@ class HouseScene1 extends Phaser.Scene {
     this.rightWords = [];
 
     this.isComplete = false;
-    console.log(this.roundCount);
   }
 
   update() {
