@@ -2,6 +2,7 @@ import { useState } from "react";
 import Lottie from 'lottie-react'; // Default export, not named
 import loadingAnimation from '../../public/assets/loadingAnimation2.json'; // Loading animation JSON import
 import { findUser } from "../api";
+import '../../public/assets/loadingBox.gif'
 
 const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   const [password, setPassword] = useState("");
@@ -31,21 +32,16 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
 
   if (loading) {
     return (
-      <div>
-        <Lottie 
-          animationData={loadingAnimation} 
-          loop={true} 
-          autoplay={true} 
-          height={2000} 
-          width={2000} 
-        />
+      <div className="loadingContainer">
+        <img className='loadingImage' src='../../public/assets/loadingBox.gif'></img>
+        <p className="loadingText" >Loading, this may take a while...please be patient!</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h3>Log In</h3>
+      <h3 className="welcomeText">Log In</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
