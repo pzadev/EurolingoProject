@@ -11,8 +11,8 @@ export class MainScene extends Phaser.Scene {
 
   init(data) {
     // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1100; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 300; // Default to 800 if no position passed
+    this.startX = data && data.x ? data.x : 1800; // Default to 900 if no position passed
+    this.startY = data && data.y ? data.y : 750; // Default to 800 if no position passed
 
     this.username = this.game.registry.get("username") || data?.username;
 
@@ -349,7 +349,7 @@ export class MainScene extends Phaser.Scene {
       .setSize(50, 40)
       .setOrigin(1, 1);
     teleport.visible = false;
-    teleport.setData("targetScene", "BridgeScene"); // CHANGE TO BRIDGE AFTER EDIT
+    teleport.setData("targetScene", "CaveScene"); // CHANGE TO BRIDGE AFTER EDIT
 
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
