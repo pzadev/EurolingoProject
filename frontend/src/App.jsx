@@ -12,12 +12,11 @@ const App = () => {
 
   return (
     <div>
-      <Header username={username} />
-      <img src="/logo.png" alt="EuroLingo Logo" />
+      <Header username={username} gameStart={gameStart}/>
       {gameStart ? (
         <PhaserGame username={username}/>
       ) : showLogIn ? (
-        <LogIn setGameStart={setGameStart} setShowLogIn={setShowLogIn} username={username} setUsername={setUsername} />
+        <LogIn setGameStart={setGameStart} setShowLogIn={setShowLogIn} username={username} setUsername={setUsername} gameStart={gameStart}/>
       ) : (
         <CreateAccount setShowLogIn={setShowLogIn} />
       )}

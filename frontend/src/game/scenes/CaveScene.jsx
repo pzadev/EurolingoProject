@@ -28,7 +28,7 @@ class CaveScene extends Phaser.Scene {
     this.chest = this.physics.add
       .staticSprite(650, 400, "chest")
       .setScale(2)
-      .setDepth(20)
+      .setDepth(1)
       .refreshBody();
 
     this.scoreText = this.add.text(10, 10, `Score: ${this.playerScore}`, {

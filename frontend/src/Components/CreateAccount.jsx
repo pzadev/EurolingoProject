@@ -44,7 +44,7 @@ const CreateAccount = ({ setShowLogIn }) => {
 
   return (
     <div>
-      <h3>Create Account</h3>
+      <h3 className='welcomeText'>Create Account</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

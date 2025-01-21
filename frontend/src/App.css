@@ -135,3 +135,25 @@ form {
   color: #333;
   margin-bottom: 10px;
 }
+
+.loadingImage {
+  width: 250px; /* Adjust the width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.loading-container {
+  display: flex; /* Flexbox for centering */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100vh; /* Full viewport height */
+  background-color: #f9f9f9; /* Optional background color */
+}
+
+.loadingText {
+  color:rgb(108, 123, 191);
+}
+
+.welcomeText {
+  color: rgb(108, 123, 191);
+  padding-bottom: 3rem;
+}

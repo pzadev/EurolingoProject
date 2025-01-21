@@ -1,46 +1,24 @@
 body {
-    /* background-image: url("https://cdn1.epicgames.com/ue/product/Screenshot/Screenshot05-1920x1080-0f4d271d3f5c217a2a06977d706debf1.jpg?resize=1&w=1920"); */
-    /* background-image: url("../../game_folder/assets/pixel-art-aesthetic-background_1234738-163492.avif"); */
     background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/aeca1614-ab29-413b-867d-5f2f40cef9cd/dg5o6sj-835af1de-281e-4b19-b6e5-9bc22fa9e417.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2FlY2ExNjE0LWFiMjktNDEzYi04NjdkLTVmMmY0MGNlZjljZFwvZGc1bzZzai04MzVhZjFkZS0yODFlLTRiMTktYjZlNS05YmMyMmZhOWU0MTcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wogA1dhR9HXYUczexlGjA6XcHShDEUa0Ywstt3nauoU");
-    /* background-image: url("https://img.freepik.com/premium-photo/landscape-8bit-pixel-art-summer-natural-landscape-mountain-scenery-arcade-video-game-background_1029469-29331.jpg"); */
-    /* background-image: url("https://easy-peasy.ai/cdn-cgi/image/quality=80,format=auto,width=700/https://fdczvxmwwjwpwbeeqcth.supabase.co/storage/v1/object/public/images/898a7ddf-a91c-4f90-88bf-02dfaee3f2fb/05399a49-f0f7-427a-9034-65c0c4036874.png"); */
-    /* background-image: url("https://img.freepik.com/premium-photo/landscape-8bit-pixel-art-summer-natural-landscape-mountain-scenery-arcade-video-game-background_776674-410662.jpg"); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
+    padding-bottom: 50px;  
   }
   #root {
     max-width: 1280px;
-    margin: 5rem auto 0;
-    padding: 2rem;
+    margin: 5rem;
     text-align: center;
-    display: flex;
-    flex-direction: column;
     align-items: center;
   }
-  .header {
-    padding: 1rem 2rem;
-    color: rgb(0, 0, 0);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    border-radius: 0;
-    z-index: 1000;
-    transition: transform 0.3s ease-in-out;
-  }
+
   .header.hidden {
     transform: translateY(-100%);
   }
-  .header-content {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-  }
+
   .header-logo h1 {
     font-size: 2rem;
     color: #FFFFFF;
@@ -49,9 +27,6 @@ body {
     padding: 1rem;
   }
 
-  .header-nav {
-    margin-right: 1000px;
-  }
   .header-username p {
     font-size: 1.2rem;
     font-family: "Orbitron", sans-serif;
@@ -68,4 +43,31 @@ body {
     .header-logo h1 {
       font-size: 1.5rem;
     }
+  }
+
+  .toggleButton {
+    width: 50px;  /* Increase icon size */
+    height: 50px;
+    float: right;
+    background-image: url(https://banner2.cleanpng.com/20181111/ioy/kisspng-computer-icons-scalable-vector-graphics-informatio-classic-ferrari-parts-lemon-parts-1713919533611.webp);
+    background-size: cover; /* Ensures the image scales to cover the icon area */
+  background-position: center; /* Centers the image within the element */
+  mix-blend-mode: multiply;
+  }
+
+  .infoText {
+      color: rgb(108, 123, 191);
+      list-style-type: none;
+  }
+
+  .infoContainer {
+    background-color: #f8f9fa; /* Light background for the container */
+  border: 1px solid #ccc;    /* Border around the container */
+  padding: 20px;             /* Padding inside the container */
+  border-radius: 8px;        /* Rounded corners */
+  max-width: 600px;          /* Max width for the container */
+  margin: 20px auto;         /* Center the container with margin */
+  font-size: 16px;           /* Set font size for the text */
+  color: #333;               /* Text color */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for better visual separation */
   }
