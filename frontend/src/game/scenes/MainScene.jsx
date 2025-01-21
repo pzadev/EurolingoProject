@@ -6,23 +6,13 @@ export class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "Main" });
     this.userProgress = null;
-    this.username = null; // testing
   }
 
   init(data) {
-    // Defaults guy start position to 900/800 unless switching scene
-    this.startX = data && data.x ? data.x : 1400; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 950; // Default to 800 if no position passed
+    this.startX = data && data.x ? data.x : 900;
+    this.startY = data && data.y ? data.y : 800;
 
-    this.startX = data && data.x ? data.x : 1800; // Default to 900 if no position passed
-    this.startY = data && data.y ? data.y : 800; // Default to 800 if no position passed
     this.username = this.game.registry.get("username") || data?.username;
-
-    if (!this.username) {
-      console.warn("Username is not defined. User progress might not load.");
-    } else {
-      console.log(`Initializing MainScene for user: ${this.username}`);
-    }
 
     this.loadUserProgress();
   }
@@ -30,8 +20,6 @@ export class MainScene extends Phaser.Scene {
   async loadUserProgress() {
     try {
       this.userProgress = await checkUserProgress(this.username);
-      console.log(this.userProgress);
-      console.log(this.username); // testing in/out of scene username state
 
       const badgeMapping = {
         italian: { x: 55, y: 97, image: "itaFlag" },
@@ -68,10 +56,10 @@ export class MainScene extends Phaser.Scene {
       frameHeight: 32,
     });
 
-    this.load.image("spost", 'game_folder/assets/Sign_Post.png')
-    this.load.image("tree", 'game_folder/assets/Another_tree.png')
-    this.load.image("bush", 'game_folder/assets/Bush.png')
-    this.load.image("bush1", 'game_folder/assets/Bush1.png')
+    this.load.image("spost", "game_folder/assets/Sign_Post.png");
+    this.load.image("tree", "game_folder/assets/Another_tree.png");
+    this.load.image("bush", "game_folder/assets/Bush.png");
+    this.load.image("bush1", "game_folder/assets/Bush1.png");
     this.load.image("collision", "assets/collision.png");
     this.load.image("roof1", "assets/rooftop.png");
     this.load.image("roof2", "assets/Rooftop2.1.png");
@@ -105,7 +93,6 @@ export class MainScene extends Phaser.Scene {
 
     this.loadUserProgress();
     this.game.sound.stopAll();
-    // Character animations/frames
 
     this.progressBar = this.add
       .image(55, 110, "progressBar")
@@ -120,11 +107,6 @@ export class MainScene extends Phaser.Scene {
       .setDepth(21)
       .setScrollFactor(0);
 
-    // this.globe2 = this.add
-    // .image(42, 53, "globe2")
-    // .setScale(0.08)
-    // .setDepth(21)
-    // .setScrollFactor(0);
     this.anims.create({
       key: "guyidle",
       frames: this.anims.generateFrameNumbers("guy", {
@@ -154,28 +136,28 @@ export class MainScene extends Phaser.Scene {
     // ideas for flag/country indetifier for player
 
     this.bush = this.add
-        .image(662,958, 'bush')
-        .setOrigin(0, 0)
-        .setDepth(10)
-        .setScale(0.5);
+      .image(662, 958, "bush")
+      .setOrigin(0, 0)
+      .setDepth(10)
+      .setScale(0.5);
 
     this.bush = this.add
-        .image(1028,1007, 'bush1')
-        .setOrigin(0, 0)
-        .setDepth(10)
-        .setScale(0.5);
-    
-    this.bush = this.add
-        .image(1392,983, 'tree')
-        .setOrigin(0, 0)
-        .setDepth(10)
-        .setScale(0.5);
+      .image(1028, 1007, "bush1")
+      .setOrigin(0, 0)
+      .setDepth(10)
+      .setScale(0.5);
 
     this.bush = this.add
-        .image(1508,887, 'spost')
-        .setOrigin(0, 0)
-        .setDepth(10)
-        .setScale(0.5);
+      .image(1392, 983, "tree")
+      .setOrigin(0, 0)
+      .setDepth(10)
+      .setScale(0.5);
+
+    this.bush = this.add
+      .image(1508, 887, "spost")
+      .setOrigin(0, 0)
+      .setDepth(10)
+      .setScale(0.5);
 
     this.roof = this.add
       .image(1251, 432, "roof1")
@@ -379,7 +361,7 @@ export class MainScene extends Phaser.Scene {
       .setSize(50, 40)
       .setOrigin(1, 1);
     teleport.visible = false;
-    teleport.setData("targetScene", "CaveScene"); // CHANGE TO BRIDGE AFTER EDIT
+    teleport.setData("targetScene", "BridgeScene");
 
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
@@ -390,7 +372,6 @@ export class MainScene extends Phaser.Scene {
         const targetScene = doorArea.getData("targetScene");
         if (targetScene) {
           this.doorOpenSound.play();
-          console.log(`You are close to the ${targetScene} door!`);
           this.scene.start(targetScene);
         }
       },
@@ -404,7 +385,6 @@ export class MainScene extends Phaser.Scene {
       this.teleport,
       async (player, teleport) => {
         if (!this.userProgress) {
-          console.log("Progress data not yet loaded.");
           return;
         }
         // Change below to true to test restriction to bridge/cave

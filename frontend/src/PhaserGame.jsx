@@ -11,7 +11,6 @@ import BridgeScene from "./game/scenes/BridgeScene";
 import CaveScene from "./game/scenes/CaveScene";
 
 const PhaserGame = ({ username }) => {
-  const [isAllMatched, setIsAllMatched] = useState(false);
   const gameContainer = useRef(null);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const PhaserGame = ({ username }) => {
       physics: {
         default: "arcade",
         arcade: {
-          debug: false, // Set to true to debug/see hitboxes
+          debug: false,
         },
       },
       scene: [
@@ -46,7 +45,6 @@ const PhaserGame = ({ username }) => {
 
     gameContainer.current.appendChild(game.canvas);
 
-    // Clean up the game instance when the component unmounts
     return () => {
       game.destroy(true);
     };

@@ -1,6 +1,5 @@
-import Lottie from 'lottie-react'; // Default export, not named
-import loadingAnimation from '../../public/assets/loadingAnimation.json'; // Direct import for JSON
 import { useState } from "react";
+import '../../public/assets/loadingBox.gif'
 import { checkIfUserExists, createUser } from "../api";
 
 const CreateAccount = ({ setShowLogIn }) => {
@@ -36,9 +35,10 @@ const CreateAccount = ({ setShowLogIn }) => {
 
   if (loading) {
     return (
-      <div>
-        <Lottie animationData={loadingAnimation} loop={true} autoplay={true} height={200} width={200} />
-      </div>
+      <div className="loadingContainer">
+      <img className='loadingImage' src='../../public/assets/loadingBox.gif'></img>
+      <p className="loadingText" >Loading, this may take a while...please be patient!</p>
+    </div>
     );
   }
 
