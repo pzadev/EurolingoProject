@@ -28,13 +28,13 @@ class CaveScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("chest", "game_folder/assets/Chest_Anim.png", {
+    this.load.spritesheet("chest", "assets/Chest_Anim.png", {
       frameWidth: 16,
       frameHeight: 16,
     });
     this.load.image("collision", "assets/collision.png");
-    this.load.image("guide", "game_folder/assets/Guide.png");
-    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
+    this.load.image("guide", "assets/Guide.png");
+    this.load.image("speech", "assets/Speech Bubble.png");
   }
 
   create() {
@@ -236,8 +236,6 @@ class CaveScene extends Phaser.Scene {
   }
 
   showTextInputModal(targetWord, correctAnswer) {
-  
-
     if (this.modalContainer) return;
 
     this.modalContainer = this.add

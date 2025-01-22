@@ -27,15 +27,15 @@ class HouseScene2 extends Phaser.Scene {
       frameHeight: 16,
     });
 
-    this.load.image("exMark", "game_folder/assets/Look_At_Me.png");
+    this.load.image("exMark", "assets/Look_At_Me.png");
     this.load.image("collision", "assets/collision.png");
     this.load.audio("spain", "assets/spainSong.mp3");
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
-    this.load.image("guide", "game_folder/assets/Guide.png");
-    this.load.image("journal", "game_folder/assets/Learn_Journal.png");
-    this.load.image("back", "game_folder/assets/Back_BTN.png");
-    this.load.image("test", "game_folder/assets/Ukr_Congrats.png");
-    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
+    this.load.image("guide", "assets/Guide.png");
+    this.load.image("journal", "assets/Learn_Journal.png");
+    this.load.image("back", "assets/Back_BTN.png");
+    this.load.image("test", "assets/Ukr_Congrats.png");
+    this.load.image("speech", "assets/Speech Bubble.png");
   }
 
   create() {
