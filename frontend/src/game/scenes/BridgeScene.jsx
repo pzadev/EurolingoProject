@@ -23,7 +23,7 @@ class BridgeScene extends Phaser.Scene {
 
     this.load.image("collision", "assets/collision.png");
     this.load.audio("waterfall", "/assets/waterfall.mp3");
-    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
+    this.load.image("speech", "assets/Speech Bubble.png");
     this.load.image("gerFlag", "assets/gerFlag.png");
     this.load.image("spaFlag", "assets/spaFlag.png");
     this.load.image("ukrFlag", "assets/ukrFlag.png");

@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import HouseCollisionBlocks from "../imports/houseCollisionBlocks";
-import { frenchWords } from "../../../game_folder/assets/test.data";
 
 class HouseScene5 extends Phaser.Scene {
   constructor() {
@@ -21,20 +20,20 @@ class HouseScene5 extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("chest", "game_folder/assets/Chest_Anim.png", {
+    this.load.spritesheet("chest", "assets/Chest_Anim.png", {
       frameWidth: 16,
       frameHeight: 16,
     });
     this.load.image("collision", "assets/collision.png");
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
-    this.load.image("EifelT", "game_folder/assets/Eifel_Tower.png");
-    this.load.image("Inspect", "game_folder/assets/Look_At_Me.png");
+    this.load.image("EifelT", "assets/Eifel_Tower.png");
+    this.load.image("Inspect", "assets/Look_At_Me.png");
     this.load.audio("frrSong", "assets/frrSong.mp3");
-    this.load.image("guide", "game_folder/assets/Guide.png");
-    this.load.image("journal", "game_folder/assets/Learn_Journal.png");
-    this.load.image("back", "game_folder/assets/Back_BTN.png");
+    this.load.image("guide", "assets/Guide.png");
+    this.load.image("journal", "assets/Learn_Journal.png");
+    this.load.image("back", "assets/Back_BTN.png");
 
-    this.load.image("speech", "game_folder/assets/Speech Bubble.png");
+    this.load.image("speech", "assets/Speech Bubble.png");
   }
 
   create() {
