@@ -151,6 +151,7 @@ class CaveScene extends Phaser.Scene {
   }
   //guide interaction
   guideInteraction() {
+    console.log(this.gameFinished);
     const username = this.game.registry.get("username");
     if (this.reminder && this.speech) {
       this.reminder.destroy();
@@ -368,6 +369,8 @@ class CaveScene extends Phaser.Scene {
     if (this.rightWordData.length > 0) {
       this.rightWordData.shift();
       if (this.rightWordData.length === 0) {
+        this.gameFinished = true;
+
         this.showInGameFeedback(
           "Congratulations! You've completed all tasks.",
           5000
