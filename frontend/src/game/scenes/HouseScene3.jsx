@@ -5,7 +5,7 @@ import { frenchWords } from "../../../game_folder/assets/test.data";
 class HouseScene3 extends Phaser.Scene {
   constructor() {
     super({ key: "House3" });
-    this.onMatchComplete = null; // Callback to update React state
+    this.onMatchComplete = null; 
     this.leftWords = [];
     this.rightWords = [];
     this.matchedPairs = [];
@@ -39,7 +39,6 @@ class HouseScene3 extends Phaser.Scene {
 
   create() {
     this.welcomeFunction();
-    // Stop BG Music in House
     const backgroundMusic = this.sound.get("backgroundMusic");
     if (backgroundMusic) {
       backgroundMusic.stop();
@@ -60,7 +59,6 @@ class HouseScene3 extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    // House image
     const gameWidth = this.scale.width;
     const gameHeight = this.scale.height;
     const houseImage = this.add
@@ -77,12 +75,11 @@ class HouseScene3 extends Phaser.Scene {
 
     this.player.setCollideWorldBounds(true);
 
-    // House collision and door data for HouseScene
+
     const house2CollisionBlocks = new House2CollisionBlocks(this);
     const house2CollisionGroup = house2CollisionBlocks.getHouse2Blocks();
     this.physics.add.collider(this.player, house2CollisionGroup);
 
-    // Door Area for HouseScene
     this.doorArea = this.physics.add.staticGroup();
     const houseDoor = this.doorArea
       .create(613, 205, "collision")
@@ -102,8 +99,6 @@ class HouseScene3 extends Phaser.Scene {
       this
     );
 
-    //guide-area
-
     this.add.image(310, 390, "guide").setDepth(3).setScale(0.18).setAlpha(0.8);
     this.guideArea = this.physics.add.staticGroup();
     this.guideArea = this.physics.add.staticGroup();
@@ -120,7 +115,6 @@ class HouseScene3 extends Phaser.Scene {
       this
     );
 
-    // Chest and exclamation mark
     this.chestOpened = false;
 
     this.Book_exMark = this.physics.add
@@ -159,7 +153,6 @@ class HouseScene3 extends Phaser.Scene {
       repeat: 0,
     });
 
-    // World bounds and camera
     this.physics.world.setBounds(0, 0, 725, 800);
     this.cameras.main.setBounds(0, 0, 800, 800);
   }
@@ -514,7 +507,7 @@ class HouseScene3 extends Phaser.Scene {
     ].forEach((item) => item?.destroy());
 
     this.interaction = false;
-    // this.journalTriggered = false;
+
 
     if (!this.Chest_exMark) {
       this.Chest_exMark = this.physics.add
@@ -528,10 +521,10 @@ class HouseScene3 extends Phaser.Scene {
   openChest(player, chest) {
     if (!this.chestOpened) {
       this.interaction = true;
-      this.chestOpened = true; // Set the flag to true
+      this.chestOpened = true; 
       chest.anims.play("openChest", true);
       console.log("Chest opened!");
-      this.triggerWordMatching(); // Start word matching after chest is opened
+      this.triggerWordMatching();
     }
   }
 
@@ -554,7 +547,7 @@ class HouseScene3 extends Phaser.Scene {
         const startX = this.chest.x;
         const startY = this.chest.y - 20;
 
-        // Left Side (English words)
+       
         const leftText = this.add
           .text(startX, startY, leftItem, {
             fontSize: "20px",
@@ -565,13 +558,13 @@ class HouseScene3 extends Phaser.Scene {
           .setInteractive();
         this.input.setDraggable(leftText);
 
-        // Assign rank and wordName properties correctly
+
         leftText.wordName = leftWordData.englishWord;
         leftText.rank = leftWordData.rank;
 
         this.leftWords.push(leftText);
 
-        // Right Side (Shuffled Target language words)
+      
         const rightText = this.add
           .text(startX, startY, rightItem, {
             fontSize: "20px",
@@ -582,9 +575,9 @@ class HouseScene3 extends Phaser.Scene {
           .setInteractive();
         this.input.setDraggable(rightText);
 
-        // Assign rank and wordName properties correctly
-        rightText.wordName = rightWordData.targetWord; // Set the target word
-        rightText.rank = rightWordData.rank; // Set the same rank as the left item for matching
+    
+        rightText.wordName = rightWordData.targetWord;
+        rightText.rank = rightWordData.rank;
 
         this.rightWords.push(rightText);
 
@@ -592,7 +585,6 @@ class HouseScene3 extends Phaser.Scene {
         const rightTargetX = 850;
         const targetY = 50 + index * 70;
 
-        // Animate left words
         this.tweens.add({
           targets: leftText,
           x: leftTargetX,
@@ -626,62 +618,68 @@ class HouseScene3 extends Phaser.Scene {
   }
 
   checkForMatches() {
+  
+    const chestBounds = this.chest.getBounds();
+  
+   
     this.leftWords.forEach((leftWord) => {
       this.rightWords.forEach((rightWord) => {
-        console.log("Left Text:", leftWord.x, leftWord.y);
-        console.log("Right Text:", rightWord.x, rightWord.y); // Log position of right word
-
-        // Get their bounds for overlap detection
+    
+        console.log("Left Text:", leftWord.x, leftWord.y); 
+        console.log("Right Text:", rightWord.x, rightWord.y);
+  
+      
         const leftBounds = leftWord.getBounds();
         const rightBounds = rightWord.getBounds();
+  
 
-        // Log bounds to help debug if they overlap correctly
-
-        // Check for overlap
-        const overlap = Phaser.Geom.Intersects.RectangleToRectangle(
+        const leftOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
           leftBounds,
-          rightBounds
+          chestBounds
         );
-        console.log(leftWord.rank);
-
-        if (overlap) {
-          console.log("Overlap Detected!");
-
-          // Check if ranks match
+        const rightOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
+          rightBounds,
+          chestBounds
+        );
+  
+        if (leftOverlapChest && rightOverlapChest) {
+          console.log("Words Overlap Chest!");
+  
+    
           if (leftWord.rank === rightWord.rank) {
             const pairKey = `${leftWord.text}-${rightWord.text}`;
-
-            // Ensure the pair isn't already matched
+  
+          
             if (!this.matchedPairs.includes(pairKey)) {
               console.log("Matched Pair:", pairKey);
               this.matchedPairs.push(pairKey);
               this.countMatches++;
-
-              // Destroy matched words
+  
+    
               leftWord.destroy();
               rightWord.destroy();
-
-              // Remove matched objects from arrays
+  
+         
               Phaser.Utils.Array.Remove(this.leftWords, leftWord);
               Phaser.Utils.Array.Remove(this.rightWords, rightWord);
-
+  
               this.showWellDoneMessage();
             }
           }
         }
       });
     });
+  
 
-    // Check if all pairs have been matched
     if (this.matchedPairs.length === this.leftWords.length) {
       this.roundComplete();
     }
   }
 
   getRandomWords(array, count) {
-    // Shuffle the array
+
     const shuffled = Phaser.Utils.Array.Shuffle(array);
-    // Return the first count elements
+ 
     return shuffled.slice(0, count);
   }
 
@@ -694,7 +692,7 @@ class HouseScene3 extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(10);
 
-    // Fade out the message after 2 seconds
+ 
     this.tweens.add({
       targets: message,
       alpha: 0,
@@ -709,10 +707,10 @@ class HouseScene3 extends Phaser.Scene {
     const username = this.game.registry.get("username");
     console.log(username);
     if (this.isComplete) {
-      return; // Prevent triggering multiple times
+      return;
     }
     this.roundCount++;
-    this.isComplete = true; // Mark as complete
+    this.isComplete = true; 
     console.log("Round Complete!");
     const message = `Well done ${username}!\nSee you soon!`;
     this.speech = this.add.image(420, 200, "speech").setScale(0.15);
@@ -752,7 +750,7 @@ class HouseScene3 extends Phaser.Scene {
       });
     }
 
-    // Reset round state for next round
+   
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
