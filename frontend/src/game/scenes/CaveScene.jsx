@@ -9,7 +9,8 @@ class CaveScene extends Phaser.Scene {
     this.isTaskActive = false;
     this.rightWordData = [];
     this.leftWordData = [];
-    this.skippedWordsCount = 0;
+    this.skippedAndFindWordsCount = 0;
+    this.onlySkippCount = 0;
     this.gameFinished = false;
   }
 
@@ -78,7 +79,7 @@ class CaveScene extends Phaser.Scene {
 
     //create npc-probably reset
     this.guide = this.physics.add
-      .staticSprite(300, 230, "guide")
+      .staticSprite(480, 230, "guide")
       .setScale(0.15)
       .setDepth(3)
       .setAlpha(0.8)
@@ -86,7 +87,7 @@ class CaveScene extends Phaser.Scene {
       .refreshBody();
     this.guideArea = this.physics.add.staticGroup();
     const guideCollision = this.guideArea
-      .create(300, 230, "collision")
+      .create(480, 230, "collision")
       .setSize(50, 50);
     guideCollision.setAlpha(0);
 
@@ -148,7 +149,6 @@ class CaveScene extends Phaser.Scene {
       this
     );
   }
-
   //guide interaction
   guideInteraction() {
     const username = this.game.registry.get("username");
@@ -160,24 +160,31 @@ class CaveScene extends Phaser.Scene {
 
     if (this.gameFinished) {
       this.speech = this.add
-        .image(380, 150, "speech")
+        .image(580, 150, "speech")
         .setScale(0.15)
         .setDepth(9);
 
       this.reminder = this.add
-        .text(280, 100, `Hey!\nDo you want\nrestart the game?`, {
-          fontSize: "18px",
-          color: "#ffffff",
-          align: "center",
-          padding: {
-            x: 10,
-            y: 5,
-          },
-        })
+        .text(
+          480,
+          100,
+          `Hey!\nDo you want\nRestart a game\nor see you later!`,
+          {
+            fontSize: "15px",
+            color: "#ffffff",
+            align: "center",
+            padding: {
+              x: 10,
+              y: 5,
+            },
+          }
+        )
         .setDepth(10);
 
+      this.dialogContainer = this.add.container(0, 0).setDepth(10);
+
       this.yesButton = this.add
-        .text(300, 200, "Yes", {
+        .text(500, 200, "Restart", {
           fontSize: "20px",
           color: "#00ff00",
           backgroundColor: "#000",
@@ -186,37 +193,17 @@ class CaveScene extends Phaser.Scene {
         .setInteractive()
         .on("pointerdown", () => {
           this.skippedWordsCount = 0;
+          this.onlySkippCount = 0;
           this.scene.restart();
-        })
-        .setDepth(10);
+        });
 
-      this.noButton = this.add
-        .text(400, 200, "No", {
-          fontSize: "20px",
-          color: "#ff0000",
-          backgroundColor: "#000",
-          padding: { x: 10, y: 5 },
-        })
-        .setInteractive()
-        .on("pointerdown", () => {
-          if (this.reminder) this.reminder.destroy();
-          if (this.speech) this.speech.destroy();
-          if (this.yesButton) this.yesButton.destroy();
-          if (this.noButton) this.noButton.destroy();
-
-          this.reminder = null;
-          this.speech = null;
-          this.yesButton = null;
-          this.noButton = null;
-        })
-        .setDepth(10);
-
+      this.dialogContainer.add(this.yesButton);
       return;
     }
 
-    this.speech = this.add.image(380, 150, "speech").setScale(0.15).setDepth(9);
+    this.speech = this.add.image(580, 150, "speech").setScale(0.15).setDepth(9);
     this.reminder = this.add
-      .text(280, 100, `Hey!\nYou need \nto find a chest!`, {
+      .text(480, 100, `Hey!\nYou need \nto find a chest!`, {
         fontSize: "18px",
         color: "#ffffff",
         align: "center",
@@ -247,7 +234,6 @@ class CaveScene extends Phaser.Scene {
       this.showTextInputModal(firstWord.text, correctAnswer);
     }
   }
-
 
   showTextInputModal(targetWord, correctAnswer) {
     console.log(`Displaying modal for word: ${targetWord}`);
@@ -281,20 +267,18 @@ class CaveScene extends Phaser.Scene {
     this.modalContainer.add([wordText, targetWordText]);
 
     // Create the HTML input element dynamically
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Enter the transtation";
-    input.style.position = "absolute";
-    input.style.top = `600px`;
-    input.style.left = `620px`;
-    input.style.width = "200px";
-    input.style.height = "30px";
-    input.style.fontSize = "16px";
-    input.style.textAlign = "center";
-    input.style.color = "#000000";
-    input.style.border = "1px solid #000";
-    input.style.borderRadius = "5px";
-    document.body.appendChild(input);
+    const input = this.add.dom(0, 10).createFromHTML(`
+      <input type="text" placeholder="Enter the translation" style="
+          width: 200px;
+          height: 25px;
+          font-size: 16px;
+          text-align: center;
+          color: #000000;
+          border: 1px solid #000;
+          border-radius: 5px;
+      ">
+  `);
+    this.modalContainer.add(input);
 
     const submitButton = this.add
       .text(-110, 80, "Submit", {
@@ -305,18 +289,30 @@ class CaveScene extends Phaser.Scene {
       })
       .setInteractive()
       .on("pointerdown", () => {
-        const userAnswer = input.value.trim().toLowerCase();
+        this.skippedAndFindWordsCount++;
+        // Access the input value directly from the DOM element
+        const userAnswer = input
+          .getChildByID(input.node.id)
+          .value.trim()
+          .toLowerCase();
         const correctAnswerLower = correctAnswer.toLowerCase();
 
-        if (userAnswer === correctAnswerLower) {
-          this.addPoints(1);
-          this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
-        } else {
-          this.showInGameFeedback("Incorrect. Try again!", 3000);
-        }
+        if (this.skippedAndFindWordsCount <= 10) {
+          if (userAnswer === correctAnswerLower) {
+            this.addPoints(1);
+            this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
+          } else {
+            this.showInGameFeedback("Incorrect. Try again!", 3000);
+          }
 
-        this.cleanupModal(input);
-        this.moveToNextWord();
+          this.cleanupModal(input);
+          this.moveToNextWord();
+        } else {
+          this.skippedWordsCount = 0;
+          this.cleanupModal(input);
+          this.gameFinished = true;
+          this.chest.destroy();
+        }
       });
     this.modalContainer.add(submitButton);
 
@@ -329,18 +325,27 @@ class CaveScene extends Phaser.Scene {
       })
       .setInteractive()
       .on("pointerdown", () => {
-        this.skippedWordsCount++;
-        if (this.skippedWordsCount < 9) {
-          this.showInGameFeedback("You skipped the word.", 3000);
+        this.skippedAndFindWordsCount++;
+        this.onlySkippCount++;
+        // Show feedback for skipped word
+        if (this.skippedAndFindWordsCount < 9) {
+          this.showInGameFeedback(
+            `You skipped ${this.onlySkippCount} word(s).`,
+            3000
+          );
         }
-        if (this.skippedWordsCount === 9) {
+
+        if (this.skippedAndFindWordsCount === 9) {
           this.showInGameFeedback("You have one more word.", 3000);
         }
-
         this.cleanupModal(input);
 
-        if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
-          this.skippedWordsCount = 0;
+        if (
+          this.skippedAndFindWordsCount > 9 &&
+          this.rightWordData.length <= 1
+        ) {
+          this.skippedAndFindWordsCount = 0;
+          this.onlySkippCount = 0;
           this.gameFinished = true;
           this.chest.destroy();
           this.showInGameFeedback(
@@ -359,10 +364,6 @@ class CaveScene extends Phaser.Scene {
     if (this.modalContainer) {
       this.modalContainer.destroy();
       this.modalContainer = null;
-    }
-
-    if (input) {
-      document.body.removeChild(input);
     }
   }
 
@@ -498,7 +499,7 @@ class CaveScene extends Phaser.Scene {
       this.lightRadius
     );
 
-    const distance = Phaser.Math.Distance.Between(
+    const distanceToTheChest = Phaser.Math.Distance.Between(
       this.player.x,
       this.player.y,
       this.chest.x,
@@ -511,14 +512,12 @@ class CaveScene extends Phaser.Scene {
       this.guide.y
     );
 
-    // console.log(`Distance to chest: ${distance}`); // Debug distance
-
-    if (distance <= 80) {
+    if (distanceToTheChest <= 80) {
       this.chest.setVisible(true);
     } else {
       this.chest.setVisible(false);
     }
-    if (distanceToNPC <= 100) {
+    if (distanceToNPC <= 80) {
       // console.log("Player is near the chest. Making it visible."); // Debug log
       this.guide.setVisible(true);
     } else {
