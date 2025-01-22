@@ -4,9 +4,9 @@ import HouseCollisionBlocks from "../imports/houseCollisionBlocks";
 class HouseScene1 extends Phaser.Scene {
   constructor() {
     super({ key: "House1" });
-    this.leftWords = []; // Left words (English)
-    this.rightWords = []; // Right words (Target language)
-    this.matchedPairs = []; // Matched word pairs
+    this.leftWords = []; 
+    this.rightWords = []; 
+    this.matchedPairs = [];
     this.rightWordData = [];
     this.leftWOrdData = [];
     this.roundCount = 0;
@@ -40,7 +40,6 @@ class HouseScene1 extends Phaser.Scene {
 
   create() {
     this.welcomeFunction();
-    // Stop BG Music in House
 
     const backgroundMusic = this.sound.get("backgroundMusic");
     if (backgroundMusic) {
@@ -62,7 +61,6 @@ class HouseScene1 extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    // House image
     const gameWidth = this.scale.width;
     const gameHeight = this.scale.height;
     const houseImage = this.add
@@ -84,7 +82,7 @@ class HouseScene1 extends Phaser.Scene {
       .setScale(0.1);
 
     this.add.image(320, 290, "guide").setDepth(3).setScale(0.18).setAlpha(0.8);
-    //guide area
+
     this.guideArea = this.physics.add.staticGroup();
     const guideCollision = this.guideArea
       .create(320, 290, "collision")
@@ -101,12 +99,10 @@ class HouseScene1 extends Phaser.Scene {
 
     this.player.setCollideWorldBounds(true);
 
-    // House collision and door data for HouseScene
     const houseCollisionBlocks = new HouseCollisionBlocks(this);
     const houseCollisionGroup = houseCollisionBlocks.getHouseBlocks();
     this.physics.add.collider(this.player, houseCollisionGroup);
 
-    // Door Area for HouseScene
     this.doorArea = this.physics.add.staticGroup();
     const houseDoor = this.doorArea
       .create(470, 160, "collision")
@@ -127,7 +123,7 @@ class HouseScene1 extends Phaser.Scene {
       this
     );
 
-    // Chest and Exclamation mark setup
+
     this.chestOpened = false;
 
     this.Book_exMark = this.physics.add
@@ -165,12 +161,10 @@ class HouseScene1 extends Phaser.Scene {
       repeat: 0,
     });
 
-    // World bounds and camera
     this.physics.world.setBounds(0, 0, 735, 800);
     this.cameras.main.setBounds(0, 0, 800, 800);
   }
 
-  // welcome function
 
   welcomeFunction() {
     console.log("Hello, welcome");
@@ -278,8 +272,6 @@ class HouseScene1 extends Phaser.Scene {
       });
     }
   }
-
-  //pop-up-message-on-guide
 
   guideInteraction() {
     const username = this.game.registry.get("username");
@@ -522,7 +514,7 @@ class HouseScene1 extends Phaser.Scene {
     ].forEach((item) => item?.destroy());
 
     this.interaction = false;
-    // this.journalTriggered = false;
+
 
     if (!this.Chest_exMark) {
       this.Chest_exMark = this.physics.add
@@ -590,9 +582,9 @@ class HouseScene1 extends Phaser.Scene {
           .setInteractive();
         this.input.setDraggable(rightText);
 
-        // Assign rank and wordName properties correctly
-        rightText.wordName = rightWordData.targetWord; // Set the target word
-        rightText.rank = rightWordData.rank; // Set the same rank as the left item for matching
+      
+        rightText.wordName = rightWordData.targetWord;
+        rightText.rank = rightWordData.rank;
 
         this.rightWords.push(rightText);
 
@@ -600,7 +592,7 @@ class HouseScene1 extends Phaser.Scene {
         const rightTargetX = 850;
         const targetY = 50 + index * 70;
 
-        // Animate left words
+
         this.tweens.add({
           targets: leftText,
           x: leftTargetX,
@@ -610,7 +602,6 @@ class HouseScene1 extends Phaser.Scene {
           ease: "Power2",
         });
 
-        // Animate right words
         this.tweens.add({
           targets: rightText,
           x: rightTargetX,
@@ -621,11 +612,9 @@ class HouseScene1 extends Phaser.Scene {
         });
       });
 
-      // Add drag events for interaction
       this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
         gameObject.x = dragX;
         gameObject.y = dragY;
-        // Check for matches as player drags words
         this.checkForMatches();
       });
 
@@ -634,21 +623,20 @@ class HouseScene1 extends Phaser.Scene {
   }
 
   checkForMatches() {
-    // Get the bounds of the chest
+  
     const chestBounds = this.chest.getBounds();
   
-    // Iterate through all left and right Phaser text objects
     this.leftWords.forEach((leftWord) => {
       this.rightWords.forEach((rightWord) => {
-        // Log positions of left and right words
-        console.log("Left Text:", leftWord.x, leftWord.y); // Log position of left word
-        console.log("Right Text:", rightWord.x, rightWord.y); // Log position of right word
+       
+        console.log("Left Text:", leftWord.x, leftWord.y);
+        console.log("Right Text:", rightWord.x, rightWord.y);
   
-        // Get their bounds for overlap detection
+      
         const leftBounds = leftWord.getBounds();
         const rightBounds = rightWord.getBounds();
   
-        // Check if both words are overlapping the chest
+
         const leftOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
           leftBounds,
           chestBounds
@@ -661,21 +649,19 @@ class HouseScene1 extends Phaser.Scene {
         if (leftOverlapChest && rightOverlapChest) {
           console.log("Words Overlap Chest!");
   
-          // Check if ranks match
           if (leftWord.rank === rightWord.rank) {
             const pairKey = `${leftWord.text}-${rightWord.text}`;
   
-            // Ensure the pair isn't already matched
+        
             if (!this.matchedPairs.includes(pairKey)) {
               console.log("Matched Pair:", pairKey);
               this.matchedPairs.push(pairKey);
               this.countMatches++;
-  
-              // Destroy matched words
+
               leftWord.destroy();
               rightWord.destroy();
   
-              // Remove matched objects from arrays
+      
               Phaser.Utils.Array.Remove(this.leftWords, leftWord);
               Phaser.Utils.Array.Remove(this.rightWords, rightWord);
   
@@ -685,17 +671,16 @@ class HouseScene1 extends Phaser.Scene {
         }
       });
     });
-  
-    // Check if all pairs have been matched
+
     if (this.matchedPairs.length === this.leftWords.length) {
       this.roundComplete();
     }
   }
 
   getRandomWords(array, count) {
-    // Shuffle the array
+  
     const shuffled = Phaser.Utils.Array.Shuffle(array);
-    // Return the first count elements
+
     return shuffled.slice(0, count);
   }
 
@@ -708,7 +693,6 @@ class HouseScene1 extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(10);
 
-    // Fade out the message after 2 seconds
     this.tweens.add({
       targets: message,
       alpha: 0,
@@ -723,13 +707,11 @@ class HouseScene1 extends Phaser.Scene {
     const username = this.game.registry.get("username");
     console.log(username);
     if (this.isComplete) {
-      return; // Prevent triggering multiple times
+      return; 
     }
     this.roundCount++;
     console.log("Round Complete!");
-
-    // Display the round completion image
-    this.isComplete = true; // Mark as complete
+    this.isComplete = true; 
     console.log("Round Complete!");
     const message = `Well done ${username}!\nSee you soon!`;
     this.speech = this.add.image(420, 200, "speech").setScale(0.15);
@@ -770,7 +752,6 @@ class HouseScene1 extends Phaser.Scene {
       });
     }
 
-    // Reset round state for next round
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
