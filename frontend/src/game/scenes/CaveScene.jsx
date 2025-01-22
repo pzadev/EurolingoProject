@@ -13,6 +13,11 @@ class CaveScene extends Phaser.Scene {
     this.gameFinished = false;
   }
 
+  init(data) {
+    this.language = data.language; // The language passed from BridgeScene
+    console.log("Cave scene language: " + this.language);
+  }
+
   preload() {
     this.load.image("cave", "assets/cave.png", {
       frameWidth: 630,
@@ -38,17 +43,17 @@ class CaveScene extends Phaser.Scene {
     this.game.sound.stopAll();
 
     const possibleChestPositions = [
-      { x: 840, y: 560 },
-      { x: 280, y: 200 },
-      { x: 730, y: 250 },
-      { x: 500, y: 460 },
-      { x: 670, y: 550 },
+      // { x: 840, y: 560 },
+      // { x: 280, y: 200 },
+      // { x: 730, y: 250 },
+      // { x: 500, y: 460 },
+      // { x: 670, y: 550 },
     ];
 
     const randomPosition = Phaser.Utils.Array.GetRandom(possibleChestPositions);
 
     this.chest = this.physics.add
-      .staticSprite(randomPosition.x, randomPosition.y, "chest")
+      .staticSprite(300, 400, "chest")
       .setScale(2)
       .setDepth(10)
       .setVisible(true)
@@ -493,7 +498,7 @@ class CaveScene extends Phaser.Scene {
   }
 
   fetchAndDisplayWords() {
-    fetch("https://eurolingo.onrender.com/api/italian", {
+    fetch(`https://eurolingo.onrender.com/api/${this.language}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
