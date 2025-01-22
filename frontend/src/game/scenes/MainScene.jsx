@@ -6,13 +6,21 @@ export class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "Main" });
     this.userProgress = null;
+    this.username = null; // testing
   }
 
   init(data) {
-    this.startX = data && data.x ? data.x : 900;
+  
+    this.startX = data && data.x ? data.x : 1800; 
     this.startY = data && data.y ? data.y : 800;
 
     this.username = this.game.registry.get("username") || data?.username;
+
+    if (!this.username) {
+      console.warn("Username is not defined. User progress might not load.");
+    } else {
+      console.log(`Initializing MainScene for user: ${this.username}`);
+    }
 
     this.loadUserProgress();
   }
@@ -20,6 +28,8 @@ export class MainScene extends Phaser.Scene {
   async loadUserProgress() {
     try {
       this.userProgress = await checkUserProgress(this.username);
+      console.log(this.userProgress);
+      console.log(this.username);
 
       const badgeMapping = {
         italian: { x: 55, y: 97, image: "itaFlag" },
@@ -56,10 +66,6 @@ export class MainScene extends Phaser.Scene {
       frameHeight: 32,
     });
 
-    this.load.image("spost", "game_folder/assets/Sign_Post.png");
-    this.load.image("tree", "game_folder/assets/Another_tree.png");
-    this.load.image("bush", "game_folder/assets/Bush.png");
-    this.load.image("bush1", "game_folder/assets/Bush1.png");
     this.load.image("collision", "assets/collision.png");
     this.load.image("roof1", "assets/rooftop.png");
     this.load.image("roof2", "assets/Rooftop2.1.png");
@@ -75,13 +81,13 @@ export class MainScene extends Phaser.Scene {
     this.load.image("Hut", "assets/Hut.png");
     this.load.image("Pole", "assets/Pole.png");
     this.load.image("fountain", "assets/FountainSpout.png");
-    // Pixel Flags
+
     this.load.image("gerFlag", "assets/gerFlag.png");
     this.load.image("spaFlag", "assets/spaFlag.png");
     this.load.image("ukrFlag", "assets/ukrFlag.png");
     this.load.image("itaFlag", "assets/itaFlag.png");
     this.load.image("freFlag", "assets/freFlag.png");
-    // Progress bar
+
     this.load.image("progressBar", "assets/gamebartest.png");
     this.load.image("globe", "assets/globe.png");
     this.load.image("globe2", "assets/globe2.png");
@@ -123,41 +129,16 @@ export class MainScene extends Phaser.Scene {
         end: 79,
       }),
       frameRate: 8,
-      repeat: -1, // Loops through indefinitely
+      repeat: -1,
     });
 
     const background = this.add
       .sprite(0, 0, "background")
       .setOrigin(0, 0)
-      .setScale(3.2); // How zoomed in the map is
+      .setScale(3.2); 
 
     background.play("background");
 
-    // ideas for flag/country indetifier for player
-
-    this.bush = this.add
-      .image(662, 958, "bush")
-      .setOrigin(0, 0)
-      .setDepth(10)
-      .setScale(0.5);
-
-    this.bush = this.add
-      .image(1028, 1007, "bush1")
-      .setOrigin(0, 0)
-      .setDepth(10)
-      .setScale(0.5);
-
-    this.bush = this.add
-      .image(1392, 983, "tree")
-      .setOrigin(0, 0)
-      .setDepth(10)
-      .setScale(0.5);
-
-    this.bush = this.add
-      .image(1508, 887, "spost")
-      .setOrigin(0, 0)
-      .setDepth(10)
-      .setScale(0.5);
 
     this.roof = this.add
       .image(1251, 432, "roof1")
@@ -267,9 +248,9 @@ export class MainScene extends Phaser.Scene {
     this.player = this.physics.add
       .sprite(this.startX, this.startY, "guy")
       .setSize(18, 10)
-      .setScale(2.5) // Size of character
-      .setOrigin(0, 0) // Do not change
-      .setOffset(6.5, 14); // Do not change
+      .setScale(2.5) 
+      .setOrigin(0, 0) 
+      .setOffset(6.5, 14);
 
     this.player.setCollideWorldBounds(true);
 
@@ -313,46 +294,44 @@ export class MainScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    // Collision and door data for MainScene
     const collisionBlocks = new CollisionBlocks(this);
     const collisionGroup = collisionBlocks.getBlocks();
     this.physics.add.collider(this.player, collisionGroup);
 
-    // Door Area for MainScene
     this.doorArea = this.physics.add.staticGroup();
     this.teleport = this.physics.add.staticGroup();
     const door1 = this.doorArea
       .create(495, 665, "collision")
       .setSize(40, 60)
-      .setOrigin(1, 1); // House door TL
+      .setOrigin(1, 1); 
     door1.visible = false;
     door1.setData("targetScene", "House1");
 
     const door2 = this.doorArea
       .create(1161, 355, "collision")
       .setSize(40, 60)
-      .setOrigin(1, 1); // House door TR
+      .setOrigin(1, 1); 
     door2.visible = false;
     door2.setData("targetScene", "House2");
 
     const door3 = this.doorArea
       .create(1315, 700, "collision")
       .setSize(40, 60)
-      .setOrigin(1, 1); // House door TR
+      .setOrigin(1, 1); 
     door3.visible = false;
     door3.setData("targetScene", "House3");
 
     const door4 = this.doorArea
       .create(1225, 1125, "collision")
       .setSize(40, 60)
-      .setOrigin(1, 1); // House door TR
+      .setOrigin(1, 1); 
     door4.visible = false;
     door4.setData("targetScene", "House4");
 
     const door5 = this.doorArea
       .create(535, 1270, "collision")
       .setSize(40, 60)
-      .setOrigin(1, 1); // House door TR
+      .setOrigin(1, 1);
     door5.visible = false;
     door5.setData("targetScene", "House5");
 
@@ -361,7 +340,7 @@ export class MainScene extends Phaser.Scene {
       .setSize(50, 40)
       .setOrigin(1, 1);
     teleport.visible = false;
-    teleport.setData("targetScene", "BridgeScene");
+    teleport.setData("targetScene", "BridgeScene"); 
 
     this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
 
@@ -372,6 +351,7 @@ export class MainScene extends Phaser.Scene {
         const targetScene = doorArea.getData("targetScene");
         if (targetScene) {
           this.doorOpenSound.play();
+          console.log(`You are close to the ${targetScene} door!`);
           this.scene.start(targetScene);
         }
       },
@@ -379,15 +359,16 @@ export class MainScene extends Phaser.Scene {
       this
     );
 
-    // Bridge & Cave Completion Area Teleport
+ 
     this.physics.add.overlap(
       this.player,
       this.teleport,
       async (player, teleport) => {
         if (!this.userProgress) {
+          console.log("Progress data not yet loaded.");
           return;
         }
-        // Change below to true to test restriction to bridge/cave
+      
         const completedLanguages = this.userProgress.filter(
           (language) => Object.values(language)[0] === true
         ).length;
@@ -406,7 +387,6 @@ export class MainScene extends Phaser.Scene {
       this
     );
 
-    // World bounds and camera
     this.physics.world.setBounds(0, 0, 2000, 1600);
     this.cameras.main.setBounds(0, 0, 2000, 1600);
     this.cameras.main.startFollow(this.player);
