@@ -25,7 +25,7 @@ Backend
 
 Installation
 Clone the repository:
-git clone <repository-url>
+git clone (https://github.com/pseheya/EuroLingo.git)
 
 Navigate to the backend folder and install dependencies:
 cd backend
