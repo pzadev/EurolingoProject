@@ -195,6 +195,7 @@ class CaveScene extends Phaser.Scene {
         .on("pointerdown", () => {
           this.skippedWordsCount = 0;
           this.onlySkippCount = 0;
+          this.gameFinished = false;
           this.scene.restart();
         });
 
