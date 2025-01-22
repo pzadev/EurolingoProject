@@ -236,8 +236,7 @@ class CaveScene extends Phaser.Scene {
   }
 
   showTextInputModal(targetWord, correctAnswer) {
-    console.log(`Displaying modal for word: ${targetWord}`);
-    console.log(`Correct answer: ${correctAnswer}`);
+  
 
     if (this.modalContainer) return;
 

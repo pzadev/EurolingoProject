@@ -30,11 +30,9 @@ export const findUser = async (username, password) => {
     if (user.password === password) {
       return user;
     } else {
-      console.log(user.username);
       return user.username;
     }
   } catch (error) {
-    console.log(error, "catch err");
     throw new Error(error.message);
   }
 };
@@ -52,9 +50,7 @@ export const checkIfUserExists = async (username) => {
       return null;
     }
     return user;
-  } catch (error) {
-    console.log(error.message);
-  }
+  } catch (error) {}
 };
 
 export const checkUserProgress = async (username) => {
@@ -68,7 +64,5 @@ export const checkUserProgress = async (username) => {
     const data = await response.json();
     const { progress } = data;
     return progress;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };

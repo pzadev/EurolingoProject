@@ -6,12 +6,12 @@ export class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "Main" });
     this.userProgress = null;
-    this.username = null; // testing
+    this.username = null; 
   }
 
   init(data) {
   
-    this.startX = data && data.x ? data.x : 1800; 
+    this.startX = data && data.x ? data.x : 900; 
     this.startY = data && data.y ? data.y : 800;
 
     this.username = this.game.registry.get("username") || data?.username;
@@ -19,7 +19,6 @@ export class MainScene extends Phaser.Scene {
     if (!this.username) {
       console.warn("Username is not defined. User progress might not load.");
     } else {
-      console.log(`Initializing MainScene for user: ${this.username}`);
     }
 
     this.loadUserProgress();
@@ -28,8 +27,6 @@ export class MainScene extends Phaser.Scene {
   async loadUserProgress() {
     try {
       this.userProgress = await checkUserProgress(this.username);
-      console.log(this.userProgress);
-      console.log(this.username);
 
       const badgeMapping = {
         italian: { x: 55, y: 97, image: "itaFlag" },
@@ -52,7 +49,6 @@ export class MainScene extends Phaser.Scene {
         }
       });
     } catch (err) {
-      console.log("Error getting user progress:", err);
     }
   }
 
@@ -351,8 +347,7 @@ export class MainScene extends Phaser.Scene {
         const targetScene = doorArea.getData("targetScene");
         if (targetScene) {
           this.doorOpenSound.play();
-          console.log(`You are close to the ${targetScene} door!`);
-          this.scene.start(targetScene);
+          this.scene.start(targetScene)
         }
       },
       null,
@@ -365,7 +360,6 @@ export class MainScene extends Phaser.Scene {
       this.teleport,
       async (player, teleport) => {
         if (!this.userProgress) {
-          console.log("Progress data not yet loaded.");
           return;
         }
       
@@ -375,7 +369,7 @@ export class MainScene extends Phaser.Scene {
 
         if (completedLanguages === 5) {
           const targetScene = teleport.getData("targetScene");
-          this.scene.start(targetScene);
+          this.scene.start(targetScene, { x: 100, y: 270 })
         } else {
           this.add.text(1780, 770, "Collect all 5 badges first!", {
             font: "20px Montserrat",

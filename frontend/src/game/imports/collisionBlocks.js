@@ -24,7 +24,6 @@ export default class CollisionBlocks {
       .setSize(10, 205)
       .setOrigin(1, 1)
       .setVisible(false);
-    // TR Fencing
     this.collisionBlocks
       .create(1510, 530, "collision")
       .setSize(10, 445)
@@ -50,7 +49,6 @@ export default class CollisionBlocks {
       .setSize(100, 10)
       .setOrigin(1, 1)
       .setVisible(false);
-    // CR House
     this.collisionBlocks
       .create(1395, 625, "collision")
       .setSize(100, 200)
@@ -61,19 +59,16 @@ export default class CollisionBlocks {
       .setSize(100, 200)
       .setOrigin(1, 1)
       .setVisible(false);
-    // CL House
     this.collisionBlocks
       .create(175, 850, "collision")
       .setSize(180, 210)
       .setOrigin(1, 1)
       .setVisible(false);
-    // BL House
     this.collisionBlocks
       .create(540, 1185, "collision")
       .setSize(375, 215)
       .setOrigin(1, 1)
       .setVisible(false);
-    // TOP House
     this.collisionBlocks
       .create(1235, 267, "collision")
       .setSize(100, 220)
@@ -84,20 +79,17 @@ export default class CollisionBlocks {
       .setSize(100, 200)
       .setOrigin(1, 1)
       .setVisible(false);
-    // Horse's House
     this.collisionBlocks
       .create(1260, 1037, "collision")
       .setSize(190, 200)
       .setOrigin(1, 1)
       .setVisible(false);
-    //Hut
     this.collisionBlocks
       .create(1695, 955, "collision")
       .setSize(100, 115)
       .setOrigin(1, 1)
       .setVisible(false);
 
-    //Pole
     this.collisionBlocks
       .create(572, 940, "collision")
       .setSize(10, 10)
@@ -105,13 +97,12 @@ export default class CollisionBlocks {
       .setVisible(false);
 
     550, 841;
-    //Bench
+
     this.collisionBlocks
       .create(1215, 790, "collision")
       .setSize(90, 20)
       .setOrigin(1, 1)
       .setVisible(false);
-    // Fountain
     this.collisionBlocks
       .create(999, 900, "collision")
       .setSize(85, 60)
@@ -127,7 +118,6 @@ export default class CollisionBlocks {
       .setSize(50, 10)
       .setOrigin(1, 1)
       .setVisible(false);
-    // TL House
     this.collisionBlocks
       .create(605, 540, "collision")
       .setSize(335, 180)
@@ -152,13 +142,12 @@ export default class CollisionBlocks {
       .create(500, 645, "collision")
       .setSize(80, 30)
       .setOrigin(1, 1)
-      .setVisible(false); // House door
-    // TL House Wall
+      .setVisible(false);
     this.collisionBlocks
       .create(275, 560, "collision")
       .setSize(1, 150)
       .setOrigin(1, 1)
-      .setVisible(false); // Left Wall
+      .setVisible(false);
     this.collisionBlocks
       .create(320, 460, "collision")
       .setSize(1, 40)
@@ -220,7 +209,6 @@ export default class CollisionBlocks {
       .setOrigin(1, 1)
       .setVisible(false);
 
-    //wishingWell
     1120, 535;
     this.collisionBlocks
       .create(1178, 640, "collision")
@@ -228,7 +216,6 @@ export default class CollisionBlocks {
       .setOrigin(1, 1)
       .setVisible(false);
 
-    // Water Boundaries
     this.collisionBlocks
       .create(1160, 1310, "collision")
       .setSize(180, 10)
@@ -450,8 +437,6 @@ export default class CollisionBlocks {
       .setSize(10, 35)
       .setOrigin(1, 1)
       .setVisible(false);
-
-    
   }
 
   getBlocks() {

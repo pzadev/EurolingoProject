@@ -8,10 +8,9 @@ class BridgeScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.startX = data && data.x ? data.x : 150; // Default to 100 if no position passed
-    this.startY = data && data.y ? data.y : 400; // Default to 400 if no position passed
+    this.startX = data && data.x ? data.x : 100;
+    this.startY = data && data.y ? data.y : 275;
   }
-
   preload() {
     this.load.spritesheet("bridge", "assets/bridge.png", {
       frameWidth: 630,
@@ -38,7 +37,7 @@ class BridgeScene extends Phaser.Scene {
 
     const waterfall = this.sound.add("waterfall", {
       loop: true,
-      volume: 0.03,
+      volume: 0.015,
     });
 
     waterfall.play();
@@ -50,20 +49,20 @@ class BridgeScene extends Phaser.Scene {
         end: 14,
       }),
       frameRate: 8,
-      repeat: -1, // Loops through indefinitely
+      repeat: -1,
     });
 
     const bridge = this.add
       .sprite(0, 0, "bridge")
       .setOrigin(0, 0)
-      .setScale(1.587, 1.2); // How zoomed in the map is
+      .setScale(1.587, 1.2);
 
     this.player = this.physics.add
-      .sprite(50, 280, "guy")
+      .sprite(this.startX, this.startY, "guy")
       .setSize(18, 10)
-      .setScale(3) // Size of character
-      .setOrigin(0, 0) // Do not change
-      .setOffset(6.5, 14); // Do not change
+      .setScale(3)
+      .setOrigin(0, 0)
+      .setOffset(6.5, 14);
 
     this.player.setCollideWorldBounds(true);
 
@@ -82,8 +81,8 @@ class BridgeScene extends Phaser.Scene {
       .setOrigin(1, 1);
     teleport2.visible = true;
     teleport2.setData("targetScene", "Main");
-    teleport2.setData("targetX", 1900);
-    teleport2.setData("targetY", 800);
+    teleport2.setData("x", 1850);
+    teleport2.setData("y", 800);
     this.physics.add.overlap(
       this.player,
       this.teleport,
@@ -91,8 +90,8 @@ class BridgeScene extends Phaser.Scene {
         const targetScene = teleport.getData("targetScene");
         if (targetScene) {
           this.scene.start(targetScene, {
-            targetX: teleport.getData("targetX"),
-            targetY: teleport.getData("targetY"),
+            x: teleport.getData("x"),
+            y: teleport.getData("y"),
             selectedLanguage: this.selectedLanguage,
           });
         }
@@ -102,23 +101,21 @@ class BridgeScene extends Phaser.Scene {
     );
     bridge.play("bridge");
 
-    // House collision and door data for HouseScene
     const bridgeBlocks = new BridgeCollisions(this);
     const bridgeCollisionGroup = bridgeBlocks.getBridgeBlocks();
     this.physics.add.collider(this.player, bridgeCollisionGroup);
 
     this.characterZone = this.physics.add.staticGroup();
     const characterTrigger = this.characterZone
-      .create(550, 300, "collision") // Position it slightly to the right and central
-      .setSize(150, 100) // Size of the trigger zone
+      .create(550, 300, "collision")
+      .setSize(150, 100)
       .setOrigin(0.5, 0.5);
-    characterTrigger.visible = false; // Make the collision area invisible
+    characterTrigger.visible = false;
 
-    // Add overlap detection for player and the trigger zone
     this.physics.add.overlap(
       this.player,
       this.characterZone,
-      this.handleCharacterInteraction, // Callback function for interaction
+      this.handleCharacterInteraction,
       null,
       this
     );

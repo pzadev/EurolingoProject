@@ -5,7 +5,7 @@ import { frenchWords } from "../../../game_folder/assets/test.data";
 class HouseScene3 extends Phaser.Scene {
   constructor() {
     super({ key: "House3" });
-    this.onMatchComplete = null; 
+    this.onMatchComplete = null;
     this.leftWords = [];
     this.rightWords = [];
     this.matchedPairs = [];
@@ -29,7 +29,7 @@ class HouseScene3 extends Phaser.Scene {
     this.load.image("exMark", "game_folder/assets/Look_At_Me.png");
     this.load.image("collision", "assets/collision.png");
     this.load.audio("gerSong", "assets/gerSong.mp3");
-    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.5 });
+    this.doorOpenSound = this.sound.add("doorOpen", { volume: 0.2 });
     this.load.image("guide", "game_folder/assets/Guide.png");
     this.load.image("journal", "game_folder/assets/Learn_Journal.png");
     this.load.image("back", "game_folder/assets/Back_BTN.png");
@@ -47,7 +47,7 @@ class HouseScene3 extends Phaser.Scene {
     if (!this.sound.get("gerSong")) {
       this.backgroundMusic = this.sound.add("gerSong", {
         loop: true,
-        volume: 0.2,
+        volume: 0.03,
       });
       this.backgroundMusic.play();
     } else {
@@ -75,7 +75,6 @@ class HouseScene3 extends Phaser.Scene {
 
     this.player.setCollideWorldBounds(true);
 
-
     const house2CollisionBlocks = new House2CollisionBlocks(this);
     const house2CollisionGroup = house2CollisionBlocks.getHouse2Blocks();
     this.physics.add.collider(this.player, house2CollisionGroup);
@@ -90,7 +89,6 @@ class HouseScene3 extends Phaser.Scene {
       this.player,
       this.doorArea,
       function (player, doorArea) {
-        console.log("You are at the door!");
         this.doorOpenSound.play();
         this.scene.start("Main", { x: 1275, y: 715 });
         this.countMatches = 0;
@@ -158,8 +156,6 @@ class HouseScene3 extends Phaser.Scene {
   }
 
   welcomeFunction() {
-    console.log("Hello, welcome");
-
     if (this.reminder && this.speech) {
       this.reminder.destroy();
       this.speech.destroy();
@@ -272,7 +268,6 @@ class HouseScene3 extends Phaser.Scene {
     }
 
     if (this.countMatches < 5 && this.chestOpened === true) {
-      console.log("we are in line 183");
       this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
         310,
@@ -302,7 +297,6 @@ class HouseScene3 extends Phaser.Scene {
       this.journalTriggered === true &&
       this.leftWords.length === 0
     ) {
-      console.log("we are in line 183");
       this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
         310,
@@ -322,7 +316,6 @@ class HouseScene3 extends Phaser.Scene {
     }
 
     if (this.journalTriggered === true && this.chestOpened === false) {
-      console.log("box");
       this.speech = this.add.image(420, 200, "speech").setScale(0.15);
       this.reminder = this.add.text(
         310,
@@ -436,8 +429,6 @@ class HouseScene3 extends Phaser.Scene {
   }
 
   displayWords(data) {
-    console.log(this.leftWords);
-    console.log(this.rightWords);
     const leftWordsData = data.map((item) => ({
       text: item.englishWord,
       rank: item.rank,
@@ -508,7 +499,6 @@ class HouseScene3 extends Phaser.Scene {
 
     this.interaction = false;
 
-
     if (!this.Chest_exMark) {
       this.Chest_exMark = this.physics.add
         .staticSprite(540, 223, "exMark")
@@ -521,33 +511,24 @@ class HouseScene3 extends Phaser.Scene {
   openChest(player, chest) {
     if (!this.chestOpened) {
       this.interaction = true;
-      this.chestOpened = true; 
+      this.chestOpened = true;
       chest.anims.play("openChest", true);
-      console.log("Chest opened!");
       this.triggerWordMatching();
     }
   }
 
   triggerWordMatching() {
-    console.log(this.leftWords);
     if (this.interaction === true) {
       this.matchedPairs = [];
-      console.log("Left Word Data:", this.leftWordData);
-      console.log("Right Word Data:", this.rightWordData);
       Phaser.Utils.Array.Shuffle(this.leftWordData);
       Phaser.Utils.Array.Shuffle(this.rightWordData);
       this.leftWordData.forEach((leftWordData, index) => {
         const leftItem = leftWordData.text;
         const rightWordData = this.rightWordData[index];
         const rightItem = rightWordData.text;
-
-        console.log("Left Word:", leftItem);
-        console.log("Right Word:", rightItem);
-
         const startX = this.chest.x;
         const startY = this.chest.y - 20;
 
-       
         const leftText = this.add
           .text(startX, startY, leftItem, {
             fontSize: "20px",
@@ -558,13 +539,11 @@ class HouseScene3 extends Phaser.Scene {
           .setInteractive();
         this.input.setDraggable(leftText);
 
-
         leftText.wordName = leftWordData.englishWord;
         leftText.rank = leftWordData.rank;
 
         this.leftWords.push(leftText);
 
-      
         const rightText = this.add
           .text(startX, startY, rightItem, {
             fontSize: "20px",
@@ -575,7 +554,6 @@ class HouseScene3 extends Phaser.Scene {
           .setInteractive();
         this.input.setDraggable(rightText);
 
-    
         rightText.wordName = rightWordData.targetWord;
         rightText.rank = rightWordData.rank;
 
@@ -594,7 +572,6 @@ class HouseScene3 extends Phaser.Scene {
           ease: "Power2",
         });
 
-        // Animate right words
         this.tweens.add({
           targets: rightText,
           x: rightTargetX,
@@ -605,11 +582,10 @@ class HouseScene3 extends Phaser.Scene {
         });
       });
 
-      // Add drag events for interaction
       this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
         gameObject.x = dragX;
         gameObject.y = dragY;
-        // Check for matches as player drags words
+
         this.checkForMatches();
       });
 
@@ -618,20 +594,12 @@ class HouseScene3 extends Phaser.Scene {
   }
 
   checkForMatches() {
-  
     const chestBounds = this.chest.getBounds();
-  
-   
+
     this.leftWords.forEach((leftWord) => {
       this.rightWords.forEach((rightWord) => {
-    
-        console.log("Left Text:", leftWord.x, leftWord.y); 
-        console.log("Right Text:", rightWord.x, rightWord.y);
-  
-      
         const leftBounds = leftWord.getBounds();
         const rightBounds = rightWord.getBounds();
-  
 
         const leftOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
           leftBounds,
@@ -641,35 +609,27 @@ class HouseScene3 extends Phaser.Scene {
           rightBounds,
           chestBounds
         );
-  
+
         if (leftOverlapChest && rightOverlapChest) {
-          console.log("Words Overlap Chest!");
-  
-    
           if (leftWord.rank === rightWord.rank) {
             const pairKey = `${leftWord.text}-${rightWord.text}`;
-  
-          
+
             if (!this.matchedPairs.includes(pairKey)) {
-              console.log("Matched Pair:", pairKey);
               this.matchedPairs.push(pairKey);
               this.countMatches++;
-  
-    
+
               leftWord.destroy();
               rightWord.destroy();
-  
-         
+
               Phaser.Utils.Array.Remove(this.leftWords, leftWord);
               Phaser.Utils.Array.Remove(this.rightWords, rightWord);
-  
+
               this.showWellDoneMessage();
             }
           }
         }
       });
     });
-  
 
     if (this.matchedPairs.length === this.leftWords.length) {
       this.roundComplete();
@@ -677,9 +637,8 @@ class HouseScene3 extends Phaser.Scene {
   }
 
   getRandomWords(array, count) {
-
     const shuffled = Phaser.Utils.Array.Shuffle(array);
- 
+
     return shuffled.slice(0, count);
   }
 
@@ -692,7 +651,6 @@ class HouseScene3 extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(10);
 
- 
     this.tweens.add({
       targets: message,
       alpha: 0,
@@ -705,13 +663,11 @@ class HouseScene3 extends Phaser.Scene {
 
   roundComplete() {
     const username = this.game.registry.get("username");
-    console.log(username);
     if (this.isComplete) {
       return;
     }
     this.roundCount++;
-    this.isComplete = true; 
-    console.log("Round Complete!");
+    this.isComplete = true;
     const message = `Well done ${username}!\nSee you soon!`;
     this.speech = this.add.image(420, 200, "speech").setScale(0.15);
 
@@ -745,18 +701,15 @@ class HouseScene3 extends Phaser.Scene {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        console.log(response);
         return response.json();
       });
     }
 
-   
     this.matchedPairs = [];
     this.leftWords = [];
     this.rightWords = [];
 
     this.isComplete = false;
-    console.log(this.roundCount);
   }
 
   update() {
