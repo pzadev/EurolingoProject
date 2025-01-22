@@ -35,6 +35,9 @@ const PhaserGame = ({ username }) => {
         CaveScene,
       ],
       parent: gameContainer.current,
+      dom: {
+        createContainer: true,
+      },
     };
 
     const game = new Phaser.Game(config);

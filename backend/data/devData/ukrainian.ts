@@ -1353,7 +1353,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 271,
-    targetWord: "особа",
+    targetWord: "обличчя",
     englishWord: "face",
   },
   {
@@ -1563,7 +1563,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 313,
-    targetWord: "Обговорення",
+    targetWord: "говорити",
     englishWord: "talk",
   },
   {
@@ -1593,7 +1593,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 319,
-    targetWord: "прямій",
+    targetWord: "прямий",
     englishWord: "direct",
   },
   {
@@ -1613,7 +1613,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 323,
-    targetWord: "виміру",
+    targetWord: "вимір",
     englishWord: "measure",
   },
   {
@@ -2938,7 +2938,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 588,
-    targetWord: "ається",
+    targetWord: "газ",
     englishWord: "gas",
   },
   {
@@ -2953,7 +2953,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 591,
-    targetWord: "млн",
+    targetWord: "міліон",
     englishWord: "million",
   },
   {
@@ -3658,7 +3658,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 732,
-    targetWord: "узбережжі",
+    targetWord: "узбережжя",
     englishWord: "coast",
   },
   {
@@ -4543,7 +4543,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 909,
-    targetWord: "Магнит",
+    targetWord: "магніт",
     englishWord: "magnet",
   },
   {
@@ -4553,7 +4553,7 @@ export const urkainianWords: Language[] = [
   },
   {
     rank: 911,
-    targetWord: "спасибі",
+    targetWord: "дякую",
     englishWord: "thank",
   },
   {
