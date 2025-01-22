@@ -14,8 +14,8 @@ class CaveScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.language = data.language; // The language passed from BridgeScene
-    console.log("Cave scene language: " + this.language);
+    this.selectedLanguage = data.selectedLanguage || "french";
+    console.log("Cave scene language: " + this.selectedLanguage);
   }
 
   preload() {
@@ -43,17 +43,17 @@ class CaveScene extends Phaser.Scene {
     this.game.sound.stopAll();
 
     const possibleChestPositions = [
-      // { x: 840, y: 560 },
-      // { x: 280, y: 200 },
-      // { x: 730, y: 250 },
-      // { x: 500, y: 460 },
-      // { x: 670, y: 550 },
+      { x: 300, y: 400 },
+      { x: 600, y: 500 },
+      { x: 730, y: 250 },
+      { x: 500, y: 460 },
+      { x: 670, y: 550 },
     ];
 
     const randomPosition = Phaser.Utils.Array.GetRandom(possibleChestPositions);
 
     this.chest = this.physics.add
-      .staticSprite(300, 400, "chest")
+      .staticSprite(randomPosition.x, randomPosition.y, "chest")
       .setScale(2)
       .setDepth(10)
       .setVisible(true)
@@ -149,7 +149,6 @@ class CaveScene extends Phaser.Scene {
     );
   }
 
-  //guide interaction
   //guide interaction
   guideInteraction() {
     const username = this.game.registry.get("username");
@@ -249,95 +248,6 @@ class CaveScene extends Phaser.Scene {
     }
   }
 
-  // showTextInputModal(targetWord, correctAnswer) {
-  //   if (this.inputElement) return;
-
-  //   this.inputElement = document.createElement("div");
-  //   this.inputElement.style.position = "absolute";
-  //   this.inputElement.style.top = "50%";
-  //   this.inputElement.style.left = "50%";
-  //   this.inputElement.style.transform = "translate(-50%, -50%)";
-  //   this.inputElement.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-  //   this.inputElement.style.padding = "20px";
-  //   this.inputElement.style.borderRadius = "10px";
-  //   this.inputElement.style.color = "red";
-  //   this.inputElement.style.textAlign = "center";
-
-  //   const wordDisplay = document.createElement("h3");
-
-  //   const redText = document.createElement("span");
-  //   redText.textContent = "Translate this word into English: ";
-  //   redText.style.color = "white";
-
-  //   const targetWordText = document.createElement("span");
-  //   targetWordText.textContent = targetWord;
-  //   targetWordText.style.color = "white";
-
-  //   wordDisplay.appendChild(redText);
-  //   wordDisplay.appendChild(targetWordText);
-
-  //   this.inputElement.appendChild(wordDisplay);
-
-  //   const input = document.createElement("input");
-  //   input.type = "text";
-  //   input.placeholder = "Enter the correct word";
-  //   this.inputElement.appendChild(input);
-
-  //   const submitButton = document.createElement("button");
-  //   submitButton.textContent = "Submit";
-  //   this.inputElement.appendChild(submitButton);
-
-  //   const skipButton = document.createElement("button");
-  //   skipButton.textContent = "Skip";
-  //   this.inputElement.appendChild(skipButton);
-
-  //   document.body.appendChild(this.inputElement);
-
-  //   submitButton.addEventListener("click", () => {
-  //     const userAnswer = input.value.trim().toLowerCase();
-  //     const correctAnswerLower = correctAnswer.toLowerCase();
-
-  //     if (userAnswer === correctAnswerLower) {
-  //       this.addPoints(1);
-  //       this.showInGameFeedback("Correct! You've earned 1 point.", 3000);
-  //     } else {
-  //       this.showInGameFeedback("Incorrect. Try again!", 3000);
-  //     }
-
-  //     this.isTaskActive = false;
-  //     document.body.removeChild(this.inputElement);
-  //     this.inputElement = null;
-
-  //     this.moveToNextWord();
-  //     console.log("User Answer:", userAnswer);
-  //     console.log("Correct Answer:", correctAnswer);
-  //   });
-
-  //   skipButton.addEventListener("click", () => {
-  //     this.skippedWordsCount++;
-  //     if (this.skippedWordsCount < 9) {
-  //       this.showInGameFeedback("You skipped the word.", 3000);
-  //     }
-  //     if (this.skippedWordsCount === 9) {
-  //       this.showInGameFeedback("You have one more word.", 3000);
-  //     }
-
-  //     document.body.removeChild(this.inputElement);
-  //     this.inputElement = null;
-  //     this.isTaskActive = false;
-  //     if (this.skippedWordsCount > 9 && this.rightWordData.length <= 1) {
-  //       this.skippedWordsCount = 0;
-  //       this.chest.destroy();
-  //       this.showInGameFeedback(
-  //         "Congratulations! You've completed all tasks.",
-  //         5000
-  //       );
-  //       return;
-  //     } else {
-  //       this.moveToNextWord();
-  //     }
-  //   });
-  // }
 
   showTextInputModal(targetWord, correctAnswer) {
     console.log(`Displaying modal for word: ${targetWord}`);
@@ -498,7 +408,7 @@ class CaveScene extends Phaser.Scene {
   }
 
   fetchAndDisplayWords() {
-    fetch(`https://eurolingo.onrender.com/api/${this.language}`, {
+    fetch(`https://eurolingo.onrender.com/api/${this.selectedLanguage}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })

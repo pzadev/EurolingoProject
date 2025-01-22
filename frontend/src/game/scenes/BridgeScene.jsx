@@ -4,7 +4,7 @@ import BridgeCollisions from "../imports/bridgeCollisions";
 class BridgeScene extends Phaser.Scene {
   constructor() {
     super({ key: "BridgeScene" });
-    this.selectedLanguage = null
+    this.selectedLanguage = null;
   }
 
   init(data) {
@@ -93,6 +93,7 @@ class BridgeScene extends Phaser.Scene {
           this.scene.start(targetScene, {
             targetX: teleport.getData("targetX"),
             targetY: teleport.getData("targetY"),
+            selectedLanguage: this.selectedLanguage,
           });
         }
       },
@@ -106,45 +107,45 @@ class BridgeScene extends Phaser.Scene {
     const bridgeCollisionGroup = bridgeBlocks.getBridgeBlocks();
     this.physics.add.collider(this.player, bridgeCollisionGroup);
 
-
     this.characterZone = this.physics.add.staticGroup();
-const characterTrigger = this.characterZone
-  .create(550, 300, "collision") // Position it slightly to the right and central
-  .setSize(150, 100)              // Size of the trigger zone
-  .setOrigin(0.5, 0.5);
-characterTrigger.visible = false; // Make the collision area invisible
+    const characterTrigger = this.characterZone
+      .create(550, 300, "collision") // Position it slightly to the right and central
+      .setSize(150, 100) // Size of the trigger zone
+      .setOrigin(0.5, 0.5);
+    characterTrigger.visible = false; // Make the collision area invisible
 
-// Add overlap detection for player and the trigger zone
-this.physics.add.overlap(
-  this.player,
-  this.characterZone,
-  this.handleCharacterInteraction, // Callback function for interaction
-  null,
-  this
-);
-
+    // Add overlap detection for player and the trigger zone
+    this.physics.add.overlap(
+      this.player,
+      this.characterZone,
+      this.handleCharacterInteraction, // Callback function for interaction
+      null,
+      this
+    );
   }
 
   handleCharacterInteraction(player, zone) {
-    // Ensure previous speech bubble elements are removed if they exist
     if (this.reminder && this.speech) {
       this.reminder.destroy();
       this.speech.destroy();
     }
-  
-    // Create the speech bubble and text
+
     this.speech = this.add.image(600, 200, "speech").setScale(0.21).setDepth(9);
     this.reminder = this.add
-      .text(439, 135, `Well done on getting this far!\nFor your final task, select\na language, and then\nhead over to the cave.`,  {
-        fontSize: "17px",
-        color: "#ffffff",
-        align: "center",
-        padding: { x: 10, y: 5 },
-      })
+      .text(
+        439,
+        135,
+        `Well done on getting this far!\nFor your final task, select\na language, and then\nhead over to the cave.`,
+        {
+          fontSize: "17px",
+          color: "#ffffff",
+          align: "center",
+          padding: { x: 10, y: 5 },
+        }
+      )
       .setDepth(10);
-  
-    // Set a timed delay to remove the speech bubble and text
-    this.time.delayedCall(9000, () => {
+
+    this.time.delayedCall(5000, () => {
       if (this.reminder && this.speech) {
         this.reminder.destroy();
         this.speech.destroy();
@@ -153,41 +154,39 @@ this.physics.add.overlap(
         this.displayFlags();
       }
     });
-  
-    // Disable the interaction zone to prevent repeated triggers
+
     zone.destroy();
   }
 
   displayFlags() {
     const flagPositions = [
-      { key: "gerFlag", x: 400, y: 300, language: "German" },
-      { key: "spaFlag", x: 500, y: 300, language: "Spanish" },
-      { key: "ukrFlag", x: 600, y: 300, language: "Ukrainian" },
-      { key: "itaFlag", x: 700, y: 300, language: "Italian" },
-      { key: "freFlag", x: 800, y: 300, language: "French" },
+      { key: "gerFlag", x: 330, y: 370, language: "german" },
+      { key: "spaFlag", x: 420, y: 370, language: "spanish" },
+      { key: "ukrFlag", x: 510, y: 370, language: "ukrainian" },
+      { key: "itaFlag", x: 600, y: 370, language: "italian" },
+      { key: "freFlag", x: 690, y: 370, language: "french" },
     ];
-  
+
     flagPositions.forEach((flag) => {
-      const flagSprite = this.add.image(flag.x, flag.y, flag.key)
-        .setScale(0.7) // Adjust flag size
+      const flagSprite = this.add
+        .image(flag.x, flag.y, flag.key)
+        .setScale(0.8)
         .setInteractive()
         .on("pointerdown", () => {
           this.handleFlagClick(flag.language);
         });
-    }) ;
-  }
-
-
-  handleFlagClick(language) {
-    this.selectedLanguage = language; // Store the language choice
-
-    this.children.getAll().forEach(child => {
-      if (child && child.texture && child.texture.key.includes('Flag')) {
-        child.setVisible(false); // Or child.destroy() if you prefer to remove them completely
-      }
     });
   }
 
+  handleFlagClick(language) {
+    this.selectedLanguage = language;
+
+    this.children.getAll().forEach((child) => {
+      if (child && child.texture && child.texture.key.includes("Flag")) {
+        child.setVisible(false);
+      }
+    });
+  }
 
   update() {
     this.player.setVelocity(0);
