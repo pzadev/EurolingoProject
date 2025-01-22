@@ -9,7 +9,7 @@ export class MainScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.startX = data && data.x ? data.x : 900;
+    this.startX = data && data.x ? data.x : 1900;
     this.startY = data && data.y ? data.y : 800;
 
     this.username = this.game.registry.get("username") || data?.username;
