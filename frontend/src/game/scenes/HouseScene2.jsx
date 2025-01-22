@@ -629,49 +629,58 @@ class HouseScene2 extends Phaser.Scene {
   }
 
   checkForMatches() {
+    // Get the bounds of the chest
+    const chestBounds = this.chest.getBounds();
+  
+    // Iterate through all left and right Phaser text objects
     this.leftWords.forEach((leftWord) => {
       this.rightWords.forEach((rightWord) => {
+        // Log positions of left and right words
+        console.log("Left Text:", leftWord.x, leftWord.y); // Log position of left word
+        console.log("Right Text:", rightWord.x, rightWord.y); // Log position of right word
+  
         // Get their bounds for overlap detection
         const leftBounds = leftWord.getBounds();
         const rightBounds = rightWord.getBounds();
-
-        // Log bounds to help debug if they overlap correctly
-
-        // Check for overlap
-        const overlap = Phaser.Geom.Intersects.RectangleToRectangle(
+  
+        // Check if both words are overlapping the chest
+        const leftOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
           leftBounds,
-          rightBounds
+          chestBounds
         );
-
-        if (overlap) {
-          console.log("Overlap Detected!");
-
+        const rightOverlapChest = Phaser.Geom.Intersects.RectangleToRectangle(
+          rightBounds,
+          chestBounds
+        );
+  
+        if (leftOverlapChest && rightOverlapChest) {
+          console.log("Words Overlap Chest!");
+  
           // Check if ranks match
           if (leftWord.rank === rightWord.rank) {
             const pairKey = `${leftWord.text}-${rightWord.text}`;
-
+  
             // Ensure the pair isn't already matched
             if (!this.matchedPairs.includes(pairKey)) {
               console.log("Matched Pair:", pairKey);
               this.matchedPairs.push(pairKey);
               this.countMatches++;
-              console.log(this.countMatches);
-
+  
               // Destroy matched words
               leftWord.destroy();
               rightWord.destroy();
-
+  
               // Remove matched objects from arrays
               Phaser.Utils.Array.Remove(this.leftWords, leftWord);
               Phaser.Utils.Array.Remove(this.rightWords, rightWord);
-
+  
               this.showWellDoneMessage();
             }
           }
         }
       });
     });
-
+  
     // Check if all pairs have been matched
     if (this.matchedPairs.length === this.leftWords.length) {
       this.roundComplete();
