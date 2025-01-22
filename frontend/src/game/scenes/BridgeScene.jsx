@@ -4,6 +4,7 @@ import BridgeCollisions from "../imports/bridgeCollisions";
 class BridgeScene extends Phaser.Scene {
   constructor() {
     super({ key: "BridgeScene" });
+    this.selectedLanguage = null
   }
 
   init(data) {
@@ -143,16 +144,48 @@ this.physics.add.overlap(
       .setDepth(10);
   
     // Set a timed delay to remove the speech bubble and text
-    this.time.delayedCall(10000, () => {
+    this.time.delayedCall(9000, () => {
       if (this.reminder && this.speech) {
         this.reminder.destroy();
         this.speech.destroy();
         this.reminder = null;
+
+        this.displayFlags();
       }
     });
   
     // Disable the interaction zone to prevent repeated triggers
     zone.destroy();
+  }
+
+  displayFlags() {
+    const flagPositions = [
+      { key: "gerFlag", x: 400, y: 300, language: "German" },
+      { key: "spaFlag", x: 500, y: 300, language: "Spanish" },
+      { key: "ukrFlag", x: 600, y: 300, language: "Ukrainian" },
+      { key: "itaFlag", x: 700, y: 300, language: "Italian" },
+      { key: "freFlag", x: 800, y: 300, language: "French" },
+    ];
+  
+    flagPositions.forEach((flag) => {
+      const flagSprite = this.add.image(flag.x, flag.y, flag.key)
+        .setScale(0.7) // Adjust flag size
+        .setInteractive()
+        .on("pointerdown", () => {
+          this.handleFlagClick(flag.language);
+        });
+    }) ;
+  }
+
+
+  handleFlagClick(language) {
+    this.selectedLanguage = language; // Store the language choice
+
+    this.children.getAll().forEach(child => {
+      if (child && child.texture && child.texture.key.includes('Flag')) {
+        child.setVisible(false); // Or child.destroy() if you prefer to remove them completely
+      }
+    });
   }
 
 
