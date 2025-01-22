@@ -15,7 +15,6 @@ class CaveScene extends Phaser.Scene {
 
   init(data) {
     this.selectedLanguage = data.selectedLanguage || "french";
-    console.log("Cave scene language: " + this.selectedLanguage);
   }
 
   preload() {
@@ -104,20 +103,20 @@ class CaveScene extends Phaser.Scene {
       .setSize(20, 20)
       .setOrigin(1, 1);
     teleport.visible = false;
-    teleport.setData("targetScene", "BridgeScene");
-    teleport.setData("startX", 850);
-    teleport.setData("startY", 200);
+    teleport.setData("targetScene", "Main");
+    teleport.setData("x", 1800);
+    teleport.setData("y", 800);
 
     this.physics.add.overlap(
       this.player,
       this.teleport,
       (player, teleport) => {
         const targetScene = teleport.getData("targetScene");
-        const startX = teleport.getData("startX");
-        const startY = teleport.getData("startY");
+        const x = teleport.getData("x");
+        const y = teleport.getData("y");
 
         if (targetScene) {
-          this.scene.start(targetScene, { x: startX, y: startY });
+          this.scene.start(targetScene, { x, y });
           this.gameFinished = false;
         }
       },
@@ -156,7 +155,6 @@ class CaveScene extends Phaser.Scene {
       this.reminder.destroy();
       this.speech.destroy();
     }
-    console.log(this.gameFinished);
 
     if (this.gameFinished) {
       this.speech = this.add
@@ -248,11 +246,7 @@ class CaveScene extends Phaser.Scene {
     }
   }
 
-
   showTextInputModal(targetWord, correctAnswer) {
-    console.log(`Displaying modal for word: ${targetWord}`);
-    console.log(`Correct answer: ${correctAnswer}`);
-
     if (this.modalContainer) return;
 
     this.modalContainer = this.add
@@ -280,7 +274,6 @@ class CaveScene extends Phaser.Scene {
       .setOrigin(0.5);
     this.modalContainer.add([wordText, targetWordText]);
 
-    // Create the HTML input element dynamically
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "Enter the transtation";
@@ -511,18 +504,14 @@ class CaveScene extends Phaser.Scene {
       this.guide.y
     );
 
-    // console.log(`Distance to chest: ${distance}`); // Debug distance
-
     if (distance <= 80) {
       this.chest.setVisible(true);
     } else {
       this.chest.setVisible(false);
     }
     if (distanceToNPC <= 100) {
-      // console.log("Player is near the chest. Making it visible."); // Debug log
       this.guide.setVisible(true);
     } else {
-      // console.log("Player is far from the chest. Hiding it."); // Debug log
       this.guide.setVisible(false);
     }
   }

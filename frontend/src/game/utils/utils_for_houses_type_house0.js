@@ -1,5 +1,4 @@
 export function lookAtJournal() {
-  console.log(this);
   if (this.journalTriggered) return;
   this.journalTriggered = true;
   this.Chest_exMark = this.physics.add
@@ -37,18 +36,16 @@ export function fetchAndDisplayWords(language) {
   })
     .then((response) => response.json())
     .then((data) => {
-      const randomWords = this.getRandomWords(data, 5); // Ensure this function exists
-      return randomWords; // Return the processed words
+      const randomWords = this.getRandomWords(data, 5);
+      return randomWords;
     })
     .catch((error) => {
       console.error("API Error:", error);
-      throw error; // Rethrow to propagate error
+      throw error;
     });
 }
 
 export function displayWords(data) {
-  console.log(this.leftWords);
-  console.log(this.rightWords);
   const leftWordsData = data.map((item) => ({
     text: item.englishWord,
     rank: item.rank,
@@ -81,21 +78,6 @@ export function displayWords(data) {
   });
   createBackButton();
 }
-
-// function createLeftText(text, x, y, rank, color) {
-//   const word = this.add
-//     .text(x, y, text, { fontSize: "50px", color })
-//     .setDepth(3);
-//   word.rank = rank;
-//   this.leftWords.push(word);
-// }
-// function createRightText(text, x, y, rank, color) {
-//   const word = this.add
-//     .text(x, y, text, { fontSize: "50px", color })
-//     .setDepth(3);
-//   word.rank = rank;
-//   this.rightWords.push(word);
-// }
 
 function createBackButton() {
   this.back_btn = this.add.image(860, 565, "back").setDepth(3).setInteractive();
