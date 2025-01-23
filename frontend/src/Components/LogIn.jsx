@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { findUser } from "../api";
-import { loadingBox } from "assets/loadingBox.gif";
+import loadingBox from "../../public/assets/loadingBox.gif";
 
 const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   const [password, setPassword] = useState("");

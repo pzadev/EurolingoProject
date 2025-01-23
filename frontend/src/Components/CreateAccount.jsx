@@ -1,5 +1,5 @@
 import { useState } from "react";
-import loadingBox from "assets/loadingBox.gif";
+import loadingBox from "../../public/assets/loadingBox.gif";
 import { checkIfUserExists, createUser } from "../api";
 
 const CreateAccount = ({ setShowLogIn }) => {
