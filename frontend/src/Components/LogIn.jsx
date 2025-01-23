@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { findUser } from "../api";
-import '../../public/assets/loadingBox.gif'
+import { loadingBox } from "assets/loadingBox.gif";
 
 const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
       if (data.password === password) {
         setSubmissionFeedback("Log in successfully");
         setGameStart(true);
-        setUsername(username)
+        setUsername(username);
         setPassword("");
       } else if (data.password !== password) {
         setSubmissionFeedback("Incorrect password");
@@ -31,8 +31,10 @@ const LogIn = ({ setGameStart, setShowLogIn, setUsername, username }) => {
   if (loading) {
     return (
       <div className="loadingContainer">
-        <img className='loadingImage' src='../../public/assets/loadingBox.gif'></img>
-        <p className="loadingText" >Loading, this may take a while...please be patient!</p>
+        <img className="loadingImage" src={loadingBox}></img>
+        <p className="loadingText">
+          Loading, this may take a while...please be patient!
+        </p>
       </div>
     );
   }
