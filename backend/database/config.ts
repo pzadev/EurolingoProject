@@ -1,7 +1,5 @@
 import dotenv from "dotenv";
 
-jest.setTimeout(30000);
-
 const envFile =
   process.env.NODE_ENV === "test" ? ".env.local" : ".env.development";
 dotenv.config({ path: envFile });
