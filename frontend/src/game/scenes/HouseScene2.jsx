@@ -419,7 +419,7 @@ class HouseScene2 extends Phaser.Scene {
     this.journalImage = this.add.image(500, 310, "journal").setDepth(3);
     this.journalImage.displayWidth = 1200;
     this.journalImage.displayHeight = 1050;
-    fetch("https://eurolingo.onrender.com/api/spanish", {
+    fetch("https://elbackend.onrender.com/api/spanish", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -692,7 +692,7 @@ class HouseScene2 extends Phaser.Scene {
     });
 
     if (this.roundCount === 5) {
-      fetch(`https://eurolingo.onrender.com/api/users/${username}`, {
+      fetch(`https://elbackend.onrender.com/api/users/${username}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

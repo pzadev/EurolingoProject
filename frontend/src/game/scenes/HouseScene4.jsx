@@ -411,7 +411,7 @@ class HouseScene4 extends Phaser.Scene {
     this.journalImage = this.add.image(500, 310, "journal").setDepth(3);
     this.journalImage.displayWidth = 1200;
     this.journalImage.displayHeight = 1050;
-    fetch("https://eurolingo.onrender.com/api/ukrainian", {
+    fetch("https://elbackend.onrender.com/api/ukrainian", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })

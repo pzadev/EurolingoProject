@@ -30,7 +30,7 @@ export function fetchAndDisplayWords(language) {
   this.journalImage.displayWidth = 1200;
   this.journalImage.displayHeight = 1050;
 
-  return fetch(`https://eurolingo.onrender.com/api/${language}`, {
+  return fetch(`https://elbackend.onrender.com/api/${language}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   })

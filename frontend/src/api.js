@@ -1,6 +1,6 @@
 export const createUser = async (username, password) => {
   try {
-    const response = await fetch("https://eurolingo.onrender.com/api/users", {
+    const response = await fetch("https://elbackend.onrender.com/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -19,7 +19,7 @@ export const createUser = async (username, password) => {
 export const findUser = async (username, password) => {
   try {
     const response = await fetch(
-      `https://eurolingo.onrender.com/api/users/${username}`,
+      `https://elbackend.onrender.com/api/users/${username}`,
       {
         method: "GET",
       }
@@ -40,7 +40,7 @@ export const findUser = async (username, password) => {
 export const checkIfUserExists = async (username) => {
   try {
     const response = await fetch(
-      `https://eurolingo.onrender.com/api/users/${username}`,
+      `https://elbackend.onrender.com/api/users/${username}`,
       {
         method: "GET",
       }
@@ -56,7 +56,7 @@ export const checkIfUserExists = async (username) => {
 export const checkUserProgress = async (username) => {
   try {
     const response = await fetch(
-      `https://eurolingo.onrender.com/api/users/${username}`,
+      `https://elbackend.onrender.com/api/users/${username}`,
       {
         method: "GET",
       }
