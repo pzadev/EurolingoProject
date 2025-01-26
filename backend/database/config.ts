@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ae082ce8c21cba09a334cebd31389b8ed08c838
 const envFile =
   process.env.NODE_ENV === "test" ? ".env.local" : ".env.development";
 dotenv.config({ path: envFile });

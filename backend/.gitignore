@@ -2,3 +2,8 @@ node_modules
 .env.local
 .env.development
 .env.computer
+<<<<<<< HEAD
+=======
+seeding-dev-data.ts
+hello
+>>>>>>> 0ae082ce8c21cba09a334cebd31389b8ed08c838
