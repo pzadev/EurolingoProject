@@ -1,9 +1,6 @@
 import { italianWords, frenchWords, germanWords, spanishWords, urkainianWords, userData } from "./data/devData";
-
 import { initializeConnection } from "./database/connect";
-
 import { seeding } from "./database/seed";
-
 import app  from "./app"
 
 import { MONGODB_URI, DATABASE_NAME } from "./database/config";
