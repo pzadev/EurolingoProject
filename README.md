@@ -1,10 +1,10 @@
-# EuroLingo
+# EuroLingo 
 
-## EuroLingo is an engaging and effective language learning application that blends interactive features with an exciting 2D game experience. Developed in the style of Pokémon, users can explore, complete word-matching tasks, track their progress, and unlock new areas of the map. With personalized content and multilingual support, EuroLingo makes language learning fun and immersive.
+## EuroLingo is an engaging and effective language learning application that blends interactive features with an exciting 2D game experience. Developed in the style of Pokémon, users can explore, complete word-matching and translating tasks, track their progress, and unlock new areas of the map. EuroLingo was developed by me as part of a team of 5 people. 
 
 ## EuroLingo is deployed at **https://eurolingogame.netlify.app/**
 
-### Features
+## Features
 Interactive Learning Modules: Enjoy interactive lessons designed to reinforce language skills.
 Game-Based Learning: Engage in a 2D game experience styled like Pokémon, combining education with entertainment.
 User Authentication: Secure authentication for personalized learning experiences.
